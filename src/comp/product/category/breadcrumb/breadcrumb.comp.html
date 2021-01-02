@@ -1,0 +1,53 @@
+<ngx-loading [show]="busy"></ngx-loading>
+
+<nav aria-label="breadcrumb" *ngIf="isEdit && personProductProfileDto && personProductProfileDto.IsShopOwner"
+    [@expandCollapse]>
+    <ol class="breadcrumb p-0 border border-danger">
+        <li class="breadcrumb-item" [class.active]="productCategory.IsSelected"
+            *ngFor="let productCategory of editCategoryListDto">
+            <button class="btn btn-outline-primary btn-sm btn-naked"
+                [popover]="productCategory.IsLast ? null : popTemplateCategory" [isOpen]="productCategory.IsOpen"
+                placement="auto" type="button" (click)="getChildrenList(productCategory)">
+                {{productCategory.Name}}
+            </button>
+        </li>
+        <li class="breadcrumb-item">
+            <button class="btn btn-outline-danger btn-sm btn-naked" type="button" (click)="cancel()">
+                <fa [name]="'ban'"></fa>{{'xCancel' | translate}}
+            </button>
+            <button class="btn btn-outline-success btn-sm btn-naked blink ml-2" type="button" (click)="save()"
+                *ngIf="showSaveBtn">
+                <fa [name]="'check'"></fa>{{'xSave' | translate}}
+            </button>
+        </li>
+    </ol>
+</nav>
+
+<nav aria-label="breadcrumb" *ngIf="!isEdit && upperCategoryListDto.length > 1" [@expandCollapse]>
+    <ol class="breadcrumb p-0">
+        <li class="breadcrumb-item" [class.active]="productCategory.IsSelected"
+            *ngFor="let productCategory of upperCategoryListDto">
+            <a [routerLink]="productCategory.FullUrl" class="text-dark">
+                {{productCategory.Name}}
+            </a>
+        </li>
+        <li class="breadcrumb-item" *ngIf="personProductProfileDto && personProductProfileDto.IsShopOwner">
+            <button class="btn btn-outline-primary btn-sm btn-naked ml-2" type="button" (click)="edit()">
+                <fa [name]="'edit'"></fa>{{'xEdit' | translate}}
+            </button>
+        </li>
+    </ol>
+</nav>
+
+<ng-template #popTemplateCategory>
+    <div class="row">
+        <div class="col-12">
+            <ngx-loading [show]="busyChildren"></ngx-loading>
+        </div>
+        <div class="col-12" *ngFor="let category of childrenCategoryListDto">
+            <button class="btn btn-outline-primary btn-sm btn-naked" type="button" (click)="childrenClick(category)">
+                {{category.Name}}
+            </button>
+        </div>
+    </div>
+</ng-template>

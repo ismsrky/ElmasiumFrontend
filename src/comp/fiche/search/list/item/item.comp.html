@@ -1,0 +1,32 @@
+<div class="card mb-1 border-info">
+    <div class="card-body p-2">
+        <div class="row">
+            <div class="col-sm-6 pr-0">
+                <h5 class="text-white pl-2 pt-1 pb-1" [class.bg-success]="listItem.IsDebtor==1"
+                    [class.bg-warning]="listItem.IsDebtor==0" [class.bg-secondary]="listItem.IsDebtor==2">
+                    {{ficheTypeFakes[listItem.FicheTypeFakeId] | translate}}
+                    - {{listItem.Id}}</h5>
+            </div>
+            <div class="col-sm-3 pr-0">
+                <h5 class="float-right">{{listItem.GrandTotal - listItem.PaidTotal | number:'1.2-2'}}
+                    <currency-icon [currencyId]="listItem.CurrencyId"></currency-icon>
+                </h5>
+            </div>
+            <div class="col-sm-3 pr-0">
+                <button *ngIf="!host.criteriaBo.Multiple" class="btn btn-primary btn-block btn-sm" type="submit"
+                    (click)="selectItem()">
+                    <fa [name]="'check'"></fa>{{'xSelect' | translate}}
+                </button>
+                <div class="utility" *ngIf="host.criteriaBo.Multiple">
+                    <div class="animated-checkbox">
+                        <label>
+                            <input type="checkbox" [(ngModel)]="listItem.Checked" name="Checked">
+                            <span class="label-text" *ngIf="listItem.Checked">{{'xUnselect' | translate}}</span>
+                            <span class="label-text" *ngIf="!listItem.Checked">{{'xSelect' | translate}}</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

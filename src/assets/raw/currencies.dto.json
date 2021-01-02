@@ -1,0 +1,150 @@
+[
+    {
+        "Id": 0,
+        "Name": "xTurkishLira",
+        "Code": "TRY",
+        "IconClass": "try",
+        "IconUniCode": "&#xf195;",
+        "IconStr": "₺"
+    },
+    {
+        "Id": 1,
+        "Name": "xAmericanDollar",
+        "Code": "USD",
+        "IconClass": "usd",
+        "IconUniCode": "&#xf155;",
+        "IconStr": "$"
+    },
+    {
+        "Id": 2,
+        "Name": "xEuro",
+        "Code": "EUR",
+        "IconClass": "eur",
+        "IconUniCode": "&#xf153;",
+        "IconStr": "€"
+    },
+    {
+        "Id": 3,
+        "Name": "xJapaneseYen",
+        "Code": "JPY",
+        "IconClass": "jpy",
+        "IconUniCode": "&#xf157;",
+        "IconStr": "¥"
+    },
+    {
+        "Id": 4,
+        "Name": "xPoundSterling",
+        "Code": "GBP",
+        "IconClass": "gbp",
+        "IconUniCode": "&#xf154;",
+        "IconStr": "£"
+    },
+    {
+        "Id": 5,
+        "Name": "xAustralianDollar",
+        "Code": "AUD",
+        "IconClass": null,
+        "IconStr": null
+    },
+    {
+        "Id": 6,
+        "Name": "xCanadianDollar",
+        "Code": "CAD",
+        "IconClass": null,
+        "IconStr": null
+    },
+    {
+        "Id": 7,
+        "Name": "xSwissFranc",
+        "Code": "CHF",
+        "IconClass": null,
+        "IconStr": null
+    },
+    {
+        "Id": 8,
+        "Name": "xRenminbi",
+        "Code": "CNY",
+        "IconClass": null,
+        "IconStr": null
+    },
+    {
+        "Id": 9,
+        "Name": "xSwedishKrona",
+        "Code": "SEK",
+        "IconClass": null,
+        "IconStr": null
+    },
+    {
+        "Id": 10,
+        "Name": "xNewZealandDollar",
+        "Code": "NZD",
+        "IconClass": null,
+        "IconStr": null
+    },
+    {
+        "Id": 11,
+        "Name": "xMexicanPeso",
+        "Code": "MXN",
+        "IconClass": null,
+        "IconStr": null
+    },
+    {
+        "Id": 12,
+        "Name": "xSingaporeDollar",
+        "Code": "SGD",
+        "IconClass": null,
+        "IconStr": null
+    },
+    {
+        "Id": 13,
+        "Name": "xHongKongDollar",
+        "Code": "HKD",
+        "IconClass": null,
+        "IconStr": null
+    },
+    {
+        "Id": 14,
+        "Name": "xNorwegianKrone",
+        "Code": "NOK",
+        "IconClass": null,
+        "IconStr": null
+    },
+    {
+        "Id": 15,
+        "Name": "xSouthKoreanWon",
+        "Code": "KRW",
+        "IconClass": "krw",
+        "IconUniCode": "&#xf159;",
+        "IconStr": "₩"
+    },
+    {
+        "Id": 16,
+        "Name": "xRussianRuble",
+        "Code": "RUB",
+        "IconClass": "rub",
+        "IconUniCode": "&#xf158;",
+        "IconStr": "₽"
+    },
+    {
+        "Id": 17,
+        "Name": "xIndianRupee",
+        "Code": "INR",
+        "IconClass": "inr",
+        "IconUniCode": "&#xf156;",
+        "IconStr": "₹"
+    },
+    {
+        "Id": 18,
+        "Name": "xBrazilianReal",
+        "Code": "BRL",
+        "IconClass": null,
+        "IconStr": null
+    },
+    {
+        "Id": 19,
+        "Name": "xSouthAfricanRand",
+        "Code": "ZAR",
+        "IconClass": null,
+        "IconStr": null
+    }
+]

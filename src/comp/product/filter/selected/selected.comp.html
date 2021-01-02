@@ -1,0 +1,19 @@
+<div class="tile p-2">
+    <h5>{{'xSearchWord' | translate}}</h5>
+    <hr class="m-2">
+    <div class="row">
+        <div class="col-12">
+            <form class="needs-validation" #searcWordForm="ngForm" (submit)="searhWord()" novalidate>
+                <div class="input-group">
+                    <input class="form-control" type="text" name="SearchWord" #_searchWord="ngModel"
+                        [(ngModel)]="searchWord" placeholder="{{'xSearchWord' | translate}}" style="height: 20px">
+                    <div class="input-group-append">
+                        <button class="btn btn-sm btn-info" type="submit">
+                            <fa [name]="'search'"></fa>
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

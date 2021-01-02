@@ -1,0 +1,158 @@
+<ngx-loading [show]="busy"></ngx-loading>
+<div [class.tile]="!IsInside" [class.border]="personAddressListDto && personAddressListDto.IsCrudOpen"
+    [class.border-danger]="personAddressListDto && personAddressListDto.IsCrudOpen">
+    <div class="row mb-2" *ngIf="!IsInside">
+        <div class="col-12">
+            <h5>{{'xAddress' | translate}}
+                <button type="button" class="close pull-right" aria-label="Close" *ngIf="!showLite"
+                    (click)="personAddressListDto.IsCrudOpen=false">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </h5>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <form class="needs-validation" #personAddressForm="ngForm" (submit)="save()" novalidate>
+                <div class="row" *ngIf="!showLite">
+                    <div class="mb-2 col-md-6">
+                        <label class="control-label">
+                            *{{'xAddressName' | translate}}
+                        </label>
+                        <input class="form-control" #addressName="ngModel" required
+                            [class.is-invalid]="addressName.invalid && (addressName.touched || personAddressForm.submitted)"
+                            [(ngModel)]="personAddressDto.Name" name="Name" [appAutofocus]="true" type="text"
+                            placeholder="{{'xAddressName' | translate}}" autocomplete="off">
+                        <div class="invalid-tooltip">{{'xAddressNameCantBeEmpty' | translate}}</div>
+                    </div>
+                    <div class="mb-2 col-md-6">
+                        <label class="control-label">
+                            *{{'xAddressType' | translate}}
+                        </label>
+                        <select class="form-control" #addressTypeId="ngModel" required
+                            [class.is-invalid]="addressTypeId.invalid && (addressTypeId.touched || personAddressForm.submitted)"
+                            [(ngModel)]="personAddressDto.AddressTypeId" name="AddressTypeId">
+                            <option [ngValue]="null">{{'xSelectAddressType' | translate}}</option>
+                            <option *ngFor="let item of addressTypes | enums" [ngValue]="item.key">
+                                {{item.value | translate}}
+                            </option>
+                        </select>
+                        <div class="invalid-tooltip">{{'xSelectAddressType' | translate}}</div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="mb-2 col-md-6">
+                        <ngx-loading [show]="busyCountry"></ngx-loading>
+                        <label class="control-label">
+                            *{{'xCountry' | translate}}
+                        </label>
+                        <select class="form-control" #countrySelect="ngModel" required
+                            [class.is-invalid]="countrySelect.invalid && (countrySelect.touched || personAddressForm.submitted)"
+                            [(ngModel)]="personAddressDto.CountryId" name="CountryId"
+                            (change)="countryChanged($event.target.value,false)">
+                            <option [ngValue]="null">{{'xSelectCountry' | translate}}</option>
+                            <option *ngFor="let country of countryList" [value]="country.Id">
+                                {{country.Name}}</option>
+                        </select>
+                        <div class="invalid-tooltip">{{'xSelectCountry' | translate}}</div>
+                    </div>
+                    <div class="mb-2 col-md-6" *ngIf="selectedCountry && selectedCountry.HasStates" [@expandCollapse]>
+                        <ngx-loading [show]="busyState"></ngx-loading>
+                        <label class="control-label">
+                            {{'xState' | translate}}
+                        </label>
+                        <select class="form-control" #stateSelect="ngModel" [(ngModel)]="personAddressDto.StateId"
+                            name="DistrictId" (change)="stateChanged($event.target.value,false)">
+                            <option [ngValue]="null">{{'xSelectState' | translate}}</option>
+                            <option *ngFor="let state of stateList" [value]="state.Id">{{state.Name}}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="mb-2 col-md-6">
+                        <ngx-loading [show]="busyCity"></ngx-loading>
+                        <label class="control-label">
+                            {{'xCity' | translate}}
+                        </label>
+                        <select class="form-control" #citySelect="ngModel" [(ngModel)]="personAddressDto.CityId"
+                            name="CityId" (change)="cityChanged($event.target.value,false)">
+                            <option [ngValue]="null">{{'xSelectCity' | translate}}</option>
+                            <option *ngFor="let city of cityList" [value]="city.Id">{{city.Name}}</option>
+                        </select>
+                    </div>
+                    <div class="mb-2 col-md-6">
+                        <ngx-loading [show]="busyDistrict"></ngx-loading>
+                        <label class="control-label">
+                            {{'xDistrict' | translate}}
+                        </label>
+                        <select class="form-control" #districtSelect="ngModel" [(ngModel)]="personAddressDto.DistrictId"
+                            name="DistrictId" (change)="districtChanged($event.target.value,false)">
+                            <option [ngValue]="null">{{'xSelectDistrict' | translate}}</option>
+                            <option *ngFor="let district of districtList" [value]="district.Id">{{district.Name}}
+                            </option>
+                        </select>
+                    </div>
+                    <div class="mb-2 col-md-6">
+                        <ngx-loading [show]="busyLocality"></ngx-loading>
+                        <label class="control-label">
+                            {{'xLocality' | translate}}
+                        </label>
+                        <select class="form-control" #districtSelect="ngModel" [(ngModel)]="personAddressDto.LocalityId"
+                            name="LocalityId">
+                            <option [ngValue]="null">{{'xSelectLocality' | translate}}</option>
+                            <option *ngFor="let locality of localityList" [value]="locality.Id">{{locality.Name}}
+                            </option>
+                        </select>
+                    </div>
+                    <div class="mb-2 col-md-6">
+                        <label class="control-label">
+                            {{'xZipCode' | translate}}
+                        </label>
+                        <input class="form-control" #zipCode="ngModel" [(ngModel)]="personAddressDto.ZipCode"
+                            name="ZipCode" type="text" placeholder="{{'xZipCode' | translate}}" autocomplete="off">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="mb-2 col-12">
+                        <label class="control-label">{{'xAddress' | translate}}</label>
+                        <textarea class="form-control" [(ngModel)]="personAddressDto.Notes" name="Notes" type="text"
+                            placeholder="{{'xAddress' | translate}}"></textarea>
+                    </div>
+                </div>
+                <div class="row" *ngIf="!showLite">
+                    <div class="mb-2 col-md-6">
+                        <label class="control-label">
+                            {{'xInvolvedPersonName' | translate}}
+                        </label>
+                        <input class="form-control" [(ngModel)]="personAddressDto.InvolvedPersonName"
+                            name="InvolvedPersonName" type="text" placeholder="{{'xInvolvedPersonName' | translate}}"
+                            autocomplete="off">
+                    </div>
+                    <div class="mb-2 col-md-6">
+                        <label class="control-label">{{'xMobilePhone' | translate}}</label>
+                        <input class="form-control" [(ngModel)]="personAddressDto.Phone" name="Phone"
+                            [clearIfNotMatch]="true" mask="(000) 000-0000" type="text">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <select *ngIf="!showLite" class="form-control pull-left" #statId="ngModel"
+                            [(ngModel)]="personAddressDto.StatId" name="StatId">
+                            <option *ngFor="let item of stats | enums" [ngValue]="item.key">
+                                {{item.value | translate}}</option>
+                        </select>
+                    </div>
+                    <div class="col-md-8" *ngIf="!IsInside">
+                        <button class="btn btn-success btn-sm pull-right ml-2" type="submit">
+                            <fa [name]="'check'"></fa>{{'xSave' | translate}}
+                        </button>
+                        <button class="btn btn-danger btn-sm pull-right ml-2" type="button" (click)="cancel()"
+                            *ngIf="!showLite">
+                            <fa [name]="'ban'"></fa>{{'xCancel' | translate}}
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

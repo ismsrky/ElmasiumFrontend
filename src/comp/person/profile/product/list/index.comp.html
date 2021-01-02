@@ -1,0 +1,49 @@
+<div class="row mb-2" *ngIf="shopProfileDto && shopProfileDto.IsShopOwner">
+    <div class="col-12">
+        <button class="btn btn-success btn-sm float-right" [class.active]="isProductOfferOpen" type="button"
+            (click)="showProductOffer()">
+            <fa [name]="'plus'"></fa>{{'xNew' | translate}}
+        </button>
+    </div>
+    <div class="col-12" *ngIf="isProductOfferOpen" [@expandCollapse] style="z-index: 100">
+        <product-offer [personId]="shopProfileDto.ShopId" [isFoodBeverage]="shopProfileDto.ShopIsFoodBeverage">
+        </product-offer>
+    </div>
+</div>
+<div class="row" *ngFor="let rootCategoryDto of rootCategoryListDto;">
+    <div class="col-12">
+        <h4>{{rootCategoryDto.Name}}</h4>
+        <div style="min-height: 200px" *ngFor="let subCategoryDto of rootCategoryDto.SubCategoryList;" inViewport
+            [inViewportOptions]="{ threshold: [0] }" (inViewportAction)="onIntersection($event,subCategoryDto)">
+            <h6 style="border-bottom: 1px double;">{{subCategoryDto.UpperCategoryName}}</h6>
+            <div class="row" *ngIf="subCategoryDto.ProductList">
+                <div class="col-md-12 col-lg-6 col-12" *ngFor="let product of subCategoryDto.ProductList"
+                    [@expandCollapse]>
+                    <person-profile-product-list-item [listItem]="product"></person-profile-product-list-item>
+                </div>
+                <div class="col-12">
+                    <button class="btn btn-sm btn-outline-primary btn-naked float-right"
+                        (click)="getProductList(subCategoryDto)">
+                        <fa [name]="'caret-down'"></fa> {{'xMore' | translate}}
+                    </button>
+                </div>
+            </div>
+
+            <ngx-loading [show]="subCategoryDto.ProductListBusy"></ngx-loading>
+        </div>
+    </div>
+</div>
+
+<div class="row" *ngIf="categoryListDto == null || categoryListDto.length == 0" [@expandCollapse]>
+    <div class="col-12">
+        <h4 class="text-danger no-records mb-0" *ngIf="busyCategory"> {{'xPleaseWait' | translate}} </h4>
+        <h4 class="text-danger no-records mb-0" *ngIf="!busyCategory"> {{'xNoRecordsFound' | translate}}
+            <img src="assets/shrug-smiley_400_400.png" class="img-fluid" alt="notfound">
+        </h4>
+    </div>
+</div>
+<div class="row">
+    <div class="col-12">
+        <ngx-loading [show]="busy || busyCategory"></ngx-loading>
+    </div>
+</div>

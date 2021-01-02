@@ -1,0 +1,214 @@
+<ngx-loading [show]="busy"></ngx-loading>
+
+<div class="card pt-1 pb-0 mb-0 border border-secondary" *ngIf="listItem && listItem.OrderStat" [@expandCollapse]
+    style="font-size: small;">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-8">
+                {{'xOrderId' | translate}}: {{listItem.Id}}
+                -
+                <a class="aLink" [routerLink]="'/' + listItem.ShopUrlName"
+                    *ngIf="host.profile.PersonId != listItem.ShopId">
+                    {{listItem.ShopFullName}}
+                </a>
+                <span *ngIf="host.profile.PersonId == listItem.ShopId">
+                    {{listItem.DebtPersonFullName}}
+                </span>
+                <span
+                    *ngIf="host.profile.PersonId == listItem.ShopId && listItem.DebtPersonTypeId != personTypes.xRealPerson">
+                    ({{personTypes[listItem.DebtPersonTypeId] | translate}})
+                </span>
+                <span *ngIf="listItem.Phone">
+                  ( 0{{listItem.Phone}})
+                </span>
+                <span *ngIf="!listItem.Phone">
+                    ({{'xNoPhone' | translate}})
+                </span>
+            </div>
+            <div class="col-md-4">
+                <span [className]="'ml-2 float-right text-' + listItem.OrderStat.ColorClassName">
+                    <fa [name]="listItem.OrderStat.IconName"></fa>
+                    {{orderStats[listItem.OrderStatId] | translate}}
+                </span>
+                <span class="float-right">
+                    {{listItem.GrandTotal | number:'1.2-2'}}
+                    <currency-icon [currencyId]="listItem.CurrencyId"></currency-icon>
+                </span>
+            </div>
+        </div>
+        <div class="row" style="border-bottom: 1px double lightgray;" *ngFor="let productDto of listItem.ProductList">
+            <div class="col-md-2 col-4" (click)="host.goToProductProfile(listItem, productDto)">
+                <img src="assets/no-image_500_500.png" *ngIf="productDto.PortraitImageUniqueIdStr == null" width="32px"
+                    height="32px" alt="No Image">
+                <img src="{{environment.productImageSource}}{{productDto.PortraitImageUniqueIdStr}}" width="32px"
+                    height="32px" *ngIf="productDto.PortraitImageUniqueIdStr != null" alt="Product Image">
+            </div>
+            <div class="col-md-2 col-4">
+                {{productDto.Quantity}} * {{productDto.ProductName}}
+            </div>
+            <div class="col-md-2" [class.mb-2]="productDto.ExcludeList">
+                <span *ngIf="productDto.ExcludeList" class="text-danger cursor-pointer mb-0"
+                    style="border-bottom: 1px dotted"
+                    (click)="isOpenExcludeList = !isOpenExcludeList">{{'xExcluding' | translate}}
+                    <fa [name]="'plus'"></fa>
+                </span>
+                <div class="row" *ngIf="isOpenExcludeList && productDto.ExcludeList" [@expandCollapse]>
+                    <div class="col-12" *ngFor="let ie of productDto.ExcludeList">
+                        <span class="text-danger">
+                            {{ie.Name}}
+                            <span *ngIf="ie.PriceGap != 0">
+                                (<span *ngIf="ie.PriceGap > 0">+</span>{{ie.PriceGap | number:'1.2-2'}}
+                                <currency-icon [currencyId]="listItem.CurrencyId">
+                                </currency-icon>)
+                            </span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2" [class.mb-2]="productDto.IncludeList">
+                <span *ngIf="productDto.IncludeList" class="text-success cursor-pointer mb-0"
+                    style="border-bottom: 1px dotted"
+                    (click)="isOpenIncludeList = !isOpenIncludeList">{{'xExtra' | translate}}
+                    <fa [name]="'plus'"></fa>
+                </span>
+                <div class="row" *ngIf="isOpenIncludeList && productDto.IncludeList" [@expandCollapse]>
+                    <div class="col-12" *ngFor="let ie of productDto.IncludeList">
+                        <span class="text-success">
+                            {{ie.Name}}
+                            <span *ngIf="ie.PriceGap != 0">
+                                (<span *ngIf="ie.PriceGap > 0">+</span>{{ie.PriceGap | number:'1.2-2'}}
+                                <currency-icon [currencyId]="listItem.CurrencyId">
+                                </currency-icon>)
+                            </span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2" [class.mb-2]="productDto.OptionList">
+                <span *ngIf="productDto.OptionList" class="text-info cursor-pointer mb-0"
+                    style="border-bottom: 1px dotted"
+                    (click)="isOpenOptionList = !isOpenOptionList">{{'xPreference' | translate}}
+                    <fa [name]="'plus'"></fa>
+                </span>
+                <div class="row" *ngIf="isOpenOptionList && productDto.OptionList" [@expandCollapse]>
+                    <div class="col-12" *ngFor="let option of productDto.OptionList">
+                        <span class="text-info">
+                            {{option.Name}}
+                            <span *ngIf="option.PriceGap != 0">
+                                (<span *ngIf="option.PriceGap > 0">+</span>{{option.PriceGap | number:'1.2-2'}}
+                                <currency-icon [currencyId]="listItem.CurrencyId">
+                                </currency-icon>)
+                            </span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <span class="float-right">
+                    {{productDto.GrandTotal | number:'1.2-2'}}
+                    <currency-icon [currencyId]="listItem.CurrencyId"></currency-icon>
+
+                    <button *ngIf="listItem.IsCommentable && host.profile.PersonId != listItem.ShopId" class="btn btn-outline-warning btn-sm btn-naked ml-2"
+                        type="button" (click)="host.openCommentProduct(listItem, productDto)">
+                        <fa [name]="productDto.CommentId ? 'star' : 'star-o'"></fa>
+                        {{productDto.xCommentCaption | translate}}
+                    </button>
+                </span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <button class="btn btn-outline-secondary btn-sm btn-naked ml-2" type="button"
+                    (click)="host.openAddress(listItem)" [class.active]="listItem.isOpenAddress">
+                    <fa [name]="'address-book'"></fa>{{'xAddress' | translate}}
+                </button>
+                <button class="btn btn-outline-secondary btn-sm btn-naked ml-2" type="button"
+                    (click)="isOpenNotes = !isOpenNotes" [class.active]="isOpenNotes">
+                    <fa [name]="listItem.Notes == null ? 'comment-o' : 'commenting-o'"></fa>
+                    {{'xNotes' | translate}}
+                </button>
+                <button class="btn btn-outline-secondary btn-sm btn-naked ml-2" type="button"
+                    (click)="host.openHistory(listItem)" [class.active]="listItem.isOpenHistory">
+                    <fa [name]="'history'"></fa>{{'xHistory' | translate}}
+                </button>
+            </div>
+            <!--
+                <div class="col-md-auto" *ngIf="host.getEndPoints">
+                <span>{{'xNoActionCanBePerformed' | translate}} </span>
+            </div>
+            -->
+            <div class="col-md-auto">
+                <button *ngIf="listItem.IsCommentable" class="btn btn-outline-warning btn-sm btn-naked ml-2"
+                    type="button" (click)="host.openComment(listItem)">
+                    <fa [name]="listItem.CommentId ? 'star' : 'star-o'"></fa>
+                    {{listItem.xCommentCaption | translate}}
+                </button>
+            </div>
+            <div class="col-md-auto" *ngIf="!host.getEndPoints">
+                <ng-container *ngFor="let element of listItem.StatNextList">
+                    <button *ngIf="element.NextOrderStat"
+                        [className]="'btn btn-sm float-right ml-2 btn-naked btn-outline-' + element.NextOrderStat.ColorClassName"
+                        type="button" (click)="host.saveStatHistory(listItem, element.NextOrderStat)">
+                        <fa [name]="element.NextOrderStat.IconName"></fa>
+                        {{element.NextOrderStat.ActionName | translate}}
+                    </button>
+                </ng-container>
+            </div>
+        </div>
+        <!--
+            <div class="row">
+            <div class="col-12">
+                <small>
+                    {{listItem.CreateDateNumber | date:'dd.MM.yyyy HH:mm:ss'}}
+                </small>
+            </div>
+        </div>
+        -->
+
+        <div class="row" *ngIf="listItem.DeliveryAddressDto && listItem.isOpenAddress"
+            [@expandCollapse]>
+            <div class="col-md-6 col-12">
+                <person-address-list-view [listItem]="listItem.DeliveryAddressDto"></person-address-list-view>
+            </div>
+        </div>
+
+        <div class="row" *ngIf="isOpenNotes" [@expandCollapse]>
+            <div class="col-12">
+                <div class="card mb-2">
+                    <div class="card-body p-2">
+                        <h4 class="text-danger no-records" *ngIf="listItem.Notes == null">
+                            {{'xNoNotes' | translate}}
+                        </h4>
+                        {{listItem.Notes}}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row" *ngIf="listItem.StatHistoryList && listItem.isOpenHistory" [@expandCollapse]>
+            <div class="col-12">
+                <span>{{'xHistory' | translate}}</span>
+
+                <div class="card mb-1" *ngFor="let statHistory of listItem.StatHistoryList">
+                    <div class="card-body p-2" *ngIf="statHistory.OrderStat">
+                        <div class="row">
+                            <div class="col-md-3">
+                                {{statHistory.ParentPersonFullName}}
+                            </div>
+                            <div [className]="'col-md-3 text-' + statHistory.OrderStat.ColorClassName">
+                                <fa [name]="statHistory.OrderStat.IconName"></fa>
+                                {{orderStats[statHistory.OrderStatId] | translate}}
+                            </div>
+                            <div class="col-md-3">
+                                {{statHistory.CreateDateNumber | date:'dd.MM.yyyy HH:mm:ss'}}
+                            </div>
+                            <div class="col-md-3">
+                                <span *ngIf="statHistory.Notes">{{statHistory.Notes}}</span>
+                                <span *ngIf="!statHistory.Notes">{{'xNoNotes' | translate}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

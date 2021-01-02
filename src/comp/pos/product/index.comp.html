@@ -1,0 +1,8 @@
+<div class="row">
+    <div class="col-12" *ngFor="let product of host.ficheDto.ProductList" [@expandCollapse]>
+        <pos-product-list-item [listItem]="product"></pos-product-list-item>
+    </div>
+</div>
+
+<pos-see-price *ngIf="isSeePriceModalOpen"></pos-see-price>
+<ngx-loading [show]="busy"></ngx-loading>

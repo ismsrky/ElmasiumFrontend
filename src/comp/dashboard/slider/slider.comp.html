@@ -1,0 +1,61 @@
+<div class="tile cursor-pointer" style="background: #195889;" (swipeleft)="move(true, true)"
+    (swiperight)="move(false, true)">
+    <ngx-loading [show]="busy"></ngx-loading>
+
+    <div class="row mb-2" *ngIf="groupListDto" [@expandCollapse]>
+        <div class="col-12 d-flex justify-content-center">
+            <button class="btn btn-rounded ml-2" type="button"
+                *ngFor="let groupDto of groupListDto"
+                [class.active]="selectedGroup != null && groupDto.Id == selectedGroup.Id"
+                [class.bg-white]="selectedGroup != null && groupDto.Id != selectedGroup.Id"
+                [class.text-black]="selectedGroup != null && groupDto.Id != selectedGroup.Id"
+
+                [class.btn-outline-light]="selectedGroup != null && groupDto.Id != selectedGroup.Id"
+                [class.btn-outline-info]="selectedGroup != null && groupDto.Id == selectedGroup.Id"
+
+                (click)="groupClick(groupDto)">
+                {{groupDto.Name}}
+            </button>
+        </div>
+    </div>
+
+    <div class="row" *ngIf="selected && selectedGroup" [@expandCollapse]>
+        <div class="col-12" [class.fade-in-out]="aniSlide">
+            <div class="tile text-white" style="background: #195889;border: 3px solid white;">
+                <div class="row">
+                    <div class="col-md-4" style="display: flex; align-items: center;">
+                        <div class="row text-center">
+                            <div class="col-12">
+                                <h3>{{selected.xText}}</h3>
+                            </div>
+                            <div class="col-12">
+                                <h1>{{selected.xTextBold}}</h1>
+                            </div>
+                        </div>
+                        <br *ngIf="!isNarrow">
+                        <br *ngIf="!isNarrow">
+                        <br *ngIf="!isNarrow">
+                        <!--
+                            <button class="btn btn-outline-light rounded ml-2 mb-2" type="button">
+                            {{selected.xButtonText}}
+                        </button>
+                       -->
+                    </div>
+                    <div class="col-md-8">
+                        <img src="{{environment.dashboardSliderImageSource}}{{selected.PortraitImageUniqueIdStr}}"
+                            class="img-fluid float-right" *ngIf="selected.PortraitImageUniqueIdStr != null"
+                            alt="User Image">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mb-2" *ngIf="selectedListDto && !isNarrow" [@expandCollapse]>
+        <div class="col-12 d-flex justify-content-center">
+            <img *ngFor="let slider of selectedListDto" [class.selected-slide]="slider==selected"
+                [class.unselected-slide]="slider!=selected"
+                src="{{environment.dashboardSliderImageSource}}thumbnail/{{slider.PortraitImageUniqueIdStr}}"
+                class="cursor-pointer ml-2" style="border-radius: 15px;" (click)="select(slider,true)" alt="User Image">
+        </div>
+    </div>
+</div>

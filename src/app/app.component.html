@@ -1,0 +1,19 @@
+<ngx-loading [show]="busy"></ngx-loading>
+
+<div class="container-scroller" *ngIf="langChanged && isLogin && isOnAir" [@expandCollapse]>
+  <layout-navbar-top></layout-navbar-top>
+
+  <div class="container-fluid page-body-wrapper" [@routerAnimation]="getRouteAnimation(appOutlet)" [@expandCollapse]>
+    <div class="main-panel" [style.margin-top]="isScreen992 ? '': '6rem'">
+      <div class="content-wrapper">
+        <router-outlet #appOutlet="outlet"></router-outlet>
+      </div>
+      <layout-footer></layout-footer>
+      
+    </div>
+    <layout-navbar-bottom></layout-navbar-bottom>
+  </div>
+</div>
+
+<app-dialog></app-dialog>
+<app-modal></app-modal>

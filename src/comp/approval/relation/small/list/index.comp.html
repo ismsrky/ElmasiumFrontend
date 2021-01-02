@@ -1,0 +1,38 @@
+<ngx-loading [show]="busy"></ngx-loading>
+
+<ul class="app-notification dropdown-menu-right preview-list pb-0 pt-2" [class.show]="true"
+    style="top:80px;max-height: 220px;">
+    <!--
+        <li class="app-notification__title">
+        {{'xConnectionRequests' | translate}}
+    </li>
+    <ul class="nav nav-tabs">
+        <li class="nav-item">
+            <a class="nav-link" [class.active]="getIncomings" [routerLink]="" (click)="loadData(true)">
+                <span>{{'xIncomings' | translate}}
+                    ({{notificationSummaryDto.xRelationIncomings}})</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" [class.active]="!getIncomings" [routerLink]="" (click)="loadData(false)">
+                <strong>
+                    {{'xOutgoings' | translate}} ({{notificationSummaryDto.xRelationOutgoings}})
+                </strong>
+            </a>
+        </li>
+    </ul>
+   -->
+    <li class="app-notification__footer"
+        *ngIf="getIncomings &&  approvalRelationList && approvalRelationList.length == 0">
+        {{'xNoIncomingRequest' | translate}}
+    </li>
+    <li class="app-notification__footer"
+        *ngIf="!getIncomings && approvalRelationList && approvalRelationList.length == 0">
+        {{'xNoOutgoingRequest' | translate}}
+    </li>
+    <div class="app-notification__content" *ngIf="approvalRelationList">
+        <div *ngFor="let approval of approvalRelationList">
+            <approval-relation-small-list-item [listItem]="approval"> </approval-relation-small-list-item>
+        </div>
+    </div>
+</ul>

@@ -1,0 +1,48 @@
+<div class="modal fade" bsModal #modal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="dialog-events-name">
+    <div class="modal-dialog modal-md modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header pb-0 pt-1">
+                <h5 id="dialog-events-name" class="modal-title pull-left">{{captionStr | translate}} </h5>
+                <button type="button" class="close pull-right" aria-label="Close" (click)="modal.hide()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body pt-2">
+                <div class="row">
+                    <div class="col-12">
+                        <person-search-criteria></person-search-criteria>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <person-search-list-index></person-search-list-index>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 col-4">
+                        <!--
+                            <span class="float-left">
+                            <fa [name]="'circle'" class="text-danger mr-1"></fa>{{'xIn' | translate}}
+                        </span>
+                       -->
+                        <span class="float-left" [class.ml-2]="!isNarrow">
+                            <fa [name]="'link'" class="mr-1"></fa>{{'xConnection' | translate}}
+                        </span>
+                    </div>
+                    <div class="col-md-8 col-8">
+                        <div class="pull-right ml-2" *ngIf="criteriaBo.Multiple">
+                            <button class="btn btn-primary btn-sm" type="submit" (click)="ok()">
+                                <fa [name]="'check'"></fa>{{'xOk' | translate}}
+                            </button>
+                        </div>
+                        <div class="pull-right ml-2">
+                            <button class="btn btn-danger btn-sm" type="button" (click)="modal.hide()">
+                                <fa [name]="'ban'"></fa>{{'xCancel' | translate}}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

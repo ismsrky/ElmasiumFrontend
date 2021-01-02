@@ -1,0 +1,25 @@
+<div class="tile">
+    <div class="row mb-2">
+        <div class="col-md-4 mb-2">
+            <!--Account type-->
+            <label class="control-label">
+                {{'xWalletType' | translate}}
+            </label>
+            <ng-select (change)="search()" [searchable]="false" [items]="accountTypeList" bindLabel="value"
+                bindValue="key" [multiple]="true" [(ngModel)]="criteriaDto.AccountTypeIdList" name="AccountTypeIdList"
+                placeholder="{{'xAll' | translate}}">
+            </ng-select>
+        </div>
+
+        <!--Status-->
+        <div class="col-md-4 mb-2">
+            <label class="control-label">
+                {{'xStatus' | translate}}
+            </label>
+            <select (change)="search()" class="form-control" name="StatId" [(ngModel)]="criteriaDto.StatId">
+                <option [ngValue]="null">{{'xAll' | translate}}</option>
+                <option *ngFor="let item of stats | enums" [ngValue]="item.key">{{item.value | translate}}</option>
+            </select>
+        </div>
+    </div>
+</div>

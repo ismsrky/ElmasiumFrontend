@@ -1,0 +1,99 @@
+<ngx-loading [show]="busy"></ngx-loading>
+
+<div class="row" *ngIf="personProductProfileDto" [@expandCollapse]>
+    <div class="col-md-6">
+        <div class="tile">
+            <h5>Eklenebilecek seçenekler</h5>
+            <ngx-loading [show]="busyGroupList"></ngx-loading>
+            <div class="row">
+                <div class="col-12" *ngFor="let group of groupListDto" [@expandCollapse]>
+                    {{group.Name}}
+                    <button class="btn btn-outline-primary btn-sm" type="button" style="border:0px"
+                        (click)="addToOptionList(group)">
+                        <fa [name]="'arrow-right'"></fa>{{'xAdd' | translate}}
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="tile">
+            <h5>Eklenmiş seçenekler
+                <span *ngIf="selectedOption" class="float-right font-italic">{{selectedOption.Name}}</span>
+            </h5>
+            <ngx-loading [show]="busyOptionList"></ngx-loading>
+            <div class="row" *ngIf="optionListDto && optionListDto.length > 0">
+                <div class="col-md-4 mb-2">
+                    <ul class="nav nav-tabs nav-tabs-vertical">
+                        <li class="nav-item" *ngFor="let option of optionListDto;let index=index" [@expandCollapse]>
+                            <a class="nav-link" (click)="tabSelect(option)"
+                                [class.active]="selectedOption && option.Id == selectedOption.Id">
+                                <span
+                                    [class.font-weight-bold]="selectedOption && option.Id == selectedOption.Id">{{option.Name}}
+                                </span>
+                                <button class="btn btn-outline-danger btn-sm float-right" type="button"
+                                    style="border:0px" (click)="deleteFromOptionList(option)">
+                                    <fa [name]="'trash'"></fa>
+                                </button>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-md-8 mb-2" *ngIf="selectedOption">
+                    <div class="tab-content tab-content-vertical p-2">
+                        <div class="tab-pane fade active show">
+                            <div class="row">
+                                <div class="col-6">
+                                    <span popover="Seçeneğin kullanılabilmesi için en az bir tanesini seçiniz."
+                                        triggers="mouseenter:mouseleave">
+                                        {{'xOption' | translate}}
+                                    </span>
+                                </div>
+                                <div class="col-6">
+                                    <span style="cursor: pointer;"
+                                        popover="Fiyat farkı pozitif, negatif veya 0 (yok) olabilir."
+                                        triggers="mouseenter:mouseleave">
+                                        {{'xPriceGap' | translate}}
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <hr class="m-2">
+                                </div>
+                            </div>
+                            <div class="row" *ngFor="let tOption of selectedOption.OptionList">
+                                <div class="col-6">
+                                    <div class="animated-checkbox mt-2">
+                                        <label>
+                                            <input type="checkbox" [(ngModel)]="tOption.IsChecked" name="tOption.Id">
+                                            <span class="label-text">{{tOption.Name}}</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <input class="form-control" #priceGap{{tOption.Id}}="ngModel" currencyMask
+                                        style="height: 20px !important" type="tel" [options]="configCurrency"
+                                        (tap)="$event.target.select()" [(ngModel)]="tOption.PriceGap"
+                                        name="PriceGap{{tOption.Id}}" placeholder="{{'xPriceGap' | translate}}"
+                                        [disabled]="!tOption.IsChecked">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mb-2">
+    <div class="col-12">
+        <button class="btn btn-success btn-sm ml-2 float-right" type="button" (click)="save()">
+            <fa [name]="'check'"></fa>{{'xSave' | translate}}
+        </button>
+        <button class="btn btn-danger btn-sm float-right" type="button" (click)="cancel()">
+            <fa [name]="'ban'"></fa>{{'xCancel' | translate}}
+        </button>
+    </div>
+</div>

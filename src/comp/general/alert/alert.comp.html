@@ -1,0 +1,7 @@
+<div class="bs-component" *ngIf="isShowAlert">
+    <div class="alert alert-dismissible" [ngClass]="AlertTypeClas">
+        <img [src]="imgSrc" style="margin-right: 10px;">
+        <button class="close" type="button" data-dismiss="alert" (click)="close();" *ngIf="Closable">×</button>
+       <font size="4">{{Msg}}</font>
+    </div>
+</div>

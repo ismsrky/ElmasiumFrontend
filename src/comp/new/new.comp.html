@@ -1,0 +1,94 @@
+<ngx-loading [show]="busy"></ngx-loading>
+
+<page-title *ngIf="!IsInside" [helpName]="'New'" [icon]="'plus'" [title]="'xNew'"></page-title>
+
+<!--New fiches-->
+<div class="tile" *ngIf="ShowNewFiche">
+    <h5>{{'xNewFiche' | translate}} </h5>
+    <div class="row mb-4">
+        <div class="col-lg-3 mb-2">
+            <button class="btn btn-warning  btn-block text-white" type="button" style="font-size: 15px"
+                (click)="openFiche(0, ficheTypeFakes.xSaleInvoice)">
+                <i class="fa fa-shopping-basket" aria-hidden="true" style="font-size: 15px"></i>
+                {{'xSaleInvoice' | translate}}
+            </button>
+        </div>
+        <div class="col-lg-3 mb-2">
+            <button class="btn btn-warning  btn-block text-white" type="button" style="font-size: 15px"
+                (click)="openFiche(0, ficheTypeFakes.xDebted)">
+                <i class="fa fa-repeat" aria-hidden="true" style="font-size: 15px"></i>
+                {{'xDebt' | translate}}
+            </button>
+        </div>
+        <div class="col-lg-3 mb-2">
+            <button class="btn btn-warning  btn-block text-white" type="button" style="font-size: 15px"
+                (click)="openFiche(0, ficheTypeFakes.xOutgoingMoney)">
+                <i class="fa fa-upload" aria-hidden="true" style="font-size: 15px"></i>
+                {{'xGiveMoney' | translate}}
+            </button>
+        </div>
+        <div class="col-lg-3 mb-2">
+            <button class="btn btn-warning  btn-block text-white" type="button" style="font-size: 15px"
+                (click)="openFiche(0, ficheTypeFakes.xOutgoingPayment)">
+                <i class="fa fa-upload" aria-hidden="true" style="font-size: 15px"></i>
+                {{'xMakePayment' | translate}}
+            </button>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-3 mb-2">
+            <button class="btn btn-success  btn-block text-white" type="button" style="font-size: 15px"
+                (click)="openFiche(0, ficheTypeFakes.xPurchaseInvoice)">
+                <i class="fa fa-shopping-basket" aria-hidden="true" style="font-size: 15px"></i>
+                {{'xPurchaseInvoice' | translate}}
+            </button>
+        </div>
+        <div class="col-lg-3 mb-2">
+            <button class="btn btn-success  btn-block text-white" type="button" style="font-size: 15px"
+                (click)="openFiche(0, ficheTypeFakes.xCredited)">
+                <i class="fa fa-undo" aria-hidden="true" style="font-size: 15px"></i>
+                {{'xCredit' | translate}}
+            </button>
+        </div>
+        <div class="col-lg-3 mb-2">
+            <button class="btn btn-success  btn-block text-white" type="button" style="font-size: 15px"
+                (click)="openFiche(0, ficheTypeFakes.xIncomingMoney)">
+                <i class="fa fa-download" aria-hidden="true" style="font-size: 15px"></i>
+                {{'xTakeMoney' | translate}}
+            </button>
+        </div>
+        <div class="col-lg-3 mb-2">
+            <button class="btn btn-success  btn-block text-white" type="button" style="font-size: 15px"
+                (click)="openFiche(0, ficheTypeFakes.xIncomingPayment)">
+                <i class="fa fa-download" aria-hidden="true" style="font-size: 15px"></i>
+                {{'xTakePayment' | translate}}
+            </button>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-12">
+        <button class="btn btn-danger" type="button"
+            (click)="hata()">
+            Hata
+        </button>
+    </div>
+</div>
+<div class="row" *ngIf="isFicheOpen" [@expandCollapse]>
+    <div class="col-12">
+        <fiche-crud></fiche-crud>
+    </div>
+</div>
+
+<!--New profiles-->
+<div class="tile" *ngIf="ShowNewProfile">
+    <h5>{{'xNewProfile' | translate}}</h5>
+    <div class="row">
+        <div class="col-lg-3 mb-2 ">
+            <button class="btn btn-primary  btn-block" type="button" style="font-size: 15px" (click)="openNewShop()">
+                <i class="fa fa-plus" aria-hidden="true" style="font-size: 15px"></i>{{'xNewShop' | translate}}
+            </button>
+        </div>
+    </div>
+</div>
+<person-new-shop-crud *ngIf="isNewShopOpen"></person-new-shop-crud>

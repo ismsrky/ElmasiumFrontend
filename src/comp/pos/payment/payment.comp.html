@@ -1,0 +1,133 @@
+<ngx-loading [show]="busy"></ngx-loading>
+<div class="modal fade" bsModal #modal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="dialog-events-name">
+    <div class="modal-dialog modal-md modal-dialog-centered">
+        <div class="modal-content">
+            <div class="row mr-0 ml-2 mt-2">
+                <div class="col-12">
+                    <label class="control-label float-left mb-0">
+                        {{'xGrandTotal' | translate}}
+                        <h2 class="text-danger mb-0">{{ficheDto.GrandTotal | number:'1.2-2'}}
+                            <currency-icon [currencyId]="ficheDto.CurrencyId"></currency-icon>
+                        </h2>
+                    </label>
+                    <button type="button" class="close pull-right" aria-label="Close" (click)="modal.hide()">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <label class="control-label float-right mb-0">
+                        {{'xRemaining' | translate}}
+                        <h2 class="text-danger mb-0">
+                            {{remainingTotal | number:'1.2-2'}}
+                            <currency-icon [currencyId]="ficheDto.CurrencyId"></currency-icon>
+                        </h2>
+                    </label>
+                </div>
+            </div>
+            <div class="modal-body pb-0 pt-0">
+                <form class="needs-validation" #paymentForm="ngForm" (submit)="save()" novalidate>
+                    <!--Cash-->
+                    <div class="row text-white bg-warning pb-2">
+                        <div class="col-md-8">
+                            <label class="control-label">{{'xCash' | translate}}</label>
+                            <select class="form-control" #selectedCashAccountId="ngModel"
+                                [(ngModel)]="SelectedCashAccountId" name="SelectedCashAccountId"
+                                (click)="accountChanged()">
+                                <option [ngValue]="null">{{'xSelectCashWallet' | translate}}</option>
+                                <option *ngFor="let cashAccount of shopCashAccountListDto" [ngValue]="cashAccount.Id">
+                                    {{cashAccount.Name}}
+                                    ({{cashAccount.Balance | number:'1.2-2'}}
+                                    <currency-icon [currencyId]="ficheDto.CurrencyId" [useString]="true">
+                                    </currency-icon>
+                                    )</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="control-label">{{'xPaidAmount' | translate}}</label>
+                            <input class="form-control" [disabled]="SelectedCashAccountId == null" #txtCode currencyMask
+                                type="tel" [options]="configCurrency" (tap)="$event.target.select()"
+                                #cashTotal="ngModel" (ngModelChange)="CashTotal=$event;paidChange($event,0)"
+                                [ngModel]="CashTotal" name="CashTotal" [appAutofocus]="true"
+                                placeholder="{{'xAmount' | translate}}">
+                        </div>
+                    </div>
+
+                    <!--Credit card-->
+                    <div class="row bg-primary text-white pb-2">
+                        <div class="col-md-8">
+                            <label class="control-label">{{'xCreditCard' | translate}}</label>
+                            <select class="form-control" #selectedBankAccountIdForCreditCard="ngModel"
+                                [(ngModel)]="SelectedBankAccountIdForCreditCard"
+                                name="SelectedBankAccountIdForCreditCard" (click)="accountChanged()">
+                                <option [ngValue]="null">{{'xSelectBankWallet' | translate}}</option>
+                                <option *ngFor="let bankAccountForCreditCard of shopBankAccountListDto"
+                                    [ngValue]="bankAccountForCreditCard.Id">{{bankAccountForCreditCard.Name}}
+                                    ({{bankAccountForCreditCard.Balance | number:'1.2-2'}}
+                                    <currency-icon [currencyId]="ficheDto.CurrencyId" [useString]="true">
+                                    </currency-icon>)</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="control-label">{{'xPaidAmount' | translate}}</label>
+                            <input class="form-control" [disabled]="SelectedBankAccountIdForCreditCard == null"
+                                #creditCardTotal="ngModel" currencyMask type="tel" [options]="configCurrency"
+                                (tap)="$event.target.select()"
+                                (ngModelChange)="CreditCardTotal=$event;paidChange($event, 1)"
+                                [ngModel]="CreditCardTotal" name="CreditCardTotal"
+                                placeholder="{{'xAmount' | translate}}">
+                        </div>
+                    </div>
+
+                    <!--Bank card-->
+                    <div class="row bg-secondary text-white pb-2">
+                        <div class="col-md-8">
+                            <label class="control-label">{{'xBankCard' | translate}}</label>
+                            <select class="form-control" #selectedBankAccountIdForBankCard="ngModel"
+                                [(ngModel)]="SelectedBankAccountIdForBankCard" name="SelectedBankAccountIdForBankCard"
+                                (change)="accountChanged()">
+                                <option [ngValue]="null">{{'xSelectBankWallet' | translate}}</option>
+                                <option *ngFor="let bankAccountForBankCard of shopBankAccountListDto"
+                                    [ngValue]="bankAccountForBankCard.Id">{{bankAccountForBankCard.Name}}
+                                    ({{bankAccountForBankCard.Balance | number:'1.2-2'}}
+                                    <currency-icon [currencyId]="ficheDto.CurrencyId" [useString]="true">
+                                    </currency-icon>
+                                    )</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="control-label">{{'xPaidAmount' | translate}}</label>
+                            <input class="form-control" [disabled]="SelectedBankAccountIdForBankCard == null"
+                                #bankTotal="ngModel" currencyMask type="tel" [options]="configCurrency"
+                                (tap)="$event.target.select()"
+                                (ngModelChange)="BankCardTotal=$event;paidChange($event, 2)" [ngModel]="BankCardTotal"
+                                name="BankTotal" placeholder="{{'xAmount' | translate}}">
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-12">
+                            <label class="control-label pull-right">
+                                {{'xPaidTotal' | translate}}: {{paidTotal | number:'1.2-2'}}
+                                <currency-icon [currencyId]="ficheDto.CurrencyId"></currency-icon>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="pull-left">
+                                {{'xCashback' | translate}}:
+                                <h5 class="text-danger">{{cashChange | number:'1.2-2'}}
+                                    <currency-icon [currencyId]="ficheDto.CurrencyId"></currency-icon>
+                                </h5>
+                            </div>
+                            <button class="btn btn-primary ml-2 pull-right" type="submit">
+                                <fa [name]="'check'"></fa>{{'xFinish' | translate}}
+                            </button>
+                            <button class="btn btn-danger pull-right" type="button" (click)="modal.hide()">
+                                <fa [name]="'ban'"></fa>{{'xCancel' | translate}}
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

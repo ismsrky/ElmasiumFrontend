@@ -1,0 +1,160 @@
+<ngx-loading [show]="busy"></ngx-loading>
+<div class="tile" [class.border]="personRelationListDto && personRelationListDto.IsAlonePersonOpen"
+    [class.border-danger]="personRelationListDto && personRelationListDto.IsAlonePersonOpen">
+    <div class="row mb-2">
+        <div class="col-12">
+            <h5>{{'xCurrent' | translate}}
+                <button type="button" class="close pull-right" aria-label="Close"
+                    (click)="personRelationListDto.IsAlonePersonOpen=false">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </h5>
+        </div>
+    </div>
+    <div class="row mb-2">
+        <div class="col-12">
+            <tabset #tabSteps [justified]="false" type="pills">
+                <tab id="0" heading="{{'xGeneral' | translate}}" (select)="tabChanged($event)"></tab>
+                <tab id="1" heading="{{'xAddress' | translate}}" (select)="tabChanged($event)"
+                    *ngIf="alonePersonDto.PersonTypeId != null && alonePersonDto.ChildRelationTypeId != null"></tab>
+            </tabset>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <form class="needs-validation" #personAloneForm="ngForm" (submit)="save()" novalidate>
+                <div [hidden]="tab_index != 0" [@expandCollapseHidden]>
+                    <div class="row">
+                        <div [class.col-12]="alonePersonDto.PersonTypeId == null"
+                            [class.col-md-6]="alonePersonDto.PersonTypeId != null">
+                            <label class="control-label">
+                                *{{'xPersonType' | translate}}
+                            </label>
+                            <select [disabled]="!isNew" class="form-control" #personTypeId="ngModel" required
+                                (change)="getAvaiblePersonTypes()"
+                                [class.is-invalid]="personTypeId.invalid && (personTypeId.touched || personAloneForm.submitted)"
+                                [(ngModel)]="alonePersonDto.PersonTypeId" name="AccountTypeId">
+                                <option [ngValue]="null">{{'xSelectType' | translate}}</option>
+                                <option *ngFor="let item of personTypes | enums" [ngValue]="item.key">{{item.value |
+                                    translate}}</option>
+                            </select>
+                            <div class="invalid-tooltip">{{'xSelectWalletType' | translate}}</div>
+                        </div>
+                        <div class="col-md-6" *ngIf="alonePersonDto.PersonTypeId != null">
+                            <label class="control-label">
+                                *{{'xConnectionType' | translate}}
+                            </label>
+                            <select [disabled]="!isNew" class="form-control" #relationTypeId="ngModel"
+                                [(ngModel)]="alonePersonDto.ChildRelationTypeId" name="ChildRelationTypeId">
+                                <option disabled [ngValue]="null">{{'xSelectConnectionType' | translate}}</option>
+                                <option *ngFor="let relation of avaibleRelationIdList" [ngValue]="relation">
+                                    {{relationTypes[relation] | translate}}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row mb-2"
+                        *ngIf="alonePersonDto.PersonTypeId != null && alonePersonDto.ChildRelationTypeId != null">
+                        <div class="col-md-6">
+                            <label class="control-label" *ngIf="alonePersonDto.PersonTypeId == personTypes.xRealPerson">
+                                *{{'xFirstName' | translate}}
+                            </label>
+                            <label class="control-label" *ngIf="alonePersonDto.PersonTypeId == personTypes.xShop">
+                                *{{'xSignName' | translate}}
+                            </label>
+                            <input class="form-control" #personName="ngModel" required
+                                [class.is-invalid]="personName.invalid && (personName.touched || personAloneForm.submitted)"
+                                [(ngModel)]="alonePersonDto.Name" name="Name" [appAutofocus]="true" type="text"
+                                placeholder="{{'xName' | translate}}">
+                            <div class="invalid-tooltip" *ngIf="alonePersonDto.PersonTypeId == personTypes.xRealPerson">{{'xFirstNameCantBeEmpty'
+                                | translate}}</div>
+                            <div class="invalid-tooltip" *ngIf="alonePersonDto.PersonTypeId == personTypes.xShop">{{'xShopSignNameCantBeEmpty'
+                                | translate}}</div>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="control-label" *ngIf="alonePersonDto.PersonTypeId == personTypes.xRealPerson">
+                                *{{'xLastName' | translate}}
+                            </label>
+                            <label class="control-label" *ngIf="alonePersonDto.PersonTypeId == personTypes.xShop">
+                                *{{'xFullName' | translate}}
+                            </label>
+                            <input class="form-control" #surname="ngModel" required
+                                [class.is-invalid]="surname.invalid && (surname.touched || personAloneForm.submitted)"
+                                [(ngModel)]="alonePersonDto.Surname" name="Surname" type="text"
+                                placeholder="{{'xLastName' | translate}}">
+                            <div class="invalid-tooltip" *ngIf="alonePersonDto.PersonTypeId == personTypes.xRealPerson">{{'xLastNameCantBeEmpty'
+                                | translate}}</div>
+                            <div class="invalid-tooltip" *ngIf="alonePersonDto.PersonTypeId == personTypes.xShop">{{'xShopFullNameCantBeEmpty'
+                                | translate}}</div>
+                        </div>
+                    </div>
+
+                    <div class="row"
+                        *ngIf="alonePersonDto.PersonTypeId != null && alonePersonDto.ChildRelationTypeId != null">
+                        <div class="col-md-6 mb-2">
+                            <label class="control-label">{{'xTaxNumber' | translate}}</label>
+                            <input class="form-control" #taxNumber="ngModel" [(ngModel)]="alonePersonDto.TaxNumber"
+                                name="taxNumber" type="text" placeholder="{{'xTaxNumber' | translate}}"
+                                autocomplete="off">
+                        </div>
+                        <div class="col-md-6 mb-2">
+                            <label class="control-label">{{'xTaxOffice' | translate}}</label>
+                            <input class="form-control" #taxOffice="ngModel" [(ngModel)]="alonePersonDto.TaxOffice"
+                                name="taxOffice" type="text" placeholder="{{'xTaxOffice' | translate}}"
+                                autocomplete="off">
+                        </div>
+                    </div>
+
+                    <div class="row mb-2"
+                        *ngIf="alonePersonDto.PersonTypeId != null && alonePersonDto.ChildRelationTypeId != null">
+                        <div class="col-md-6">
+                            <label class="control-label">
+                                {{'xEmail' | translate}}
+                            </label>
+                            <input class="form-control" #email="ngModel" [(ngModel)]="alonePersonDto.Email" name="Email"
+                                type="text" placeholder="{{'xEmail' | translate}}">
+                            <div class="invalid-tooltip">{{'xWalletNameCantBeEmpty' | translate}}</div>
+                        </div>
+                        <div class="col-md-6 mb-2">
+                            <label class="control-label">{{'xMobilePhone' | translate}}</label>
+                            <input class="form-control" [(ngModel)]="alonePersonDto.Phone" name="Phone"
+                                [clearIfNotMatch]="true" mask="(000) 000-0000" type="text">
+                        </div>
+                    </div>
+                    <div class="row"
+                        *ngIf="alonePersonDto.PersonTypeId != null && alonePersonDto.ChildRelationTypeId != null">
+                        <div class="mb-2 col-12">
+                            <label class="control-label">{{'xNotes' | translate}}</label>
+                            <textarea class="form-control" [(ngModel)]="alonePersonDto.Notes" name="Notes" type="text"
+                                placeholder="{{'xNotes' | translate}}"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <person-address-crud [hidden]="tab_index != 1" [showLite]="true" [IsInside]="true"
+                    [@expandCollapseHidden]></person-address-crud>
+
+                <div *ngIf="alonePersonDto.PersonTypeId != null && alonePersonDto.ChildRelationTypeId != null">
+                    <div class="pull-left" *ngIf="tab_index == 0" [@expandCollapse]>
+                        <select class="form-control" #statId="ngModel" [(ngModel)]="alonePersonDto.StatId"
+                            name="StatId">
+                            <option *ngFor="let item of stats | enums" [ngValue]="item.key">{{item.value | translate}}
+                            </option>
+                        </select>
+                    </div>
+                    <div class="pull-right ml-2">
+                        <button class="btn btn-success btn-block" type="submit">
+                            <fa [name]="'check'"></fa>{{'xSave' | translate}}
+                        </button>
+                    </div>
+                    <div class="pull-right">
+                        <button class="btn btn-danger btn-block" type="button" (click)="cancel()">
+                            <fa [name]="'ban'"></fa>{{'xCancel' | translate}}
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

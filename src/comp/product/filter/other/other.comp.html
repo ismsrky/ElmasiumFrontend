@@ -1,0 +1,25 @@
+<div class="tile">
+    <div class="row">
+        <h5>{{'xPriceRange' | translate}}</h5>
+        <hr class="m-2">
+        <div class="col-10">
+            <div class="row">
+                <div class="col-6 p-0">
+                    <input class="form-control" style="height: 20px" #_minPrice="ngModel" currencyMask type="tel"
+                        [options]="configCurrency" (tap)="$event.target.select()" [(ngModel)]="minPrice"
+                        autocomplete="off" name="MinPrice" placeholder="{{'xMin' | translate}}">
+                </div>
+                <div class="col-6 pr-0">
+                    <input class="form-control" style="height: 20px" #_maxPrice="ngModel" currencyMask type="tel"
+                        [options]="configCurrency" (tap)="$event.target.select()" [(ngModel)]="maxPrice"
+                        autocomplete="off" name="MaxPrice" placeholder="{{'xMax' | translate}}">
+                </div>
+            </div>
+        </div>
+        <div class="col-2">
+            <button class="btn btn-outline-secondary btn-sm btn-naked float-right" type="button" (click)="searhPrice()">
+                <fa [name]="'caret-right'"></fa>
+            </button>
+        </div>
+    </div>
+</div>

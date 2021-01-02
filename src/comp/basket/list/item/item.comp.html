@@ -1,0 +1,125 @@
+<ngx-loading [show]="busy"></ngx-loading>
+
+<div class="tile">
+    <div class="row mb-4">
+        <div class="col-12">
+            <h5 *ngIf="host.isReadonly">
+                Sepet özeti
+                <hr class="mb-0">
+            </h5>
+        </div>
+        <div class="col-12">
+            <h5>
+                <a [routerLink]="'/' + listItem.ShopUrlName">
+                    {{listItem.ShopFullName}}
+                </a>
+                <button class="btn btn-success btn-sm float-right mb-2 ml-2" type="button" *ngIf="!host.isReadonly"
+                    (click)="host.goToCreateOrder(listItem.Id)">
+                    <fa [name]="'hand-o-right'"></fa>{{'xBuy' | translate}}
+                </button>
+                <button class="btn btn-outline-danger btn-sm float-right mb-2" type="button" *ngIf="!host.isReadonly"
+                    (click)="host.delete(listItem)">
+                    <fa [name]="'trash-o'"></fa>{{'xDelete' | translate}}
+                </button>
+            </h5>
+            <app-star [max]="5" [value]="listItem.ShopStarAverage"></app-star>
+        </div>
+    </div>
+    <div class="card mb-2 border-info" *ngFor="let productDto of listItem.ProductList">
+        <div class="card-body p-2">
+            <div class="row" *ngIf="!host.isReadonly">
+                <div class="col-10">
+                    {{productDto.ProductName}}
+                </div>
+                <div class="col-2">
+                    <button type="button" class="close mr-2 ml-2" aria-label="Close"
+                        (click)="host.deleteProduct(productDto.Id)">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-2 col-12">
+                    <img src="assets/no-image_500_500.png" *ngIf="productDto.PortraitImageUniqueIdStr == null"
+                        width="64px" height="64px" alt="No Image">
+                    <img src="{{environment.productImageSource}}{{productDto.PortraitImageUniqueIdStr}}" width="64px"
+                        height="64px" *ngIf="productDto.PortraitImageUniqueIdStr != null" alt="Product Image">
+                </div>
+                <div class="col-md-2 col-12">
+                    <div class="row">
+                        <div class="col-12">
+                            <include-exclude-select [isInclude]="false" [uniqueId]="productDto.Id"
+                                [isReadonly]="host.isReadonly" [showExpandBtn]="true">
+                            </include-exclude-select>
+                        </div>
+                        <div class="col-12">
+                            <include-exclude-select [isInclude]="true" [uniqueId]="productDto.Id"
+                                [isReadonly]="host.isReadonly" [showExpandBtn]="true">
+                            </include-exclude-select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 col-12">
+                    <option-select [uniqueId]="productDto.Id" [isReadonly]="host.isReadonly"></option-select>
+                </div>
+                <div class="col-md-2 col-12">
+                    <div class="row mb-2">
+                        <div class="col-4">
+                            <label class="control-label mt-3">{{'xQuantity' | translate}}</label>
+                        </div>
+                        <div class="col-8">
+                            <input class="form-control" (tap)="$event.target.select()" autocomplete="off" currencyMask
+                                [options]="configQuantity" type="tel"
+                                (change)="host.quantityChange($event.target.value, productDto)" name="Quantity"
+                                [readonly]="host.isReadonly" placeholder="{{'xAmount' | translate}}"
+                                [value]="productDto.Quantity">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-2 col-12">
+                    <span class="float-right">
+                        {{productDto.GrandTotal | number:'1.2-2'}}
+                        <currency-icon [currencyId]="listItem.CurrencyId"></currency-icon>
+                    </span>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-8 col-12" *ngIf="productDto.CodeList && productDto.CodeList.length > 0">
+                    <small class="text-secondary" *ngFor="let codeItem of productDto.CodeList">
+                        {{productCodeTypes[codeItem.ProductCodeTypeId] | translate}}:
+                        {{codeItem.Code}}
+                    </small>
+                </div>
+                <div class="col-md-2 col-12">
+                    <small class="text-secondary float-right">
+                        {{'xType' | translate}}: {{productTypes[productDto.ProductTypeId] | translate}}
+                    </small>
+                </div>
+                <div class="col-md-2 col-12">
+                    <a [routerLink]="host.getProductProfileUrl(listItem, productDto)" class="text-secondary float-right"
+                        style="font-size: small">
+                        {{'xGo' | translate}}
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <span>
+                {{listItem.CreateDateNumber | date:'dd.MM.yyyy'}}
+                <span *ngIf="listItem.UpdateDateNumber">
+                    -
+                    {{listItem.UpdateDateNumber | date:'dd.MM.yyyy'}}
+                    ({{'xEdited' | translate}})
+                </span>
+            </span>
+            <h5 class="float-right">
+                {{'xGrandTotal' | translate}}:
+                {{listItem.GrandTotal | number:'1.2-2'}}
+                <currency-icon [currencyId]="listItem.CurrencyId"></currency-icon>
+            </h5>
+        </div>
+    </div>
+</div>

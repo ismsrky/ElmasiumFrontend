@@ -1,0 +1,55 @@
+<div class="card mb-2" [class.border-info]="!listItem.IsActivitiesOpen"
+    [class.border-danger]="listItem.IsActivitiesOpen">
+    <div class="card-body p-2">
+        <div class="row">
+            <div class="col-12">
+                <h5>{{listItem.ProductName}}</h5>
+                <h6>{{productTypes[listItem.ProductTypeId] | translate}}</h6>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12" *ngIf="listItem.Price">
+                {{'xPurhasePrice' | translate}}: {{listItem.Price.PurhasePrice | number:'1.2-2'}}
+                <currency-icon [currencyId]="listItem.Price.CurrencyId"></currency-icon>
+            </div>
+        </div>
+        <div class="row" *ngIf="listItem.Price">
+            <div class="col-12">
+                {{'xSalePrice' | translate}}: {{listItem.Price.SalePrice | number:'1.2-2'}}
+                <currency-icon [currencyId]="listItem.Price.CurrencyId"></currency-icon>
+            </div>
+        </div>
+        <div class="row" *ngIf="listItem.ProductTypeId == productTypes.xShopping">
+            <div class="col-md-6">
+                {{'xQuantity' | translate}}: {{listItem.Balance}}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12" *ngIf="listItem.CodeList && listItem.CodeList.length > 0" [@expandCollapse]>
+                <small style="font-size: 10px" class="text-secondary" *ngFor="let codeItem of listItem.CodeList">
+                    {{productCodeTypes[codeItem.ProductCodeTypeId] | translate}}:
+                    {{codeItem.Code}}
+                </small>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <a *ngIf="host.profile.PersonTypeId == personTypes.xShop" [routerLink]="listItem.ProductProfileUrl" class="text-secondary float-right ml-2">
+                    <button class="btn btn-outline-primary btn-sm float-right" type="button">
+                        <fa [name]="'pencil'"></fa>{{'xGo' | translate}}
+                    </button>
+                </a>
+                <button class="btn btn-outline-success btn-sm float-right" type="button"
+                    (click)="host.getActivities(listItem)">
+                    <fa [name]="'film'"></fa>{{'xActivities' | translate}}
+                </button>
+            </div>
+            <!--
+                <div class="col-xs-6 mr-2">
+                <button class="btn btn-outline-primary btn-sm" type="submit" (click)="host.openModal(listItem.Id)">
+                    <fa [name]="'edit'"></fa>{{'xEdit' | translate}}</button>
+            </div>
+            -->
+        </div>
+    </div>
+</div>

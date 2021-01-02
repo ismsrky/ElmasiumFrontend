@@ -1,0 +1,29 @@
+<ngx-loading [show]="busy"></ngx-loading>
+<div class="card mb-2 text-black bg-light">
+    <div class="card-body p-2">
+        <div class="row">
+            <div class="col-12">
+                <h4>Ödenecek Faturalar/Fişler
+                    <button class="btn btn-primary btn-sm float-right" type="button" (click)="openModal()">
+                        <fa [name]="'plus'"></fa>{{'xAdd' | translate}}
+                    </button>
+                </h4>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12" *ngFor="let fiche of host.relatedFicheListDto">
+                <fiche-relation-list-item [listItem]="fiche"></fiche-relation-list-item>
+            </div>
+        </div>
+        <div class="row" *ngIf="host.relatedFicheListDto.length > 1">
+            <div class="col-12">
+                <span class="text-danger float-right">
+                    {{'xTotal' | translate}}: {{host.relatedRemainingTotal | number:'1.2-2'}}
+                    <currency-icon [currencyId]="host.ficheDto.CurrencyId"></currency-icon>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<fiche-search-index *ngIf="isFicheModalOpen"></fiche-search-index>

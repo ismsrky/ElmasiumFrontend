@@ -1,0 +1,45 @@
+<div class="card mb-2 border-info">
+    <div class="card-body p-2">
+        <div class="row">
+            <div class="col-12">
+                <h5>{{listItem.FullName}}</h5>
+                <h6>{{personTypes[listItem.PersonTypeId] | translate}}</h6>
+            </div>
+        </div>
+        <div class="row" *ngIf="listItem.PersonTypeId == personTypes.xShop">
+            <div class="col-12">
+                {{'xTaxNumber' | translate}}:
+                <span *ngIf="listItem.TaxNumber == null">{{'xNA' | translate}}</span>
+                <span *ngIf="listItem.TaxNumber != null">{{listItem.TaxNumber}}</span>
+            </div>
+        </div>
+        <div class="row" *ngIf="listItem.PersonTypeId == personTypes.xShop">
+            <div class="col-12">
+                {{'xTaxOffice' | translate}}:
+                <span *ngIf="listItem.TaxOffice == null">{{'xNA' | translate}}</span>
+                <span *ngIf="listItem.TaxOffice != null">{{listItem.TaxOffice}}</span>
+            </div>
+        </div>
+        <div class="row" *ngIf="listItem.PersonTypeId == personTypes.xRealPerson">
+            <div class="col-12">
+                <!--Email of real persons cannot be null and same each other.-->
+                <span>{{listItem.Email}}</span>
+            </div>
+        </div>
+
+        <div class="row float-right">
+            <div class="col-xs-4 mr-2"
+                *ngIf="listItem.ApprovalStatId && listItem.ApprovalStatId == approvalStats.xAccepted || listItem.ApprovalStatId == approvalStats.xPending">
+                <label class="control-label">{{disconnectText | translate}}</label>
+            </div>
+            <div class="col-xs-4 mr-2">
+                <button class="btn btn-primary btn-sm" type="button"
+                    *ngIf="listItem.ApprovalStatId == null || listItem.ApprovalStatId == approvalStats.xDeleted || listItem.ApprovalStatId == approvalStats.xPulledBack || listItem.ApprovalStatId == approvalStats.xRejected"
+                    (click)="host.makeRequest(listItem)">
+                    <fa [name]="'address-card'"></fa>{{addAsText | translate}}
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>

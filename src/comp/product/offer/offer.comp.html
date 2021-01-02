@@ -1,0 +1,114 @@
+<div class="row">
+    <div class="col-12">
+        <input class="form-control" (blur)="codeFocused = false" #txtCode (focus)="codeFocused = true"
+            (keydown)="keyDownFunction($event)" [formControl]="codeControl" name="Code" type="text"
+            placeholder="{{'xPlaceHolderSearchProduct' | translate}}" autocomplete="off" [appAutofocus]=!isMobile>
+    </div>
+    <div class="col-12" *ngIf="!criteriaDto.ProductNameCode" [@expandCollapse]>
+        <small class="text-secondary">
+            {{(isFoodBeverage ? 'xMakeSearchFirstToAddNewFoodBeverage' : 'xMakeSearchFirstToAddNewInventory') | translate}}
+        </small>
+    </div>
+    <div class="col-12" *ngIf="criteriaDto.ProductNameCode" [@expandCollapse]>
+        <button class="btn btn-outline-primary btn-sm btn-naked" *ngIf="!isFoodBeverage" type="button"
+            (click)="showCriteria()">
+            <fa [name]="'bars'"></fa>{{'xCriteria' | translate}}
+        </button>
+    </div>
+</div>
+<div *ngIf="productListDto.length > 0 && criteriaDto.ProductNameCode" [@expandCollapse]>
+    <div class="border border-secondary bg-secondary mr-2"
+        style="position: absolute;z-index: 2;max-height: 400px;overflow-y: scroll;overflow-x: hidden" infinite-scroll
+        [scrollWindow]="false" [infiniteScrollDistance]="1" [infiniteScrollUpDistance]="2"
+        [infiniteScrollThrottle]="300" (scrolled)="search()">
+        <div class="row" *ngFor="let product of productListDto">
+            <div class="col-12">
+                <div class="card" style="cursor: pointer;"
+                    [style.background-color]="product.IsFocused ? 'lightsteelblue' : 'white'"
+                    (mouseenter)="product.IsFocused = true" (mouseleave)="product.IsFocused = false">
+                    <div class="card-body p-2">
+                        <div class="row">
+                            <div class="col-md-2 col-4" (click)="getProduct(product)">
+                                <!--<img src="assets/no-image_64_64.png" width="50px" height="50px" alt="User Image">-->
+                                <img src="assets/no-image_64_64.png" *ngIf="product.PortraitImageUniqueIdStr == null"
+                                    width="50px" height="50px" alt="No Image">
+                                <img src="{{environment.productImageSource}}thumbnail/{{product.PortraitImageUniqueIdStr}}"
+                                    *ngIf="product.PortraitImageUniqueIdStr != null" width="auto" height="auto"
+                                    alt="Product Image">
+                            </div>
+                            <div class="col-md-10 col-8">
+                                <div class="row">
+                                    <div class="col-12" (click)="getProduct(product)">
+                                        {{product.ProductName}}
+                                    </div>
+                                    <div class="col-12" (click)="getProduct(product)"
+                                        *ngIf="product.ProductCodeList && product.ProductCodeList.length > 0">
+                                        <small class="text-secondary" *ngFor="let codeItem of product.ProductCodeList">
+                                            {{productCodeTypes[codeItem.ProductCodeTypeId] | translate}}:
+                                            {{codeItem.Code}}
+                                        </small>
+                                    </div>
+                                    <div class="col-md-6 col-12" (click)="getProduct(product)">
+                                        <small class="text-secondary">
+                                            {{'xType' | translate}}: {{productTypes[product.ProductTypeId] | translate}}
+                                        </small>
+                                    </div>
+                                    <div class="col-md-6 col-12" *ngIf="!product.PersonProductId">
+                                        <button class="btn btn-outline-primary btn-sm btn-naked pull-right"
+                                            type="button" (click)="addToInventory(product)">
+                                            <fa [name]="'plus'"></fa>{{'xAddToInventory' | translate}}
+                                        </button>
+                                    </div>
+                                    <div class="col-12" *ngIf="product.Balance != null" (click)="getProduct(product)">
+                                        <span class="float-right">
+                                            {{'xBalanceLeft' | translate}}: {{product.Balance | number:'1.0'}}
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row" *ngIf="busy" [@expandCollapse]>
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <ngx-loading [show]="busy"></ngx-loading>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row" *ngIf="criteriaDto.ProductNameCode && productListDto.length == 0 && !busy">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body p-2">
+                <div class="row">
+                    <div class="col-md-2 col-4">
+                        <img src="assets/shrug-smiley_64_64.png" width="50px" height="50px" alt="User Image">
+                    </div>
+                    <div class="col-md-10 col-8">
+                        <span class="text-center">{{'xNoRecordsFound' | translate}}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row" *ngIf="criteriaDto.ProductNameCode" [@expandCollapse]>
+    <div class="col-12">
+        <button class="btn btn-outline-primary btn-sm btn-naked pull-right" type="button" (click)="addNewProduct()">
+            <fa [name]="'plus'"></fa>{{'xCouldntFindAddNew' | translate}}
+        </button>
+    </div>
+</div>
+<div class="row">
+    <div class="col-12">
+        <ngx-loading [show]="busy && productListDto.length == 0"></ngx-loading>
+    </div>
+</div>
+
+<product-offer-criteria *ngIf="isCriteriaOpen"></product-offer-criteria>

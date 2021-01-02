@@ -1,0 +1,47 @@
+<page-title [helpName]="'SiteMap'" [icon]="xIcon" [iconColor]="xIconColor" [title]="xTitle"></page-title>
+
+<div class="row d-flex justify-content-center">
+    <div class="col-lg-4 col-md-6 col-12">
+        <div class="tile" *ngIf="navMenuList && navMenuList.length > 0">
+            <ul *ngFor="let menu of navMenuList" [@expandCollapse]>
+                <li>
+                    <a class="aLink" style="text-decoration: underline !important;" *ngIf="menu.Url" [routerLink]="[menu.Url]">
+                        <fa [name]="menu.IconClass" class="menu-icon" [ngClass]="menu.IconColor"></fa>
+                        {{menu.Name | translate}}
+                    </a>
+                    <span *ngIf="!menu.Url">
+                        <fa [name]="menu.IconClass" class="menu-icon" [ngClass]="menu.IconColor"></fa>
+                        {{menu.Name | translate}}
+                    </span>
+                    <div *ngIf="menu.SubMenuList && menu.SubMenuList.length > 0">
+                        <ul *ngFor="let menu1 of menu.SubMenuList" [@expandCollapse]>
+                            <li>
+                                <a class="aLink" style="text-decoration: underline !important;" *ngIf="menu1.Url" [routerLink]="[menu1.Url]">
+                                    <fa [name]="menu1.IconClass" class="menu-icon" [ngClass]="menu1.IconColor"></fa>
+                                    {{menu1.Name | translate}}
+                                </a>
+                                <span *ngIf="!menu1.Url">
+                                    <fa [name]="menu1.IconClass" class="menu-icon" [ngClass]="menu1.IconColor"></fa>
+                                    {{menu1.Name | translate}}
+                                </span>
+
+                                <div *ngIf="menu1.SubMenuList && menu1.SubMenuList.length > 0">
+                                    <ul *ngFor="let menu2 of menu1.SubMenuList" [@expandCollapse]>
+                                        <li>
+                                            <a class="aLink" style="text-decoration: underline !important;" [routerLink]="[menu2.Url?menu2.Url:'']">
+                                                <fa [name]="menu2.IconClass" class="menu-icon"
+                                                    [ngClass]="menu2.IconColor"></fa>
+                                                {{menu2.Name | translate}}
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>

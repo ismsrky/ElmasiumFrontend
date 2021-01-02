@@ -1,0 +1,87 @@
+<div class="row">
+    <div class="col-6">
+        <h4>Ürün özellikleri</h4>
+    </div>
+    <div class="col-6" *ngIf="personProductProfileDto && personProductProfileDto.IsShopOwner">
+        <button class="btn btn-outline-primary btn-sm float-right" type="button" style="border:0px"
+            *ngIf="!showCrudProperty" [@expandCollapse] (click)="crudProperty()">
+            <fa [name]="'plus'"></fa> {{'xNew' | translate}}
+        </button>
+    </div>
+    <div class="col-12">
+        <hr>
+    </div>
+    <div class="col-12 mb-2">
+        <div class="row">
+            <div class="col-md-6">
+
+            </div>
+            <div class="col-md-6 col-12">
+                <form class="needs-validation card border-info p-2" #propertySaveForm="ngForm" (submit)="save()"
+                    *ngIf="showCrudProperty" [@expandCollapse] novalidate>
+                    <h5>{{'xNew' | translate}}</h5>
+                    <div class="row">
+                        <div class="col-md-6 col-12 mb-2">
+                            <ngx-loading [show]="busyGroupList"></ngx-loading>
+                            <select class="form-control" [(ngModel)]="selectedGroupId" name="PropertyGroup"
+                                #propertyGroup="ngModel" required (change)="propertyGroupChanged()"
+                                [class.is-invalid]="propertyGroup.invalid && (propertyGroup.touched || propertySaveForm.submitted)">
+                                <option [ngValue]="null">{{'xSelectProperty' | translate}}</option>
+                                <option [ngValue]="group.Id" *ngFor="let group of groupListDto;">
+                                    {{group.Name}}
+                                </option>
+                            </select>
+                            <div class="invalid-tooltip">{{'xSelectProperty' | translate}}</div>
+                        </div>
+                        <div class="col-md-6 col-12 mb-2">
+                            <ngx-loading [show]="busyPropertyList"></ngx-loading>
+                            <select class="form-control" [(ngModel)]="propertySaveDto.PropertyId" name="PropertyByGroup"
+                                #propertyByGroup="ngModel" required
+                                [class.is-invalid]="propertyByGroup.invalid && (propertyByGroup.touched || propertySaveForm.submitted)">
+                                <option [ngValue]="null">{{'xSelectPropertyOption' | translate}}</option>
+                                <option [ngValue]="property.Id" *ngFor="let property of propertyListByGroupDto;">
+                                    {{property.Name | translate}}
+                                </option>
+                            </select>
+                            <div class="invalid-tooltip">{{'xSelectPropertyOption' | translate}}</div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <button class="btn btn-outline-success btn-sm float-right" type="submit" style="border:0px">
+                                <fa [name]="'check'"></fa>{{'xSave' | translate}}
+                            </button>
+                            <button class="btn btn-outline-danger btn-sm float-right" type="button" (click)="cancel()"
+                                style="border:0px">
+                                <fa [name]="'ban'"></fa>{{'xCancel' | translate}}
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-12">
+        <ngx-loading [show]="busy"></ngx-loading>
+    </div>
+
+    <div class="col-md-6 col-12 mb-2" *ngFor="let property of propertyListDto;">
+        <div class="row">
+            <div class="col-6">
+                <button class="btn btn-outline-danger btn-sm" type="button" style="border:0px"
+                    *ngIf="personProductProfileDto && personProductProfileDto.IsShopOwner"
+                    (click)="delete(property.PropertyList[0].Id)">
+                    <fa [name]="'times'"></fa>
+                </button>
+                {{property.Name}}
+            </div>
+            <div class="col-6">
+                :
+                <a [routerLink]="selectedCategory.FullUrl" [queryParams]="getQueryParams(property)"
+                    *ngIf="selectedCategory">
+                    {{property.PropertyList[0].Name}}
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

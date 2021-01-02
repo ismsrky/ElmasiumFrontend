@@ -1,0 +1,36 @@
+<page-title *ngIf="!IsInside" [helpName]="'WalletActivities'" [icon]="'file-text-o'" [title]="'xWalletActivities'">
+</page-title>
+
+<person-account-activity-list-criteria [IsInside]="IsInside"></person-account-activity-list-criteria>
+
+<div class="tile" [class.border]="IsOpen" [class.border-danger]="IsOpen">
+    <div class="row mb-2">
+        <div class="col-12">
+            <h5>{{'xActivities' | translate}} </h5>
+        </div>
+    </div>
+    <div class="row" *ngIf="activityListDto.length > 0">
+        <div class="col-12" *ngFor="let activityDto of activityListDto" [@expandCollapse]>
+            <person-account-activity-list-item [listItem]="activityDto"></person-account-activity-list-item>
+        </div>
+    </div>
+    <div class="row" *ngIf="activityListDto.length == 0" [@expandCollapse]>
+        <div class="col-12">
+            <h4 class="text-danger no-records mb-0" *ngIf="busy"> {{'xPleaseWait' | translate}} </h4>
+            <h4 class="text-danger no-records mb-0" *ngIf="!busy"> {{'xNoRecordsFound' | translate}} </h4>
+        </div>
+    </div>
+    <div class="row" *ngIf="IsInside">
+        <div class="col-12">
+            <button class="btn btn-primary btn-sm float-right" type="button" (click)="more()">
+                <fa [name]="'caret-down'"></fa>{{'xMore' | translate}}
+            </button>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <ngx-loading [show]="busy"></ngx-loading>
+    </div>
+</div>

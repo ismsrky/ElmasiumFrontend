@@ -1,0 +1,23 @@
+<div class="row" *ngIf="isNewAreaOpen" [@expandCollapse]>
+    <div class="col-12">
+        <person-setting-shop-order-area-new></person-setting-shop-order-area-new>
+    </div>
+</div>
+<div class="tile">
+    <div class="row mb-2">
+        <div class="col-12">
+            <h5>{{'xOrderAreas' | translate}}
+                <button class="btn btn-primary btn-sm pull-right" type="button" (click)="newArea()">
+                    <fa [name]="'plus'"></fa>{{'xNew' | translate}}
+                </button>
+            </h5>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6" *ngFor="let orderArea of orderAreaListDto" [@expandCollapse]>
+            <person-setting-shop-order-area-list-item [listItem]="orderArea"></person-setting-shop-order-area-list-item>
+        </div>
+    </div>
+</div>
+
+<person-setting-shop-order-area-crud *ngIf="isAreaCrudOpen"></person-setting-shop-order-area-crud>

@@ -1,0 +1,6 @@
+<span *ngIf="showName && currencyDto && currencyDto.Name">{{currencyDto.Name | translate}} </span>
+<fa *ngIf="!useString && currencyDto && currencyDto.IconClass" [name]="currencyDto.IconClass"></fa>
+<span *ngIf="!useString && currencyDto && !currencyDto.IconClass">{{currencyDto.Code}}</span>
+
+<span *ngIf="useString && currencyDto && currencyDto.IconStr">{{currencyDto.IconStr}}</span>
+<span *ngIf="useString && currencyDto && !currencyDto.IconStr">{{currencyDto.Code}}</span>

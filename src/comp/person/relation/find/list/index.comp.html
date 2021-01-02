@@ -1,0 +1,14 @@
+<ngx-loading [show]="busy"></ngx-loading>
+
+<page-title *ngIf="!IsInside" [helpName]="'AddConnection'" [icon]="'search'" [title]="'xAddConnection'"></page-title>
+<person-relation-find-list-criteria [IsInside]="IsInside"></person-relation-find-list-criteria>
+
+<div class="tile" *ngIf="findList.length > 0">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xl-4" *ngFor="let find of findList" [@expandCollapse]>
+                <person-relation-find-list-item [listItem]="find"></person-relation-find-list-item>
+            </div>
+        </div>
+    </div>
+</div>

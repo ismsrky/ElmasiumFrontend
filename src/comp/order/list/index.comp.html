@@ -1,0 +1,60 @@
+<page-title [helpName]="'OrderList'" [icon]="'list-alt'" [title]="xTitle" *ngIf="!top10"></page-title>
+
+<div class="tile p-2">
+    <div class="row" *ngIf="!top10">
+        <div class="col-12">
+            <ul class="nav nav-tabs">
+                <li class="nav-item">
+                    <a class="nav-link" [class.active]="!getEndPoints" (click)="endPointTabChange(false)">
+                        <fa [name]="'hourglass-half'"></fa> {{'xUncompleted' | translate}}
+                        <span *ngIf="getIncomings && !getReturns">({{notificationSummaryDto.xIncomingOrders}})</span>
+                        <span *ngIf="!getIncomings && !getReturns">({{notificationSummaryDto.xOutgoingOrders}})</span>
+                        <span
+                            *ngIf="getIncomings && getReturns">({{notificationSummaryDto.xIncomingOrderReturns}})</span>
+                        <span
+                            *ngIf="!getIncomings && getReturns">({{notificationSummaryDto.xOutgoingOrderReturns}})</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" [class.active]="getEndPoints" (click)="endPointTabChange(true)">
+                        <fa [name]="'check'"></fa> {{'xCompleted' | translate}}
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="tile" style="border-top-left-radius: 0px !important" *ngIf="!top10">
+        <div class="d-flex flex-row flex-wrap">
+            <div class="utility ml-2" *ngFor="let stat of statList">
+                <div class="animated-checkbox">
+                    <label>
+                        <input type="checkbox" [(ngModel)]="stat.Checked" name="stat.Id"
+                            (change)="criteriaStatChange()">
+                        <span class="label-text">{{stat.Name | translate}}</span>
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+    <h5 *ngIf="top10" class="cursor-pointer" (click)="openTop10()">{{'xTop10Orders' | translate}}
+        <fa [name]="'plus'" class="float-right"></fa>
+    </h5>
+    <div class="row" *ngIf="!top10 || (isOpenTop10 && top10)" [@expandCollapse]>
+        <div class="col-lg-12 mb-2" *ngFor="let order of orderList;" [@expandCollapse]>
+            <order-list-item [listItem]="order"></order-list-item>
+        </div>
+    </div>
+    <div class="row" *ngIf="orderList.length == 0 && (!top10 || (isOpenTop10 && top10))" [@expandCollapse]>
+        <div class="col-12">
+            <h4 class="text-danger no-records mb-0" *ngIf="busyGetList"> {{'xPleaseWait' | translate}} </h4>
+            <h4 class="text-danger no-records mb-0" *ngIf="!busyGetList"> {{'xNoOrderFound' | translate}}
+                <fa [name]="'frown-o'" [size]=1></fa>
+            </h4>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <ngx-loading [show]="busy"></ngx-loading>
+        </div>
+    </div>
+</div>

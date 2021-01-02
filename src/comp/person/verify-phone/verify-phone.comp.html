@@ -1,0 +1,46 @@
+<ngx-loading [show]="busy"></ngx-loading>
+<div class="modal fade" bsModal #modal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="dialog-events-name">
+    <div class="modal-dialog modal-md modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header p-2">
+                <h5 id="dialog-events-name" class="modal-title pull-left">{{'xVerifyPhoneNumber' | translate}}</h5>
+                <button type="button" class="close pull-right" aria-label="Close" (click)="modal.hide()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form class="needs-validation mb-2" #verifyPhoneForm="ngForm" (submit)="save()" novalidate
+                *ngIf="personVerifyPhoneBo && saveDto" [@expandCollapse]>
+                <div class="modal-body">
+
+                    <div class="row">
+                        <div class="col-6">
+                            <h5>{{personVerifyPhoneBo.Phone}}</h5>
+                        </div>
+                        <div class="col-6">
+                            <span class="float-right" *ngIf="countDown > 0">{{countDown}}
+                                {{'xSeconds' | translate}}</span>
+                            <span class="cursor-pointer float-right" *ngIf="countDown == 0"
+                                (click)="gen()">{{'xSendAgain' | translate}}
+                            </span>
+                        </div>
+                        <div class="col-12">
+                            <input class="form-control" #verifyPhoneCode="ngModel" required [disabled]="countDown <= 0"
+                                [(ngModel)]="saveDto.VerifyCode" name="verifyCode" (tap)="$event.target.select()"
+                                autocomplete="off" type="tel" currencyMask [options]="configPositiveInt" maxlength="4"
+                                [class.is-invalid]="verifyPhoneCode.invalid && (verifyPhoneCode.touched || verifyPhoneForm.submitted)"
+                                placeholder="{{'xVerificationCode' | translate}}" autocomplete="off">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer pl-2 pb-2 pt-2">
+                    <button class="btn btn-danger btn-sm pull-right" type="button" (click)="modal.hide()">
+                        <fa [name]="'ban'"></fa>{{'xCancel' | translate}}
+                    </button>
+                    <button class="btn btn-success btn-sm pull-right" type="submit" [disabled]="countDown <= 0">
+                        <fa [name]="'check'"></fa>{{'xVerify' | translate}}
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

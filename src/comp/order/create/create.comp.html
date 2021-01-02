@@ -1,0 +1,55 @@
+<page-title [helpName]="'CreateOrder'" [icon]="'list-alt'" [title]="'Sipariş oluştur'"></page-title>
+
+<ngx-loading [show]="busy"></ngx-loading>
+<!--
+    <div class="tile">
+    <div class="row">
+        <div class="col-12">
+            <h3>Adres seçimi
+                <hr class="m-0">
+            </h3>
+        </div>
+        <div class="col-12">
+            <person-address-list-index [selectAddressType]="addressTypes.xDelivery"></person-address-list-index>
+        </div>
+        <div class="col-12">
+            <person-address-list-index [selectAddressType]="addressTypes.xFiche"></person-address-list-index>
+        </div>
+    </div>
+</div>
+-->
+<div class="row">
+    <div class="col-12">
+        <basket-list-index [isReadonly]="true"></basket-list-index>
+    </div>
+    <div class="col-12">
+        <div class="tile">
+            <person-address-list-index [isInside]="true"> </person-address-list-index>
+        </div>
+    </div>
+</div>
+<div class="tile">
+    <div class="row">
+        <div class="col-12">
+            <h5>
+                {{'xDescription' | translate}}
+                <hr class="mb-0">
+            </h5>
+            <textarea class="form-control" #notes="ngModel" [(ngModel)]="saveDto.Notes" name="Notes" type="text"
+                maxlength="255" rows="10" placeholder="{{'xOptional' | translate}}"></textarea>
+
+        </div>
+        <div class="col-12">
+            <span *ngIf="!saveDto.Notes">0/255</span>
+            <span class="float-left" *ngIf="saveDto.Notes">{{saveDto.Notes.length}}/255</span>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <button class="btn btn-success float-right" [disabled]="busy" type="button" (click)="saveCheckBefore()">
+            <fa [name]="'check'"></fa>{{'xCreateOrder' | translate}}
+        </button>
+    </div>
+</div>

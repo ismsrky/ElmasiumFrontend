@@ -1,0 +1,74 @@
+<page-title [helpName]="'Connections'" [icon]="'handshake-o'" [title]="'xConnections'"></page-title>
+<person-relation-list-criteria></person-relation-list-criteria>
+
+<div class="row mb-2">
+    <div class="col-xl-12">
+        <button class="btn btn-primary float-right ml-2" type="button" (click)="showFindRelation()"
+            [class.active]="isPersonRelationShow">
+            <fa [name]="'search'"></fa>{{'xAddConnection' | translate}}
+        </button>
+        <button class="btn btn-danger float-right" type="button" (click)="getAlonePerson(0)">
+            <fa [name]="'plus'"></fa> {{'xAddCurrent' | translate}}
+        </button>
+    </div>
+</div>
+
+<div class="tile" *ngIf="isPersonRelationShow" [@expandCollapse]>
+    <div class="row">
+        <div class="col-xl-12">
+            <person-relation-find-list-index [IsInside]="true"></person-relation-find-list-index>
+        </div>
+    </div>
+</div>
+
+<div class="tile">
+    <div class="row mb-2">
+        <div class="col-md-8">
+             
+        </div>
+        <div class="col-md-4">
+            <span class="float-right ml-4">
+                <fa [name]="'link'" class="mr-1"></fa>{{'xConnection' | translate}}
+            </span>
+            <!--
+                <span class="float-right">
+                <fa [name]="'circle'" class="text-danger mr-1"></fa>{{'xIn' | translate}}
+            </span>
+          -->
+        </div>
+    </div>
+
+    <div class="row justify-content-center" *ngIf="newPersonRelationListDto.IsAlonePersonOpen" [@expandCollapse]>
+        <div class="col-xs-12">
+            <person-alone-crud #childNewAlonePerson [personRelationListDto]="newPersonRelationListDto">
+            </person-alone-crud>
+        </div>
+    </div>
+
+    <div class="row">
+        <ng-container *ngFor="let relation of relationList; let index = index">
+            <div class="col-md-6" [@expandCollapse]>
+                <person-relation-list-item [listItem]="relation"></person-relation-list-item>
+            </div>
+            <div class="col-12" *ngIf="relation.IsActivitiesOpen" [@expandCollapse]>
+                <fiche-list-index [IsInside]="true" [IsOpen]="relation.IsActivitiesOpen"></fiche-list-index>
+            </div>
+            <div class="col-12" *ngIf="relation.IsAlonePersonOpen" [@expandCollapse]>
+                <div class="row justify-content-center">
+                    <div class="col-xs-12">
+                        <person-alone-crud #childAlonePerson [personRelationListDto]="relation"></person-alone-crud>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12" *ngIf="relation.IsFicheOpen" [@expandCollapse]>
+                <fiche-crud></fiche-crud>
+            </div>
+        </ng-container>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <ngx-loading [show]="busy"></ngx-loading>
+    </div>
+</div>

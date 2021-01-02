@@ -1,0 +1,49 @@
+<div class="modal fade" bsModal #modal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="dialog-events-name">
+    <div class="modal-dialog modal-md modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header pb-0">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-12">
+                            <ngx-loading [show]="busy"></ngx-loading>
+                        </div>
+                        <div class="col-12 p-2" *ngIf="productDto" [@expandCollapse]>
+                            <h5 id="dialog-events-name" class="modal-title pull-left text-danger">
+                                <span *ngIf="productDto.PersonProductId == null">
+                                    {{'xAveragePrice' | translate}}:
+                                </span>
+                                {{productDto.Price.SalePrice | number:'1.2-2'}}
+                                <currency-icon [currencyId]="productDto.Price.CurrencyId"></currency-icon>
+                                <span *ngIf="productDto.PersonProductId == null" class="pull-right">
+                                    ({{'xNotInShop' | translate}})
+                                </span>
+                            </h5>
+                            <button type="button" class="close pull-right pr-0" aria-label="Close"
+                                (click)="modal.hide()">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-body" *ngIf="productDto" [@expandCollapse]>
+                <div class="row">
+                    <div class="col-12">
+                        {{productDto.ProductName}}
+                        <span class="float-right">
+                            {{countDown}}
+                        </span>
+                    </div>
+                    <div class="col-12" *ngIf="productDto.CodeList && productDto.CodeList.length > 0">
+                        <small class="text-secondary" *ngFor="let codeItem of productDto.CodeList">
+                            {{productCodeTypes[codeItem.ProductCodeTypeId] | translate}}:
+                            {{codeItem.Code}}
+                        </small>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+</div>

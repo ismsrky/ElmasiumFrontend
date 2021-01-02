@@ -1,0 +1,22 @@
+<div class="tile p-2">
+    <h5>{{'xCategories' | translate}}</h5>
+    <hr class="m-2">
+    <div class="row" class="mb-1" *ngFor="let category of upperCategoryListDto;let index=index;" [@expandCollapse]>
+        <div class="col-12">
+            <span [innerHTML]="'&nbsp;&nbsp;&nbsp;'" *ngFor="let i of fillArray(index)" [@expandCollapse]></span>
+            <a [routerLink]="category.FullUrl" class="text-dark" [class.font-weight-bold]="category.IsSelected" (press)="categoryPress(category)">
+                {{category.Name}}
+            </a>
+        </div>
+    </div>
+
+    <div class="row" class="mb-1" *ngFor="let category of categoryListDto" [@expandCollapse]>
+        <div class="col-12">
+            <span [innerHTML]="'&nbsp;&nbsp;&nbsp;'" *ngFor="let i of fillArray(upperCategoryListDto.length)"
+                [@expandCollapse]></span>
+            <a [routerLink]="category.UrlName" class="text-dark" (press)="categoryPress(category)">
+                {{category.Name}}
+            </a>
+        </div>
+    </div>
+</div>

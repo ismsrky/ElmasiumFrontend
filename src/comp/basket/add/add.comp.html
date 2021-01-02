@@ -1,0 +1,87 @@
+<form class="needs-validation mb-2" #saveForm="ngForm" (submit)="save()" novalidate>
+    <ngx-loading [show]="busy"></ngx-loading>
+    <div class="modal fade" bsModal #modal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="dialog-events-name">
+        <div class="modal-dialog modal-md modal-dialog-centered" style="max-width: 1000px !important" [@expandCollapse]>
+            <div class="modal-content">
+                <div class="modal-header pt-2 pb-2">
+                    <h5 class="modal-title">
+                        {{personProductProfileDto.ProductName}}
+                    </h5>
+                    <button type="button" class="close pull-right" aria-label="Close" (click)="modal.hide()">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body pt-2 pb-2">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="tile d-flex justify-content-center" style="height: 300px !important">
+                                <img src="assets/no-image_500_500.png"
+                                    *ngIf="personProductProfileDto.PortraitImageUniqueIdStr == null"
+                                    style="max-height: 100%;max-width: 100%;object-fit: cover" alt="No Image">
+                                <img src="{{environment.productImageSource}}{{personProductProfileDto.PortraitImageUniqueIdStr}}"
+                                    *ngIf="personProductProfileDto.PortraitImageUniqueIdStr != null"
+                                    style="max-height: 100%;max-width: 100%;object-fit: cover" alt="Product Image">
+                            </div>
+                        </div>
+                        <div class="col-md-8">
+                            <div class="row" *ngIf="personProductProfileDto.Notes">
+                                <div class="col-12">
+                                    {{personProductProfileDto.Notes}}
+                                    <hr class="m-2">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <include-exclude-select #excludingSelect [isInclude]="false"
+                                        [showExpandBtn]="false">
+                                    </include-exclude-select>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <hr class="m-2">
+                                    <option-select></option-select>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <include-exclude-select #includeSelect [isInclude]="true" [showExpandBtn]="true">
+                                    </include-exclude-select>
+                                </div>
+                            </div>
+                            <div class="row" [class.bottomRight]="!isNarrow">
+                                <div class="col-4">
+                                    <label class="control-label float-right mt-3">{{'xQuantity' | translate}}</label>
+                                </div>
+                                <div class="col-4">
+                                    <input class="form-control" #quantity="ngModel" (tap)="$event.target.select()"
+                                        autocomplete="off" currencyMask [options]="configQuantity" type="tel"
+                                        (ngModelChange)="saveDto.Quantity=$event;calculate()"
+                                        [ngModel]="saveDto.Quantity" name="Quantity"
+                                        placeholder="{{'xAmount' | translate}}">
+                                </div>
+                                <div class="col-4">
+                                    <h4 class="text-danger mt-2 float-right" [class.shake-once]="isActionBtnHover">
+                                        {{grandTotal | number:'1.2-2'}}
+                                        <currency-icon [currencyId]="personProductProfileDto.ShopDefaultCurrencyId">
+                                        </currency-icon>
+                                    </h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer p-2">
+                    <button class="btn btn-outline-danger btn-sm pull-right" type="button" (click)="modal.hide()">
+                        {{'xCancel' | translate}}
+                    </button>
+                    <button type="submit" (mouseenter)="isActionBtnHover=true" (mouseleave)="isActionBtnHover=false"
+                        *ngIf="isReadyOptionList && isReadyPersonProductProfile && isReadyIncludeList && isReadyExcludeList"
+                        [@expandCollapse] [className]="'btn btn-sm pull-right ml-2 btn-' + actionColorName">
+                        <fa [name]="actionIconName"></fa>{{xActionName}}
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

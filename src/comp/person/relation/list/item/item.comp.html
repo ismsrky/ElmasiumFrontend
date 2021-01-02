@@ -1,0 +1,118 @@
+<div class="card mb-1"
+    [class.border-warning]="listItem.BalanceStatId == balanceStats.xCreditor && !listItem.IsActivitiesOpen"
+    [class.border-info]="listItem.BalanceStatId == balanceStats.xZero && !listItem.IsActivitiesOpen"
+    [class.border-success]="listItem.BalanceStatId == balanceStats.xDebtor && !listItem.IsActivitiesOpen"
+    [class.border-danger]="listItem.IsActivitiesOpen">
+    <div class="card-body p-2">
+        <div class="row">
+            <div class="col-12">
+                <h5>
+                    {{listItem.RelatedPersonFullName}}
+                    <fa [name]="'link'" class="float-right" *ngIf="!listItem.IsAlone">
+                    </fa>
+                </h5>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3 col-6">
+                {{personTypes[listItem.RelatedPersonTypeId] | translate}}
+            </div>
+            <div class="col-md-5 col-6">
+                <p class="float-left">{{'xBalance' | translate}}:
+                    <span [class.text-warning]="listItem.BalanceStatId == balanceStats.xCreditor"
+                        [class.text-info]="listItem.BalanceStatId == balanceStats.xZero"
+                        [class.text-success]="listItem.BalanceStatId == balanceStats.xDebtor">
+                        {{listItem.Balance | number:'1.2-2'}}
+                        <currency-icon [currencyId]="currencyId"></currency-icon>
+                        ({{balanceStats[listItem.BalanceStatId] | translate}})</span>
+                </p>
+            </div>
+            <div class="col-md-4">
+                <span class="float-right">{{listItem.Caption}}</span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <div class="btn-group float-right ml-2 mb-2" dropdown
+                    *ngIf="!listItem.IsAlone && listItem.RelatedPersonId > 0">
+                    <button id="button-basic" dropdownToggle type="button"
+                        class="btn btn-outline-danger btn-sm dropdown-toggle" aria-controls="dropdown-basic">
+                        {{'xDisconnect' | translate}}
+                        <span class="caret"></span>
+                    </button>
+                    <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu" role="menu"
+                        aria-labelledby="button-basic">
+                        <li role="menuitem" *ngFor="let relation of listItem.RelationSubList">
+                            <button class="btn btn-outline-danger btn-sm" type="button"
+                                (click)="host.delete(listItem, relation)">
+                                <fa [name]="'times'"></fa>{{relationTypes[relation.RelationTypeId]| translate}}
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+
+                <button class="btn btn-outline-primary btn-sm ml-2 mb-2 float-right order-3" type="button"
+                    [class.active]="listItem.IsActivitiesOpen" (click)="host.getActivities(listItem)">
+                    <fa [name]="'table'"></fa>{{'xFicheActivities' | translate}}
+                </button>
+                <button class="btn btn-outline-primary btn-sm float-right ml-2 mb-2 order-2" *ngIf="listItem.IsAlone"
+                    type="button" (click)="host.getAlonePerson(listItem.RelatedPersonId)">
+                    <fa [name]="'edit'"></fa>{{'xEdit' | translate}}
+                </button>
+                <button class="btn btn-outline-primary btn-sm float-right ml-2 mb-2 order-1"
+                    [class.active]="listItem.IsFicheOperationsOpen" type="button"
+                    (click)="listItem.IsFicheOperationsOpen = !listItem.IsFicheOperationsOpen">
+                    <fa [name]="'edit'"></fa>{{'xEnterFiche' | translate}}
+                </button>
+            </div>
+        </div>
+        <div class="row" *ngIf="listItem.IsFicheOperationsOpen" [@expandCollapse]>
+            <div class="col-12">
+                <button class="btn btn-sm float-right ml-2 mb-2 btn-outline-warning" type="button"
+                    (click)="host.openFiche(listItem, ficheTypeFakes.xOutgoingPayment)">
+                    <i class="fa fa-upload" aria-hidden="true"></i>
+                    {{'xMakePayment' | translate}}
+                </button>
+                <button class="btn btn-sm float-right ml-2 mb-2 btn-outline-warning" type="button"
+                    (click)="host.openFiche(listItem, ficheTypeFakes.xOutgoingMoney)">
+                    <i class="fa fa-upload" aria-hidden="true"></i>
+                    {{'xGiveMoney' | translate}}
+                </button>
+                <button class="btn btn-sm float-right ml-2 mb-2 btn-outline-warning" type="button"
+                    (click)="host.openFiche(listItem, ficheTypeFakes.xDebted)">
+                    <i class="fa fa-repeat" aria-hidden="true"></i>
+                    {{'xDebt' | translate}}
+                </button>
+                <button class="btn btn-sm float-right ml-2 mb-2 btn-outline-warning" type="button"
+                    (click)="host.openFiche(listItem, ficheTypeFakes.xSaleInvoice)">
+                    <i class="fa fa-shopping-basket" aria-hidden="true"></i>
+                    {{'xSaleInvoice' | translate}}
+                </button>
+            </div>
+        </div>
+        <div class="row" *ngIf="listItem.IsFicheOperationsOpen" [@expandCollapse]>
+            <div class="col-12">
+                <button class="btn btn-sm float-right ml-2 mb-2 btn-outline-success" type="button"
+                    (click)="host.openFiche(listItem, ficheTypeFakes.xIncomingPayment)">
+                    <i class="fa fa-download" aria-hidden="true"></i>
+                    {{'xTakePayment' | translate}}
+                </button>
+                <button class="btn btn-sm float-right ml-2 mb-2 btn-outline-success" type="button"
+                    (click)="host.openFiche(listItem, ficheTypeFakes.xIncomingMoney)">
+                    <i class="fa fa-download" aria-hidden="true"></i>
+                    {{'xTakeMoney' | translate}}
+                </button>
+                <button class="btn btn-sm float-right ml-2 mb-2 btn-outline-success" type="button"
+                    (click)="host.openFiche(listItem, ficheTypeFakes.xCredited)">
+                    <i class="fa fa-undo" aria-hidden="true"></i>
+                    {{'xCredit' | translate}}
+                </button>
+                <button class="btn btn-sm float-right ml-2 mb-2 btn-outline-success" type="button"
+                    (click)="host.openFiche(listItem, ficheTypeFakes.xPurchaseInvoice)">
+                    <i class="fa fa-shopping-basket" aria-hidden="true"></i>
+                    {{'xPurchaseInvoice' | translate}}
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

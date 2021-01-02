@@ -1,0 +1,36 @@
+<ngx-loading [show]="busy"></ngx-loading>
+
+<div class="tile mb-0 pb-2">
+    <div class="row mb-2" *ngFor="let code of codeList;">
+        <div class="col-12">
+            <span class="float-left">{{code.Code}}</span>
+            <span class="float-right">{{productCodeTypes[code.ProductCodeTypeId] | translate}}</span>
+        </div>
+    </div>
+    <form class="needs-validation" #productCodeForm="ngForm" (submit)="save()" novalidate>
+        <div class="row">
+            <div class="col-12">
+                <input class="form-control" [appAutofocus]="true" autocomplete="off" *ngIf="showNewProductCode"
+                    [@expandCollapse] required #productCode="ngModel" [class.is-invalid]="productCode.invalid && productCodeForm.submitted"
+                    [(ngModel)]="productCodeDto.Code" name="newProductCode" type="text" maxlength="50" placeholder="Lütfen barkodu giriniz...">
+                <div class="invalid-tooltip">Lütfen barkodu giriniz...</div>
+
+                <button class="btn btn-outline-primary btn-sm pull-right" type="button" style="border:0px" *ngIf="!showNewProductCode"
+                    [@expandCollapse] (click)="newProductCode()">
+                    <fa [name]="'plus'"></fa> {{'xNew' | translate}}
+                </button>
+            </div>
+        </div>
+        <div class="row" *ngIf="showNewProductCode" [@expandCollapse]>
+            <div class="col-12">
+                <button class="btn btn-outline-success btn-sm pull-right" type="submit" style="border:0px">
+                    <fa [name]="'check'"></fa>{{'xSave' | translate}}
+                </button>
+                <button class="btn btn-outline-danger btn-sm pull-right" type="button" (click)="cancel()"
+                    style="border:0px">
+                    <fa [name]="'ban'"></fa>{{'xCancel' | translate}}
+                </button>
+            </div>
+        </div>
+    </form>
+</div>

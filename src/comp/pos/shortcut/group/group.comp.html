@@ -1,0 +1,36 @@
+<ngx-loading [show]="busy"></ngx-loading>
+<div class="modal fade" bsModal #modal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="dialog-events-name">
+    <div class="modal-dialog modal-md modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 id="dialog-events-name" class="modal-title pull-left">{{'xShortcutGroup' | translate}}</h5>
+                <button type="button" class="close pull-right" aria-label="Close" (click)="modal.hide()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form class="needs-validation" #shortcutGroupForm="ngForm" (submit)="save()" novalidate>
+                    <div class="row mb-2">
+                        <div class="col-12">
+                            <input class="form-control" #name="ngModel" required [class.is-invalid]="name.invalid && (name.touched || shortcutGroupForm.submitted)"
+                                [(ngModel)]="groupDto.Name" name="Name" [appAutofocus]="true" type="text" placeholder="{{'xGroupName' | translate}}">
+                            <div class="invalid-tooltip">{{'xGroupNameCantBeEmpty' | translate}}</div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="pull-right ml-2">
+                            <button class="btn btn-success btn-block" type="submit">
+                                <fa [name]="'check'"></fa>{{'xSave' | translate}}
+                            </button>
+                        </div>
+                        <div class="pull-right">
+                            <button class="btn btn-danger btn-block" type="button" (click)="modal.hide()">
+                                <fa [name]="'ban'"></fa>{{'xCancel' | translate}}
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

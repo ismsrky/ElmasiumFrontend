@@ -1,0 +1,7 @@
+<ngx-loading [show]="busy"></ngx-loading>
+<div class="row mb-2" (scroll)="onScroll($event)" #scrollDiv *ngIf="relationList.length > 0" [style.height]="relationList.length < 5 ? 'auto' : '250px'"
+    style="overflow-y: auto;">
+    <div class="col-12" *ngFor="let relation of relationList" [@expandCollapse]>
+        <person-search-list-item [listItem]="relation"></person-search-list-item>
+    </div>
+</div>

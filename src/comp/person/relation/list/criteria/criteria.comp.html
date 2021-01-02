@@ -1,0 +1,38 @@
+<div class="tile pb-2">
+    <div class="row ine-head">
+        <div class="col-md-4 mb-2">
+            <label class="control-label">
+                {{'xPlaceHolderSearchConnection' | translate}}
+            </label>
+            <input class="form-control" type="text" [formControl]="nameControl" name="Name" placeholder="{{'xPlaceHolderSearchConnection' | translate}}"
+                autocomplete="off">
+        </div>
+        <div class="col-md-4 mb-2">
+            <!--Relation type-->
+            <label class="control-label">
+                {{'xConnectionType' | translate}}
+            </label>
+            <ng-select (change)="search()" labelForId="randomId12" [searchable]="false" placeholder="{{'xAll' | translate}}"
+                [items]="avaibleRelationIdList" name="selectRule" bindLabel="value" bindValue="key" [multiple]="true"
+                [(ngModel)]="criteriaDto.RelationTypeIdList">
+            </ng-select>
+        </div>
+        <div class="col-md-4 mb-2">
+            <!--Balance status-->
+            <label class="control-label">
+                {{'xBalanceStatus' | translate}}
+            </label>
+            <ng-select labelForId="randomId13" (change)="search()" [searchable]="false" [items]="balanceStatList"
+                bindLabel="value" bindValue="key" [multiple]="true" [(ngModel)]="criteriaDto.BalanceStatIdList" name="BalanceStatIdList"
+                placeholder="{{'xAll' | translate}}">
+            </ng-select>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <button class="btn btn-primary btn-sm float-right" type="button" (click)="search()">
+                <fa [name]="'refresh'"></fa>{{'xRefresh' | translate}}
+            </button>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,58 @@
+<ul class="app-notification dropdown-menu dropdown-menu-right navbar-dropdown preview-list pt-0 show">
+    <li>
+        <p class="mb-0 font-weight-normal float-left dropdown-header" (click)="toggleIncomigns()">
+            <fa [name]="incomigs?'download':'upload'" [size]=1></fa>
+            <span *ngIf="incomigs">
+                {{'xIncomingRequests' | translate}} ({{notificationSummaryDto.TotalIncomings}})
+            </span>
+            <span *ngIf="!incomigs">
+                {{'xOutgoingRequests' | translate}} ({{notificationSummaryDto.TotalOutgoing}})
+            </span>
+        </p>
+    </li>
+    <li class="app-notification__content">
+        <div class="row mt-2">
+            <div class="col-12">
+                <button class="btn btn-sm btn-outline-primary btn-naked" [class.active]="showApprovalFiche"
+                    (click)="approvalFicheClick()">
+                    {{'xFiche' | translate}}
+                    (
+                    <span *ngIf="incomigs">{{notificationSummaryDto.xFicheIncomings}}</span>
+                    <span *ngIf="!incomigs">{{notificationSummaryDto.xFicheOutgoings}}</span>
+                    )
+                </button>
+                <button class="btn btn-sm btn-outline-primary btn-naked" [class.active]="showApprovalRelation"
+                    (click)="approvalRelationClick()">
+                    {{'xConnection' | translate}}
+                    (
+                    <span *ngIf="incomigs">{{notificationSummaryDto.xRelationIncomings}}</span>
+                    <span *ngIf="!incomigs">{{notificationSummaryDto.xRelationOutgoings}}</span>
+                    )
+                </button>
+                <button class="btn btn-sm btn-outline-primary btn-naked" [class.active]="showApprovalOrder"
+                    (click)="approvalOrderClick()" *ngIf="profile.PersonTypeId == personTypes.xShop">
+                    {{'xOrder' | translate}}
+                    (
+                    <span *ngIf="incomigs">{{notificationSummaryDto.xIncomingOrders}}</span>
+                    <span *ngIf="!incomigs">{{notificationSummaryDto.xOutgoingOrders}}</span>
+                    )
+                </button>
+                <button class="btn btn-sm btn-outline-primary btn-naked" [class.active]="showApprovalReturn"
+                    (click)="approvalReturnClick()" *ngIf="profile.PersonTypeId == personTypes.xShop">
+                    {{'xReturn' | translate}}
+                    (
+                    <span *ngIf="incomigs">{{notificationSummaryDto.xIncomingOrderReturns}}</span>
+                    <span *ngIf="!incomigs">{{notificationSummaryDto.xOutgoingOrderReturns}}</span>
+                    )
+                </button>
+            </div>
+
+        </div>
+    </li>
+    <li class="app-notification__content" *ngIf="showApprovalRelation">
+        <approval-relation-small-list-index></approval-relation-small-list-index>
+    </li>
+    <li class="app-notification__content" *ngIf="showApprovalFiche">
+        <approval-fiche-small-list-index></approval-fiche-small-list-index>
+    </li>
+</ul>

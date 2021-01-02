@@ -1,0 +1,24 @@
+<ngx-loading [show]="busy"></ngx-loading>
+<div class="modal fade" bsModal #modal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="dialog-events-name">
+    <div class="modal-dialog modal-md modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 id="dialog-events-name" class="modal-title pull-left">{{'xSelectedCurrency' | translate}}</h5>
+                <button type="button" class="close pull-right" aria-label="Close" (click)="modal.hide()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-12">
+                        <select class="form-control border border-primary" name="CurrencyId"
+                            [(ngModel)]="selectedCurrencyId" (change)="currencyChanged()">
+                            <option *ngFor="let item of currencies | enums" [ngValue]="item.key">
+                                {{item.value | translate}}</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

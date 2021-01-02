@@ -1,0 +1,30 @@
+<div class="tile">
+    <div class="row mb-2">
+        <div class="col-12">
+            <h5>{{'xAddConnection' | translate}}
+                <button type="button" class="close pull-right" aria-label="Close" (click)="close()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </h5>
+        </div>
+    </div>
+    <div class="row mb-2">
+        <div class="col-md-4">
+            <label class="control-label">
+                {{'xLookingFor' | translate}}
+            </label>
+            <select class="form-control" #relationTypeId="ngModel" [(ngModel)]="criteriaDto.RelationTypeId"
+                name="RelationTypeId" (change)="search()">
+                <option disabled [ngValue]="null">{{'xSelectConnectionType' | translate}}</option>
+                <option *ngFor="let relation of avaibleRelationIdList" [ngValue]="relation">
+                    {{relationTypes[relation] | translate}}
+                </option>
+            </select>
+        </div>
+        <div class="col-md-8">
+            <label class="control-label">{{'xName' | translate}}</label>
+            <input class="form-control" [formControl]="nameControl" name="Name" type="text"
+                placeholder="{{'xName' | translate}}" autocomplete="off" [appAutofocus]=true>
+        </div>
+    </div>
+</div>

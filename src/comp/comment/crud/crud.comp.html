@@ -1,0 +1,59 @@
+<form class="needs-validation mb-2" #commentForm="ngForm" (submit)="save()" novalidate>
+    <ngx-loading [show]="busy"></ngx-loading>
+    <div class="modal fade" bsModal #modal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="dialog-events-name">
+        <div class="modal-dialog modal-md modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header pt-2 pb-2">
+                    <h5 id="dialog-events-name" class="modal-title pull-left">{{commentSaveBo.xCaption | translate}}</h5>
+                    <button type="button" class="close pull-right" aria-label="Close" (click)="modal.hide()">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body pt-2">
+                    <div class="row mb-2" *ngIf="commentSaveBo.CommentTypeId == commentTypes.PersonProduct || commentSaveBo.CommentTypeId == commentTypes.Person">
+                        <div class="col-12">
+                            <rating class="float-right" [(ngModel)]="commentDto.Star" [max]="5" [readonly]="false"
+                                style="color: #daa710;font-size: 25px" name="Star"
+                                [titles]="['berbat','kötünün iyisi','idare eder','güzel','mükemmel']"></rating>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <textarea class="form-control" #comment="ngModel" [(ngModel)]="commentDto.Comment"
+                                name="Comment" type="text" maxlength="1000" rows="10" [required]="commentDto.CommentTypeId == commentTypes.ReplyPerson || commentDto.CommentTypeId == commentTypes.ReplyPersonProduct"
+                                placeholder="{{xCommentPlaceHolder | translate}}"></textarea>
+                            <div class="invalid-tooltip" *ngIf="commentDto.CommentTypeId == commentTypes.ReplyPerson || commentDto.CommentTypeId == commentTypes.ReplyPersonProduct">
+                                {{'xCommentReplyRequired' | translate}}</div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <span *ngIf="!commentDto.Comment">0/1000</span>
+                            <span class="float-left"
+                                *ngIf="commentDto.Comment">{{commentDto.Comment.length}}/1000</span>
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-12">
+                            {{xDesc | translate}}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer pl-2 pb-2 pt-2">
+                    <button class="btn btn-danger btn-sm pull-right" type="button" *ngIf="commentDto.Id"
+                        (click)="delete()">
+                        <fa [name]="'times'"></fa>{{'xDeleteMyComment' | translate}}
+                    </button>
+
+                    <button class="btn btn-danger btn-sm pull-right" type="button" (click)="modal.hide()">
+                        <fa [name]="'ban'"></fa>{{'xCancel' | translate}}
+                    </button>
+                    <button class="btn btn-success btn-sm pull-right ml-2" type="submit">
+                        <fa [name]="'check'"></fa>{{'xSave' | translate}}
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

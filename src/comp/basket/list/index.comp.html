@@ -1,0 +1,27 @@
+<page-title [helpName]="'MyBaskets'" [icon]="'shopping-basket'" [title]="'xMyBaskets'" *ngIf="!isReadonly"></page-title>
+
+<div class="row">
+    <div class="col-12">
+        <ngx-loading [show]="busy"></ngx-loading>
+    </div>
+</div>
+<div class="row mb-2">
+    <div class="col-12">
+        <span *ngIf="basketList.length > 0 && !isReadonly">
+            {{'xOneCartEachShop' | translate}}
+        </span>
+    </div>
+</div>
+<div class="row mb-2" *ngFor="let basket of basketList;">
+    <div class="col-lg-12">
+        <basket-list-item [listItem]="basket"></basket-list-item>
+    </div>
+</div>
+<div class="row" *ngIf="basketList.length == 0" [@expandCollapse]>
+    <div class="col-12">
+        <h4 class="text-danger no-records mb-0" *ngIf="busy"> {{'xPleaseWait' | translate}} </h4>
+        <h4 class="text-danger no-records mb-0" *ngIf="!busy"> {{'xNoBasketsFound' | translate}}
+            <img src="assets/shrug-smiley_400_400.png" class="img-fluid" alt="notfound">
+        </h4>
+    </div>
+</div>

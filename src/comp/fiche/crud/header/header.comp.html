@@ -1,0 +1,144 @@
+<h4>{{host.headerCaptionStr | translate}}
+    <span *ngIf="host.isFixed">
+        ({{host.otherPersonRelation.RelatedPersonFullName}})
+    </span>
+</h4>
+<hr>
+<!--
+        <div class="col-md-4" [class.mb-2]="isNarrow">
+        <div class="row">
+            <div class="col-md-6 col-5">
+                <label class="control-label mt-2" [class.float-right]="!isNarrow" [class.float-left]="isNarrow">
+                    {{'xDueDate' | translate}}</label>
+            </div>
+            <div class="col-md-6 col-7">
+                <div class="input-group">
+                    <input type="text" #dueDate="ngModel" class="form-control" bsDatepicker #dhgDueDate="bsDatepicker"
+                        [(ngModel)]="host.ficheDto.DueDate" name="DueDate" [placement]="'top'" [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY', containerClass: 'theme-blue' }"
+                        placeholder="{{'xShortDateText' | translate}}" autocomplete="off">
+                    <div class="input-group-btn">
+                        <button class="btn btn-success" (click)="dhgDueDate.show(); $event.preventDefault();">
+                            <i class="fa fa-calendar"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="row">
+            <div class="col-md-6 col-5">
+                <label class="control-label mt-2" [class.float-right]="!isNarrow" [class.float-left]="isNarrow">
+                    *{{'xIssueDate' | translate}}
+                </label>
+            </div>
+            <div class="col-md-6 col-7">
+                <div class="input-group">
+                    <input type="text" #issuedate="ngModel" required [class.is-invalid]="issuedate.invalid && (issuedate.touched || ficheHeaderForm.submitted)"
+                        class="form-control" bsDatepicker #dhgjp="bsDatepicker" [(ngModel)]="host.ficheDto.IssueDate"
+                        name="IssueDate" [placement]="'top'" [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY', containerClass: 'theme-blue' }"
+                        placeholder="{{'xShortDateText' | translate}}" autocomplete="off">
+                    <div class="invalid-tooltip">{{'xDateCantBeEmpty' | translate}}</div>
+                    <div class="input-group-btn">
+                        <button class="btn btn-success" (click)="dhgjp.show(); $event.preventDefault();">
+                            <i class="fa fa-calendar"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+   -->
+
+<div class="row">
+    <div class="col-12">
+        <ngx-loading [show]="busy"></ngx-loading>
+        <form class="needs-validation" #ficheHeaderForm="ngForm" novalidate>
+            <div class="row mb-2">
+                <!--Other person-->
+                <div class="col-md-3 mb-2" *ngIf="!host.isFixed">
+                    <label class="control-label">
+                        {{host.otherPersonCaptionStr | translate}}
+                    </label>
+                    <div class="input-group" (click)="selectPerson()">
+                        <input class="form-control" type="text"
+                            [(ngModel)]="host.otherPersonRelation.RelatedPersonFullName" name="creditPersonName"
+                            disabled placeholder="{{host.otherPersonCaptionStr | translate}}">
+                        <div class="input-group-append">
+                            <button class="btn btn-primary btn-sm btn-block" type="button">
+                                <fa [name]="'search'"></fa>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-2 mb-2" *ngIf="host.otherPersonRelation.RelatedPersonId != null" [@expandCollapse]>
+                    <label class="control-label">{{'xPrintedCode' | translate}}</label>
+                    <input class="form-control" #printedCode="ngModel" [(ngModel)]="host.ficheDto.PrintedCode"
+                        name="PrintedCode" type="text" maxlength="50" placeholder="{{'xPrintedCode' | translate}}">
+                </div>
+                <div class="col-md-2" *ngIf="host.otherPersonRelation.RelatedPersonId != null" [@expandCollapse]>
+                    <label class="control-label">
+                        {{'xDueDate' | translate}}</label>
+                    <div class="input-group">
+                        <input type="text" #dueDate="ngModel" class="form-control" bsDatepicker
+                            #dhgDueDate="bsDatepicker" [(ngModel)]="host.ficheDto.DueDate" name="DueDate"
+                            [placement]="'top'"
+                            [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY', containerClass: 'theme-blue' }"
+                            placeholder="{{'xShortDateText' | translate}}" autocomplete="off">
+                        <div class="input-group-btn">
+                            <button class="btn btn-success" (click)="dhgDueDate.show(); $event.preventDefault();">
+                                <i class="fa fa-calendar"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-2" *ngIf="host.otherPersonRelation.RelatedPersonId != null" [@expandCollapse]>
+                    <label class="control-label">
+                        *{{'xIssueDate' | translate}}
+                    </label>
+                    <div class="input-group">
+                        <input type="text" #issuedate="ngModel" required
+                            [class.is-invalid]="issuedate.invalid && (issuedate.touched || ficheHeaderForm.submitted)"
+                            class="form-control" bsDatepicker #dhgjp="bsDatepicker"
+                            [(ngModel)]="host.ficheDto.IssueDate" name="IssueDate" [placement]="'top'"
+                            [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY', containerClass: 'theme-blue' }"
+                            placeholder="{{'xShortDateText' | translate}}" autocomplete="off">
+                        <div class="invalid-tooltip">{{'xDateCantBeEmpty' | translate}}</div>
+                        <div class="input-group-btn">
+                            <button class="btn btn-success" (click)="dhgjp.show(); $event.preventDefault();">
+                                <i class="fa fa-calendar"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <!--
+                    <div class="col-md-2 mb-2" *ngIf="host.otherPersonRelation.RelatedPersonId != null" [@expandCollapse]>
+                    <label class="control-label">*{{'xFicheType' | translate}}</label>
+                    <select class="form-control" #ficheContentId="ngModel" required [class.is-invalid]="ficheContentId.invalid && (ficheContentId.touched || ficheHeaderForm.submitted)"
+                        [(ngModel)]="host.ficheDto.FicheContentId" name="FicheContentId" (change)="ficheContentChanged()">
+                        <option [ngValue]="null" disabled>Belge tipini seçiniz</option>
+                        <ng-template ngFor let-ficheContentGroup [ngForOf]="ficheContentGroupBoList">
+                            <optgroup label="{{ficheContentGroups[ficheContentGroup.ContentGroupId] | translate}}">
+                                <option *ngFor="let ficheContent of ficheContentGroup.ContentList" [ngValue]="ficheContent">{{ficheContents[ficheContent]
+                                    | translate}}</option>
+                            </optgroup>
+                        </ng-template>
+                    </select>
+
+                </div>
+               -->
+                <div class="col-md-2"
+                    *ngIf="host.otherPersonRelation.RelatedPersonId != null && host.ficheDto.FicheTypeId==ficheTypes.xInvoice">
+                    <label class="control-label">{{'xUnitPrice' | translate}}</label>
+                    <select class="form-control" [(ngModel)]="host.ficheDto.IncludingVat" name="includingVat"
+                        (change)="includingVatChanged()">
+                        <option [ngValue]="true">{{'xIncludingVat' | translate}}</option>
+                        <option [ngValue]="false">{{'xExcludingVat' | translate}}</option>
+                    </select>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<person-search-index *ngIf="isPersonSearchModalOpen"></person-search-index>

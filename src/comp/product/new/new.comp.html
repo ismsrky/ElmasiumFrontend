@@ -1,0 +1,113 @@
+<ngx-loading [show]="busy"></ngx-loading>
+<div class="modal fade" bsModal #modal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="dialog-events-name">
+    <div class="modal-dialog modal-md modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header pb-0">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-12 p-2">
+                            <h5 id="dialog-events-name" class="modal-title pull-left">{{xCaption | translate}}
+                            </h5>
+                            <button type="button" class="close pull-right pr-0" aria-label="Close"
+                                (click)="modal.hide()">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            <small class="text-secondary pull-right">{{'xStockCode' | translate}}:
+                                {{productDto.ProductCode}}</small>
+                        </div>
+                    </div>
+                    <div class="row" *ngIf="!productNewBo.IsFoodBeverage">
+                        <div class="col-4">
+                            <div class="animated-radio-button">
+                                <label>
+                                    <input type="radio" required #shoppingChecked="ngModel"
+                                        [(ngModel)]="productDto.ProductTypeId" name="Shopping" [value]="0"
+                                        (change)="productTypeChange()">
+                                    <span class="label-text">{{'xShopping' | translate}}</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="animated-radio-button">
+                                <label>
+                                    <input type="radio" required #serviceChecked="ngModel"
+                                        [(ngModel)]="productDto.ProductTypeId" name="Service" [value]="1"
+                                        (change)="productTypeChange()">
+                                    <span class="label-text">{{'xService' | translate}}</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-body">
+                <form class="needs-validation" #productForm="ngForm" (submit)="save()" novalidate>
+                    <div class="row">
+                        <div class="mb-2" [class.col-12]="!productNewBo.IsFoodBeverage"
+                            [class.col-6]="productNewBo.IsFoodBeverage">
+                            <label class="control-label">*{{'xName' | translate}}</label>
+                            <input class="form-control" #productName="ngModel" required
+                                [class.is-invalid]="productName.invalid && (productName.touched || productForm.submitted)"
+                                [(ngModel)]="productDto.Name" name="ProductName" [appAutofocus]="true" type="text"
+                                placeholder="{{'xName' | translate}}">
+                            <div class="invalid-tooltip">{{'xNameCantBeEmpty' | translate}}</div>
+                        </div>
+                        <div class="col-md-6 mb-2" *ngIf="!productNewBo.IsFoodBeverage">
+                            <label class="control-label">*{{'xPurhasePrice' | translate}}</label>
+                            <input class="form-control" #purhasePrice="ngModel" currencyMask required
+                                [class.is-invalid]="purhasePrice.invalid && (purhasePrice.touched || productForm.submitted)"
+                                type="tel" [options]="configCurrency" (tap)="$event.target.select()"
+                                [(ngModel)]="productDto.PurhasePrice" name="PurhasePrice"
+                                placeholder="{{'xPurhasePrice' | translate}}">
+                        </div>
+                        <div class="col-md-6 mb-2">
+                            <label class="control-label">*{{'xSalePrice' | translate}}</label>
+                            <input class="form-control" #salePrice="ngModel" currencyMask required
+                                [class.is-invalid]="salePrice.invalid && (salePrice.touched || productForm.submitted)"
+                                type="tel" [options]="configCurrency" (tap)="$event.target.select()"
+                                [(ngModel)]="productDto.SalePrice" name="SalePrice"
+                                placeholder="{{'xSalePrice' | translate}}">
+                        </div>
+                    </div>
+                    <div class="row mb-2" style="border-top: 1px solid #ddd;"
+                        *ngIf="productDto.ProductTypeId == productTypes.xShopping" [@expandCollapse]>
+                        <div class="col-md-4 col-6" [class.mt-5]="hasBarcode" [class.mt-1]="!hasBarcode">
+                            <div class="animated-checkbox">
+                                <label>
+                                    <input type="checkbox" [(ngModel)]="hasBarcode" name="HasBarcode"
+                                        (change)="hasBarcodeChange()">
+                                    <span class="label-text">{{'xHasBarcode' | translate}}</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-8 col-6 mt-1" *ngIf="hasBarcode" [@expandCollapse]>
+                            <label class="control-label">{{'xBarcode' | translate}}</label>
+                            <input class="form-control" #newProductCode="ngModel" [(ngModel)]="productDto.Barcode"
+                                name="newProductCode" type="text" maxlength="50" [required]="hasBarcode"
+                                [class.is-invalid]="newProductCode.invalid && (newProductCode.touched || productForm.submitted)"
+                                placeholder="{{'xBarcode' | translate}}">
+                            <div class="invalid-tooltip">{{'Lütfen barkodu giriniz.' | translate}}</div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-4">
+                            <input class="form-control" #vatRate="ngModel" currencyMask required
+                                [class.is-invalid]="vatRate.invalid && (vatRate.touched || productForm.submitted)"
+                                type="tel" [options]="configPercentage" (tap)="$event.target.select()"
+                                [(ngModel)]="productDto.VatRate" name="VatRate"
+                                placeholder="{{'xVatRate' | translate}}">
+                        </div>
+                        <div class="col-8">
+                            <button class="btn btn-success btn-sm pull-right ml-2" type="submit">
+                                <fa [name]="'check'"></fa>{{'xSave' | translate}}
+                            </button>
+                            <button class="btn btn-danger btn-sm pull-right" type="button" (click)="modal.hide()">
+                                <fa [name]="'ban'"></fa>{{'xCancel' | translate}}
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

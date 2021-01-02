@@ -1,0 +1,44 @@
+<div class="card mb-2"
+    [class.border-info]="!listItem.IsCrudOpen && (host.selectAddressType == null || (host.selectAddressType != null && listItem.IsSelect))"
+    [class.border-secondary]="!listItem.IsCrudOpen && host.selectAddressType != null && !listItem.IsSelect"
+    [class.border-danger]="listItem.IsCrudOpen" [class.cursorPointer]="host.selectAddressType != null"
+    (click)="host.itemSelect(listItem)">
+    <div class="card-body p-2">
+        <div class="row">
+            <div class="col-12">
+                <h5 *ngIf="listItem.Name">{{listItem.Name}}
+                    <fa [name]="'check'" class="text-primary float-right" *ngIf="listItem.IsSelect"></fa>
+                </h5>
+                <h6 *ngIf="listItem.InvolvedPersonName">{{listItem.InvolvedPersonName}}</h6>
+                <p>
+                    <span *ngIf="listItem.Notes">{{listItem.Notes}}<br></span>
+                    <span *ngIf="listItem.LocalityName">{{listItem.LocalityName}} / </span>
+                    <span *ngIf="listItem.DistrictName">{{listItem.DistrictName}} / </span>
+                    <span *ngIf="listItem.CityName">{{listItem.CityName}} / </span>
+                    <span *ngIf="listItem.StateName">{{listItem.StateName}} / </span>
+                    {{listItem.CountryName | translate}}
+                    <span *ngIf="listItem.ZipCode"><br>{{'xZipCode' | translate}}: {{listItem.ZipCode}} </span>
+                    <span *ngIf="listItem.Phone"><br>{{'xPhone' | translate}}: 0{{listItem.Phone}} </span>
+                </p>
+            </div>
+        </div>
+        <div class="row mb-2">
+            <div class="col-6">
+                {{'xStatus' | translate}}: {{stats[listItem.StatId] | translate}}
+            </div>
+            <div class="col-6">{{'xType' | translate}}: {{addressTypes[listItem.AddressTypeId] | translate}}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <button class="btn btn-outline-primary btn-sm float-right ml-2" type="submit"
+                    (click)="host.openModal(listItem.Id)">
+                    <fa [name]="'edit'"></fa>{{'xEdit' | translate}}
+                </button>
+                <button class="btn btn-outline-danger btn-sm float-right" type="button" (click)="host.delete(listItem)">
+                    <fa [name]="'times'"></fa>{{'xDelete' | translate}}
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

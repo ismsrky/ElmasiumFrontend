@@ -1,0 +1,55 @@
+<ngx-loading [show]="busy"></ngx-loading>
+
+<div class="row">
+    <div class="col-md-4">
+        <include-exclude-find></include-exclude-find>
+    </div>
+    <div class="col-md-8" *ngIf="ieListDto && ieListDto.length" [@expandCollapse]>
+        <div class="tile">
+            <div class="row">
+                <div class="col-md-8 col-6">
+                    <span>
+                        {{'xName' | translate}}
+                    </span>
+                </div>
+                <div class="col-md-4 col-6">
+                    <span style="cursor: pointer;" popover="Fiyat farkı pozitif, negatif veya 0 (yok) olabilir."
+                        triggers="mouseenter:mouseleave">
+                        {{'xPriceGap' | translate}}
+                    </span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <hr class="m-2">
+                </div>
+            </div>
+            <div class="row mb-2" *ngFor="let ie of ieListDto" [@expandCollapse]>
+                <div class="col-md-8  col-6">
+                    <button class="btn btn-outline-danger btn-sm btn-naked" type="button" (click)="delete(ie)">
+                        <fa [name]="'times'"></fa>
+                    </button>
+                    <span class="label-text">{{ie.Name}}</span>
+                </div>
+                <div class="col-md-4 col-6">
+                    <input class="form-control" #priceGap{{ie.Id}}="ngModel" currencyMask
+                        style="height: 20px !important" type="tel" [options]="configCurrency"
+                        (tap)="$event.target.select()" name="PriceGap{{ie.Id}}"
+                        (ngModelChange)="ie.PriceGap=$event;priceGapChange(ie)" [ngModel]="ie.PriceGap"
+                        placeholder="{{'xPriceGap' | translate}}">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mb-2">
+    <div class="col-12">
+        <button class="btn btn-success btn-sm ml-2 float-right" type="button" (click)="save()">
+            <fa [name]="'check'"></fa>{{'xSave' | translate}}
+        </button>
+        <button class="btn btn-danger btn-sm float-right" type="button" (click)="cancel()">
+            <fa [name]="'ban'"></fa>{{'xCancel' | translate}}
+        </button>
+    </div>
+</div>

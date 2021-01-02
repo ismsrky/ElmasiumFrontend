@@ -1,0 +1,52 @@
+<li>
+    <div class="row ml-2 mr-2 mt-1" style="border-bottom: 1px solid #ddd;">
+        <div class="col-xs-4 mt-3">
+            <span class="fa-stack fa-lg">
+                <i class="fa fa-circle fa-stack-2x" [class.text-success]="!amIParent" [class.text-warning]="amIParent"></i>
+                <i class="fa fa-handshake-o fa-stack-1x fa-inverse"></i>
+            </span>
+        </div>
+        <div class="col-xs-8">
+            <div class="row ml-2">
+                <div class="col-xs-12">
+                    <label class="control-label mb-0" style="font-size: smaller">{{addAsText | translate}}:</label>
+                </div>
+            </div>
+            <div class="row ml-2">
+                <div class="col-xs-12">
+                    <label class="control-label font-weight-bold" *ngIf="amIParent">
+                        {{listItem.ChildPersonFullName}}
+                        ({{personTypes[listItem.ChildPersonTypeId] | translate}})
+                    </label>
+                    <label class="control-label font-weight-bold" *ngIf="!amIParent">
+                        {{listItem.ParentPersonFullName}}
+                        ({{personTypes[listItem.ParentPersonTypeId] | translate}})
+                    </label>
+                </div>
+            </div>
+
+            <div class="row ml-2" *ngIf="host.getIncomings">
+                <div class="col-xs-6">
+                    <button class="btn btn-outline-primary btn-sm" type="button" (click)="save(approvalStats.xAccepted)">
+                        <fa [name]="'check'"></fa>{{'xAccept' | translate}}
+                    </button>
+                </div>
+                <div class="col-xs-6 pl-2">
+                    <button class="btn btn-outline-danger btn-sm" type="button" (click)="save(approvalStats.xRejected)">
+                        <fa [name]="'times'"></fa>{{'xReject' | translate}}
+                    </button>
+                </div>
+            </div>
+            <div class="row ml-2" *ngIf="!host.getIncomings">
+                <div class="col-xs-6">
+                    <button class="btn btn-outline-danger btn-sm" type="button" (click)="save(approvalStats.xPulledBack)">
+                        <fa [name]="'reply'"></fa>{{'xPullBack' | translate}}
+                    </button>
+                </div>
+            </div>
+            <div class="col-xs-12">
+                <p class="app-notification__meta">{{listItem.CreateDateNumber | date:'dd.MM.yyyy HH:mm:ss'}}</p>
+            </div>
+        </div>
+    </div>
+</li>

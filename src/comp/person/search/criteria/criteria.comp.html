@@ -1,0 +1,27 @@
+<div class="card mb-1 border-info">
+    <div class="card-body p-2">
+        <div class="row mb-1">
+            <div class="col-12">
+                <div class="input-group">
+                    <input class="form-control" type="text" [formControl]="nameControl" name="Name"
+                        placeholder="{{'xPlaceHolderSearchConnection' | translate}}" autocomplete="off">
+                    <!--
+                                <div class="input-group-append">
+                                <button class="btn btn-primary btn-sm btn-block" type="submit">
+                                    <fa [name]="'search'"></fa>
+                                </button>
+                            </div>
+                            -->
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <ng-select [formControl]="relationTypesControl" [searchable]="false"
+                    placeholder="{{'xAllConnectionTypes' | translate}}" [items]="avaibleRelationIdList"
+                    name="RelationTypeIdList" bindLabel="value" bindValue="key" [multiple]="true">
+                </ng-select>
+            </div>
+        </div>
+    </div>
+</div>

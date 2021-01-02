@@ -1,0 +1,37 @@
+<div class="row">
+    <div class="col-12">
+        {{'xMoney' | translate}}
+    </div>
+</div>
+<div class="card mb-1 border-muted" *ngFor="let money of ficheMoneyList">
+    <div class="card-body p-2">
+        <div class="row">
+            <div class="col-md-5 mb-2">
+                <p class="card border-warning mb-0 pl-2 pt-1">
+                    <label class="control-label">
+                        {{'xPayerConnection' | translate}}:
+                        <span *ngIf="money.CreditPersonAccountName">{{money.CreditPersonAccountName}}</span>
+                        <span *ngIf="ficheListDto.IsDebtor==1 && ficheListDto.ApprovalStatId==approvalStats.xPending">{{'xPending'
+                                    | translate}}</span>
+                        ({{accountTypes[money.CreditPersonAccountTypeId] | translate}})</label>
+                </p>
+            </div>
+            <div class="col-md-5 mb-2">
+                <p class="card border-success mb-0 pl-2 pt-1">
+                    <label class="control-label">
+                        {{'xPayeeConnection' | translate}}:
+                        <span *ngIf="money.DebtPersonAccountName">{{money.DebtPersonAccountName}}</span>
+                        <span *ngIf="ficheListDto.IsDebtor==0 && ficheListDto.ApprovalStatId==approvalStats.xPending">
+                            {{'xPending' | translate}}</span>
+                        ({{accountTypes[money.DebtPersonAccountTypeId] | translate}})</label>
+                </p>
+            </div>
+            <div class="col-md-2">
+                <span class="float-right">
+                    {{money.Total | number:'1.2-2'}}
+                    <currency-icon [currencyId]="ficheListDto.CurrencyId"></currency-icon>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,44 @@
+<page-title *ngIf="!IsInside" [helpName]="'FicheActivities'" [icon]="'file-text-o'" [title]="'xFicheActivities'">
+</page-title>
+
+<fiche-list-criteria [IsInside]="IsInside" *ngIf="!forRelated && !top10"></fiche-list-criteria>
+
+<div class="p-2" [class.tile]="!forRelated" [class.border]="IsOpen && !forRelated"
+    [class.border-danger]="IsOpen && !forRelated">
+    <div class="row">
+        <div class="col-12">
+            <h5 *ngIf="!top10 && !forRelated">{{'xFiches' | translate}} </h5>
+            <h5 *ngIf="top10 && !forRelated" class="cursor-pointer" (click)="clickTop10()">
+                {{'xTop10Fiches' | translate}}
+                <fa [name]="'plus'" class="float-right"></fa>
+            </h5>
+        </div>
+    </div>
+
+    <div class="row" *ngIf="forRelated">
+        <div class="col-12">
+            {{'xRelatedFiches' | translate}}
+        </div>
+    </div>
+    <div class="row" *ngIf="!top10 || (openTop10 && top10)" [@expandCollapse]>
+        <div class="col-12" *ngFor="let ficheDto of ficheListDto" [@expandCollapse]>
+            <fiche-list-item [listItem]="ficheDto" [forRelated]="forRelated"></fiche-list-item>
+        </div>
+    </div>
+    <div class="row" *ngIf="ficheListDto.length == 0">
+        <div class="col-12">
+            <h4 class="text-danger no-records mb-0" *ngIf="!busy && (!top10 || (openTop10 && top10))" [@expandCollapse]>
+                {{'xNoRecordsFound' | translate}} </h4>
+        </div>
+    </div>
+    <div class="row" [class.mb-2]="forRelated">
+        <div class="col-md-8">
+            <ngx-loading [show]="busy"></ngx-loading>
+        </div>
+        <div class="col-md-4" *ngIf="IsInside && !top10">
+            <button class="btn btn-primary btn-sm float-right" type="button" (click)="more()">
+                <fa [name]="'caret-down'"></fa>{{'xMore' | translate}}
+            </button>
+        </div>
+    </div>
+</div>

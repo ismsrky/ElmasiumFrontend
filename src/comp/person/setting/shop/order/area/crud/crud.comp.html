@@ -1,0 +1,63 @@
+<form class="needs-validation mb-2" #orderAreaForm="ngForm" novalidate>
+    <ngx-loading [show]="busy"></ngx-loading>
+    <div class="modal fade" bsModal #modal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="dialog-events-name">
+        <div class="modal-dialog modal-sm modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header pt-2 pb-2">
+                    <h5 id="dialog-events-name" class="modal-title pull-left">{{captionStr | translate}}</h5>
+                    <button type="button" class="close pull-right" aria-label="Close" (click)="modal.hide()">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body pt-2">
+                    <div class="row mb-2">
+                        <div class="col-12">
+                            <ngx-loading [show]="busyAddress"></ngx-loading>
+                            <label class="control-label">{{selectNote | translate}}</label>
+                            <select class="form-control" #addressSelect="ngModel" required
+                                [class.is-invalid]="addressSelect.invalid && (addressSelect.touched || orderAreaForm.submitted)"
+                                [(ngModel)]="selectedAddressId" name="AddressSelect">
+                                <option [ngValue]="null">{{selectNote | translate}}</option>
+                                <option *ngFor="let address of addressList" [value]="address.Id">
+                                    {{address.Name}}
+                                </option>
+                            </select>
+                            <div class="invalid-tooltip">{{selectNote | translate}}</div>
+                        </div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-12">
+                            <label class="control-label">{{'xSelectDeliveryTime' | translate}}</label>
+                            <select class="form-control" #orderDeliveryTimeId="ngModel" required
+                                [class.is-invalid]="orderDeliveryTimeId.invalid && (orderDeliveryTimeId.touched || orderAreaForm.submitted)"
+                                [(ngModel)]="subDto.OrderDeliveryTimeId" name="OrderDeliveryTimeId">
+                                <option [ngValue]="null">{{'xSelectDeliveryTime' | translate}}</option>
+                                <option *ngFor="let item of orderDeliveryTimes | enums" [ngValue]="item.key">
+                                    {{item.value | translate}}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <label class="control-label">{{'xMinOrderPrice' | translate}}</label>
+                            <input class="form-control" #orderMinPrice="ngModel" currencyMask type="tel"
+                                [options]="configCurrency" (tap)="$event.target.select()"
+                                [(ngModel)]="subDto.OrderMinPrice" name="OrderMinPrice"
+                                placeholder="{{'xAmount' | translate}}">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer pl-2 pb-2 pt-2">
+                    <button class="btn btn-danger btn-sm pull-right" type="button" (click)="modal.hide()">
+                        <fa [name]="'ban'"></fa>{{'xCancel' | translate}}
+                    </button>
+                    <button class="btn btn-success btn-sm pull-right" type="button" (click)="save()">
+                        <fa [name]="'check'"></fa>{{'xSave' | translate}}
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

@@ -1,0 +1,138 @@
+<li [@animateState]="(listItem.IsSeen || listItem.SentSeen || listItem.WaitingSeen) ? 'seen': 'unseen'">
+    <div class="row ml-2 mr-2 mt-1" style="border-bottom: 1px solid #ddd;">
+        <div class="col-xs-4 mt-3">
+            <span class="fa-stack fa-lg" *ngIf="listItem.NotificationTypeId != notificationTypes.xOrder">
+                <i [className]="'text-' + bootstrapColors[iconColor] + ' fa fa-circle fa-stack-2x'"></i>
+
+                <i class="fa fa-stack-1x fa-inverse"
+                    [class.fa-money]="listItem.NotificationTypeId == notificationTypes.xFiche || listItem.NotificationTypeId == notificationTypes.xFicheDeleted"
+                    [class.fa-handshake-o]="listItem.NotificationTypeId == notificationTypes.xConnection"
+                    [class.fa-chain-broken]="listItem.NotificationTypeId == notificationTypes.xConnectionDeleted"></i>
+            </span>
+            <span class="fa-stack fa-lg"
+                *ngIf="listItem.NotificationTypeId == notificationTypes.xOrder && listItem.OrderStat">
+                <i [className]="'text-' + listItem.OrderStat.ColorClassName + ' fa fa-circle fa-stack-2x'"></i>
+
+                <i [className]="'fa fa-stack-1x fa-inverse fa-' + listItem.OrderStat.IconName"></i>
+            </span>
+        </div>
+        <div class="col-xs-8">
+            <div class="row ml-2">
+                <div class="col-xs-12"
+                    *ngIf="listItem.NotificationTypeId == notificationTypes.xFiche || listItem.NotificationTypeId == notificationTypes.xFicheDeleted"
+                    [class.text-danger]="listItem.NotificationTypeId == notificationTypes.xFicheDeleted"
+                    (click)="openFiche()" style="cursor: pointer;">
+                    {{ficheTypeFakes[listItem.FicheTypeFakeId] | translate}}: {{listItem.FicheId}}
+                    <br>{{listItem.FicheGrandTotal | number:'1.2-2'}}
+                    <currency-icon [currencyId]="listItem.FicheCurrencyId"></currency-icon>
+
+                    <div class="row ml-0 mb-2">
+                        <div class="col-xs-12">
+                            <label class="control-label mb-0" style="font-size: smaller">
+                                {{xCaption | translate}}:
+                            </label>
+                            <br>
+                            <label class="control-label font-weight-bold mb-0">
+                                {{relatedPersonFullName}}
+                                ({{personTypes[relatePersonTypeId] | translate}})
+                            </label>
+                        </div>
+                    </div>
+                    <div class="row ml-0" *ngIf="listItem.NotificationTypeId == notificationTypes.xFicheDeleted">
+                        <div class="col-xs-12">
+                            {{'xFicheDeleted' | translate}}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xs-12" *ngIf="listItem.NotificationTypeId == notificationTypes.xConnection">
+                    {{'xConnectionRequest' | translate}}
+                    <div class="row ml-0">
+                        <div class="col-xs-12">
+                            <label class="control-label mb-0"
+                                style="font-size: smaller">{{addAsText | translate}}:</label>
+                        </div>
+                    </div>
+                    <div class="row ml-0">
+                        <div class="col-xs-12">
+                            <label class="control-label font-weight-bold" *ngIf="amIParent">
+                                {{listItem.ChildPersonFullName}}
+                                ({{personTypes[listItem.ChildPersonTypeId] | translate}})
+                            </label>
+                            <label class="control-label font-weight-bold" *ngIf="!amIParent">
+                                {{listItem.ParentPersonFullName}}
+                                ({{personTypes[listItem.ParentPersonTypeId] | translate}})
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xs-12" *ngIf="listItem.NotificationTypeId == notificationTypes.xConnectionDeleted">
+                    {{'xConnectionDisconnected' | translate}}
+                    <div class="row ml-0">
+                        <div class="col-xs-12">
+                            <label class="control-label mb-0" style="font-size: smaller">
+                                {{relationTypes[listItem.ParentRelationTypeId] | translate}}:</label>
+                            <br>
+                            <label class="control-label font-weight-bold mb-0"
+                                *ngIf="!amIParent">{{listItem.ParentPersonFullName}}
+                                <span *ngIf="listItem.ParentPersonTypeId != personTypes.xRealPerson">
+                                    ({{personTypes[listItem.ParentPersonTypeId] | translate}})</span></label>
+                            <label class="control-label font-weight-bold mb-0"
+                                *ngIf="amIParent">{{'xMe' | translate}}</label>
+                        </div>
+                    </div>
+
+                    <div class="row ml-0">
+                        <div class="col-xs-12" *ngIf="amIParent">
+                            <label class="control-label mb-0" style="font-size: smaller">
+                                {{relationTypes[listItem.ChildRelationTypeId] | translate}}:</label>
+                            <br>
+                            <label class="control-label font-weight-bold">{{listItem.ChildPersonFullName}}
+                                <span *ngIf="listItem.ChildPersonTypeId != personTypes.xRealPerson">
+                                    ({{personTypes[listItem.ChildPersonTypeId] | translate}})</span></label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xs-12"
+                    *ngIf="listItem.NotificationTypeId == notificationTypes.xOrder && listItem.OrderStat"
+                    [class.text-danger]="listItem.NotificationTypeId == notificationTypes.xFicheDeleted"
+                    (click)="openOrder()" style="cursor: pointer;">
+                    {{'xOrderId' | translate}}: {{listItem.OrderId}}
+                    <br>{{listItem.OrderGrandTotal | number:'1.2-2'}}
+                    <currency-icon [currencyId]="listItem.OrderCurrencyId"></currency-icon>
+
+                    <div class="row ml-0 mb-2">
+                        <div class="col-xs-12">
+                            <!--
+                                <label class="control-label mb-0" style="font-size: smaller">
+                                {{xCaption | translate}}:
+                            </label>
+                            <br>
+                          -->
+                            <label class="control-label font-weight-bold mb-0">
+                                {{listItem.ParentPersonFullName}}
+                                ({{personTypes[listItem.ParentPersonTypeId] | translate}})
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row ml-2" *ngIf="listItem.NotificationTypeId != notificationTypes.xOrder">
+                <div class="col-12 text-light" [class.bg-success]="listItem.ApprovalStatId == approvalStats.xAccepted"
+                    [class.bg-danger]="listItem.ApprovalStatId == approvalStats.xRejected || listItem.ApprovalStatId == approvalStats.xDeleted">
+                    {{approvalStats[listItem.ApprovalStatId] | translate}}
+                </div>
+            </div>
+            <div class="row ml-2" *ngIf="listItem.NotificationTypeId == notificationTypes.xOrder && listItem.OrderStat">
+                <div [className]="'col-12 text-light bg-' + listItem.OrderStat.ColorClassName">
+                    {{listItem.OrderStat.Name | translate}}
+                </div>
+            </div>
+            <div class="col-xs-12">
+                <p class="app-notification__meta">{{listItem.CreateDateNumber | date:'dd.MM.yyyy HH:mm:ss'}}</p>
+            </div>
+        </div>
+    </div>
+</li>

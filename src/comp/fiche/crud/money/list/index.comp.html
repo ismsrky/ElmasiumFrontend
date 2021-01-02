@@ -1,0 +1,22 @@
+<ngx-loading [show]="busy"></ngx-loading>
+
+<div class="card mb-2 text-black bg-light">
+    <div class="card-body p-2">
+        <div class="row">
+            <div class="col-12">
+                <h4>{{'xMoney' | translate}}
+                    <button class="btn btn-primary btn-sm float-right" type="button" (click)="openModal(null)">
+                        <fa [name]="'plus'"></fa>{{'xAdd' | translate}}
+                    </button>
+                </h4>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12" *ngFor="let money of host.ficheDto.MoneyList" [@expandCollapse]>
+                <fiche-money-list-item [listItem]="money" [ficheDto]="host.ficheDto"></fiche-money-list-item>
+            </div>
+        </div>
+    </div>
+</div>
+
+<fiche-money-crud *ngIf="isModalOpen"></fiche-money-crud>

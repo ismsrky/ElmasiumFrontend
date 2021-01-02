@@ -1,0 +1,21 @@
+<div class="row">
+    <div class="col-12">
+        {{'xHistory' | translate}}
+    </div>
+</div>
+
+<div class="card mb-1 border-info" *ngFor="let history of historyListDto">
+    <div class="card-body p-2">
+        <div class="row">
+            <div class="col-md-4">
+                {{history.PersonFullName}}
+            </div>
+            <div class="col-md-4">
+                {{approvalStats[history.ApprovalStatId] | translate}}
+            </div>
+            <div class="col-md-4">
+                {{history.CreateDateNumber | date:'dd.MM.yyyy HH:mm:ss'}}
+            </div>
+        </div>
+    </div>
+</div>

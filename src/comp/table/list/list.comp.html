@@ -1,0 +1,18 @@
+<div class="row" *ngIf="groupId != null">
+    <div class="col-xl-3 col-lg-4 col-md-6 col-12" *ngFor="let listItem of listDto" [@expandCollapse]>
+        <table-list-item [listItem]="listItem"></table-list-item>
+    </div>
+</div>
+<div class="row" *ngIf="isShopOwner && groupId != null">
+    <div class="col-12">
+        <button class="btn btn-outline-primary btn-sm btn-naked float-right" type="button" (click)="openCrud(null)">
+            <fa [name]="'plus'"></fa>{{'xNewTable' | translate}}
+        </button>
+    </div>
+</div>
+
+<div class="row justify-content-center" *ngIf="isCrudOpen && groupId != null" [@expandCollapse]>
+    <div class="col-12">
+        <table-crud></table-crud>
+    </div>
+</div>

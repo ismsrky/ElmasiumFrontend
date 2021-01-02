@@ -1,0 +1,21 @@
+<div class="tile">
+    <div class="row mb-2">
+        <div class="col-md-4">
+            <label class="control-label">
+                {{'xAddressType' | translate}}
+            </label>
+            <ng-select (change)="search()" [searchable]="false" [items]="addressTypeList" bindLabel="value" bindValue="key"
+                [multiple]="true" [(ngModel)]="criteriaDto.AddressTypeIdList" name="AddressTypeIdList" placeholder="{{'xAll' | translate}}">
+            </ng-select>
+        </div>
+        <div class="col-md-4">
+            <label class="control-label">
+                {{'xStatus' | translate}}
+            </label>
+            <select (change)="search()" class="form-control" name="StatId" [(ngModel)]="criteriaDto.StatId">
+                <option [ngValue]="null">{{'xAll' | translate}}</option>
+                <option *ngFor="let item of stats | enums" [ngValue]="item.key">{{item.value | translate}}</option>
+            </select>
+        </div>
+    </div>
+</div>

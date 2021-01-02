@@ -1,0 +1,29 @@
+<ngx-loading [show]="busy"></ngx-loading>
+
+<div class="modal fade" bsModal #modal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="dialog-events-name">
+    <div class="modal-dialog modal-md modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 id="dialog-events-name" class="modal-title pull-left">Para hesabı seçin</h5>
+                <button type="button" class="close pull-right" aria-label="Close" (click)="modal.hide()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body pt-1">
+                <div *ngFor="let money of ficheDto.MoneyList">
+                    <approval-fiche-choice-item [currencyId]="ficheDto.CurrencyId" [personAccountCmbBo]="getCmb(money)" [ficheMoneyDto]="money"></approval-fiche-choice-item>
+                </div>
+                <div>
+                    <div class="pull-right ml-2">
+                        <button class="btn btn-success btn-block" type="button" (click)="save()">
+                            <fa [name]="'check'"></fa>{{'xSave' | translate}}</button>
+                    </div>
+                    <div class="pull-right">
+                        <button class="btn btn-danger btn-block" type="button" (click)="modal.hide()">
+                            <fa [name]="'ban'"></fa>{{'xCancel' | translate}}</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

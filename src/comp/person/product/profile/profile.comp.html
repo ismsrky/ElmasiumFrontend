@@ -1,0 +1,137 @@
+<ngx-loading [show]="busy"></ngx-loading>
+
+<page-title [helpName]="'ProductPool'" [icon]="'barcode'" [title]="profileDto.ProductName"></page-title>
+
+<div class="tile bg-light" *ngIf="found && profileDto" [@expandCollapse]>
+    <div class="row">
+        <div class="col-lg-8 col-md-6 col-12 mb-2">
+            <product-category-breadcrumb [personProductProfileDto]="profileDto"></product-category-breadcrumb>
+        </div>
+        <div class="col-lg-4 col-md-6 col-12 mb-2">
+            <button class="btn btn-success btn-sm float-right ml-2"
+                *ngIf="profileDto.ShopIsAvailable && profileDto.IsSaleForOnline && !profileDto.IsTemporarilyUnavaible"
+                type="button" (click)="addToBasket(true)">
+                <fa [name]="'hand-o-right'"></fa>{{'xBuyNow' | translate}}
+            </button>
+            <button class="btn btn-primary btn-sm float-right ml-2"
+                *ngIf="profileDto.ShopIsAvailable && profileDto.IsSaleForOnline && !profileDto.IsTemporarilyUnavaible"
+                type="button" (click)="addToBasket(false)">
+                <fa [name]="'cart-plus'"></fa>{{'xAddToBasket' | translate}}
+            </button>
+            <h6 class="blink text-danger float-right ml-2" *ngIf="!profileDto.ShopIsAvailable">
+                {{'xShopNotTakeOrdersNow' | translate}}
+            </h6>
+            <h6 class="blink text-danger float-right ml-2" *ngIf="!profileDto.IsSaleForOnline">
+                {{'xNotSaleForOnline' | translate}}
+            </h6>
+            <h6 class="blink text-danger float-right ml-2"
+                *ngIf="profileDto.IsTemporarilyUnavaible && profileDto.IsSaleForOnline">
+                {{'xTemporarilyUnavaible' | translate}}
+            </h6>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="row">
+                <div class="col-12">
+                    <div class="tile d-flex justify-content-center" style="height: 300px !important">
+                        <img src="assets/no-image_500_500.png" *ngIf="profileDto.PortraitImageUniqueIdStr == null"
+                            style="max-height: 100%;max-width: 100%;" alt="No Image">
+                        <img src="{{environment.productImageSource}}{{profileDto.PortraitImageUniqueIdStr}}"
+                            *ngIf="profileDto.PortraitImageUniqueIdStr != null"
+                            style="max-height: 100%;max-width: 100%;" alt="Product Image">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-8" *ngIf="profileDto.CodeList && profileDto.CodeList.length > 0" [@expandCollapse]>
+                    <small style="font-size: 10px" class="text-secondary" *ngFor="let codeItem of profileDto.CodeList">
+                        {{productCodeTypes[codeItem.ProductCodeTypeId] | translate}}:
+                        {{codeItem.Code}}
+                    </small>
+                </div>
+                <div class="col-4" *ngIf="profileDto.IsShopOwner">
+                    <image-upload></image-upload>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="row">
+                <div class="col-12">
+                    <div class="tile p-2">
+                        <div class="row">
+                            <div class="col-12">
+                                <app-star [max]="5" [value]="profileDto.StarAverage"></app-star>
+                                <span *ngIf="commentCountProducts > 0">{{'xReadComments' | translate}}
+                                    ({{commentCountProducts}})</span>
+                            </div>
+                            <div class="col-12">
+                                <h2>
+                                    {{profileDto.OnlineSalePrice | number:'1.2-2'}}
+                                    <currency-icon [currencyId]="profileDto.ShopDefaultCurrencyId"></currency-icon>
+                                </h2>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12" *ngIf="profileDto.Notes">
+                    <div class="tile p-2">
+                        {{profileDto.Notes}}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <a [routerLink]="'/' + profileDto.ShopUrlName" class="aLink">
+                <div class="tile p-2">
+                    <div class="row">
+                        <div class="col-12">
+                            {{profileDto.ShopFullName}}
+                        </div>
+                        <div class="col-12">
+                            <app-star [max]="5" [value]="profileDto.ShopStarAverage"></app-star>
+                        </div>
+                        <div class="col-12 mt-2">
+                            <small class="float-right" style="font-style: italic">
+                                {{profileDto.ShopTypeName}}
+                            </small>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12" *ngIf="profileDto.IsShopOwner">
+            <div class="tile p-2">
+                <h5>{{'xSettings' | translate}}</h5>
+                <person-product-setting></person-product-setting>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="tile p-2">
+                <tabset type="tabs">
+                    <tab id="0" heading="Özellikler" (select)="tabChanged($event.id)">
+                        <span *ngIf="tabPageIndex == 0" [@expandCollapse]>
+                            <property-list [personProductProfileDto]="profileDto"></property-list>
+                        </span>
+                    </tab>
+                    <tab id="1" heading="{{'xComments' | translate}} ({{commentCountProducts}})"
+                        (select)="tabChanged($event.id)">
+                        <div *ngIf="tabPageIndex == 1" [@expandCollapse]>
+                            <comment-list-index></comment-list-index>
+                        </div>
+                    </tab>
+                    <tab id="2" heading="{{'xShopComments' | translate}} ({{commentCountShop}})"
+                        (select)="tabChanged($event.id)">
+                        <div *ngIf="tabPageIndex == 2" [@expandCollapse]>
+                            <comment-list-index></comment-list-index>
+                        </div>
+                    </tab>
+                </tabset>
+            </div>
+        </div>
+    </div>
+</div>

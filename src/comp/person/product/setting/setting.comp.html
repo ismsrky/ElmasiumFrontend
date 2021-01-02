@@ -1,0 +1,51 @@
+<ngx-loading [show]="busy"></ngx-loading>
+
+<div class="row" *ngIf="found" [@expandCollapse]>
+    <div class="col-12">
+        <ul class="nav nav-tabs">
+            <li class="nav-item">
+                <a class="nav-link p-2" [class.active]="isGeneralOpen" (click)="showGeneral()">
+                    <fa [name]="'cogs'"></fa> {{'xGeneral' | translate}}
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link p-2" [class.active]="isOptionsOpen" (click)="showOptions()">
+                    <fa [name]="'list'"></fa> {{'xOption' | translate}}
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link p-2" [class.active]="isExcludingsOpen" (click)="showIncludeExclude(false)">
+                    <fa [name]="'list'"></fa> {{'xExcluding' | translate}}
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link p-2" [class.active]="isIncludingsOpen" (click)="showIncludeExclude(true)">
+                    <fa [name]="'list'"></fa> {{'xExtra' | translate}}
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<div class="tab-content p-2" *ngIf="isGeneralOpen || isOptionsOpen || isExcludingsOpen || isIncludingsOpen"
+    [@expandCollapse]>
+    <div class="tab-pane fade active show">
+        <div *ngIf="isGeneralOpen" [@expandCollapse]>
+            <person-product-setting-general [isInside]="isInside"></person-product-setting-general>
+            <div class="tile p-2 mb-0">
+                <h5>{{'xCategory' | translate}}</h5>
+                <product-category-breadcrumb [personProductProfileDto]="personProductProfileDto">
+                </product-category-breadcrumb>
+            </div>
+        </div>
+        <div *ngIf="isOptionsOpen" [@expandCollapse]>
+            <option-list></option-list>
+        </div>
+        <div *ngIf="isExcludingsOpen" [@expandCollapse]>
+            <include-exclude-list></include-exclude-list>
+        </div>
+        <div *ngIf="isIncludingsOpen" [@expandCollapse]>
+            <include-exclude-list></include-exclude-list>
+        </div>
+    </div>
+</div>

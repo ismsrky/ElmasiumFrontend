@@ -1,0 +1,110 @@
+<ngx-loading [show]="busy"></ngx-loading>
+
+<div class="tile" *ngIf="isEdit" [@expandCollapse]>
+    <div class="row">
+        <div class="col-* ml-2">
+            <ngx-loading [show]="busyCountry"></ngx-loading>
+            <select class="form-control" #countrySelect="ngModel" required
+                [class.is-invalid]="countrySelect.invalid && (countrySelect.touched)" [(ngModel)]="addressBo.CountryId"
+                name="CountryId" (change)="countryChanged($event.target.value,false)">
+                <option [ngValue]="null">{{'xSelectCountry' | translate}}</option>
+                <option *ngFor="let country of countryList" [value]="country.Id">
+                    {{country.Name}}</option>
+            </select>
+            <div class="invalid-tooltip">{{'xSelectCountry' | translate}}</div>
+        </div>
+        <div class="col-* ml-2" *ngIf="addressBo.CountryId && selectedCountry && selectedCountry.HasStates"
+            [@expandCollapse]>
+            <ngx-loading [show]="busyState"></ngx-loading>
+            <select class="form-control" #stateSelect="ngModel" [(ngModel)]="addressBo.StateId" name="DistrictId"
+                (change)="stateChanged($event.target.value,false)">
+                <option [ngValue]="null">{{'xSelectState' | translate}}</option>
+                <option *ngFor="let state of stateList" [value]="state.Id">{{state.Name}}</option>
+            </select>
+        </div>
+        <div class="col-* ml-2" *ngIf="addressBo.CountryId" [@expandCollapse]>
+            <ngx-loading [show]="busyCity"></ngx-loading>
+            <select class="form-control" #citySelect="ngModel" [(ngModel)]="addressBo.CityId" name="CityId"
+                (change)="cityChanged($event.target.value,false)">
+                <option [ngValue]="null">{{'xSelectCity' | translate}}</option>
+                <option *ngFor="let city of cityList" [value]="city.Id">{{city.Name}}</option>
+            </select>
+        </div>
+        <div class="col-* ml-2" *ngIf="addressBo.CityId" [@expandCollapse]>
+            <ngx-loading [show]="busyDistrict"></ngx-loading>
+            <select class="form-control" #districtSelect="ngModel" [(ngModel)]="addressBo.DistrictId" name="DistrictId"
+                (change)="districtChanged($event.target.value,false)">
+                <option [ngValue]="null">{{'xSelectDistrict' | translate}}</option>
+                <option *ngFor="let district of districtList" [value]="district.Id">{{district.Name}}
+                </option>
+            </select>
+        </div>
+        <div class="col-* ml-2" *ngIf="addressBo.DistrictId" [@expandCollapse]>
+            <ngx-loading [show]="busyLocality"></ngx-loading>
+            <select class="form-control" #districtSelect="ngModel" [(ngModel)]="addressBo.LocalityId" name="LocalityId"
+                (change)="localityChanged($event.target.value)">
+                <option [ngValue]="null">{{'xSelectLocality' | translate}}</option>
+                <option *ngFor="let locality of localityList" [value]="locality.Id">{{locality.Name}}
+                </option>
+            </select>
+        </div>
+        <div class="col-* ml-2 mt-2">
+            <span *ngIf="addressBo.LocalityId == null" [@expandCollapse]>{{'xOr' | translate}}</span>
+            <button class="btn btn-success btn-sm btn-naked ml-2" type="button" (click)="ok()">
+                <fa [name]="'check'"></fa>{{'xOk' | translate}}
+            </button>
+            <button class="btn btn-outline-danger btn-sm btn-naked" type="button" (click)="cancel()">
+                <fa [name]="'ban'"></fa>{{'xCancel' | translate}}
+            </button>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <small>İstediğiniz bölgede arama yapabilirsiniz.</small>
+        </div>
+    </div>
+</div>
+
+<div class="tile p-1 float-right" [class.shake-once]="shaked" >
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb p-0 m-0" *ngIf="!isEdit" [@expandCollapse]>
+            <!--
+                <li>
+                {{'xArea' | translate}}:
+            </li>
+            -->
+            <li class="breadcrumb-item">
+                <button class="btn btn-outline-primary btn-sm btn-naked" type="button" (click)="edit()">
+                    {{addressBo.CountryName}}
+                </button>
+            </li>
+            <li class="breadcrumb-item" *ngIf="addressBo.StateId">
+                <button class="btn btn-outline-primary btn-sm btn-naked" type="button" (click)="edit()">
+                    {{addressBo.StateName}}
+                </button>
+            </li>
+            <li class="breadcrumb-item" *ngIf="addressBo.CityId">
+                <button class="btn btn-outline-primary btn-sm btn-naked" type="button" (click)="edit()">
+                    {{addressBo.CityName}}
+                </button>
+            </li>
+            <li class="breadcrumb-item" *ngIf="addressBo.DistrictId">
+                <button class="btn btn-outline-primary btn-sm btn-naked" type="button" (click)="edit()">
+                    {{addressBo.DistrictName}}
+                </button>
+            </li>
+            <li class="breadcrumb-item" *ngIf="addressBo.LocalityId">
+                <button class="btn btn-outline-primary btn-sm btn-naked" type="button" (click)="edit()">
+                    {{addressBo.LocalityName}}
+                </button>
+            </li>
+          <!--
+                <li class="breadcrumb-item">
+                <button class="btn btn-outline-primary btn-sm btn-naked ml-2" type="button" (click)="edit()">
+                    {{xAllSubs}}
+                </button>
+            </li>
+          -->
+        </ol>
+    </nav>
+</div>

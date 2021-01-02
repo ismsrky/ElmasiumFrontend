@@ -1,0 +1,62 @@
+<li>
+    <div class="row ml-2 mr-2 mt-1" style="border-bottom: 1px solid #ddd;">
+        <div class="col-xs-4 mt-3" (click)="openFiche()" style="cursor: pointer;">
+            <span class="fa-stack fa-lg">
+                <i class="fa fa-circle fa-stack-2x" [class.text-success]="amIDebt" [class.text-warning]="!amIDebt"></i>
+                <i class="fa fa-money fa-stack-1x fa-inverse"></i>
+            </span>
+            <br>
+            <button type="button" class="close mr-2 mt-2" *ngIf="listItem.HasRelation" style="cursor: pointer;">
+                <fa [name]="'link'"></fa>
+            </button>
+        </div>
+        <div class="col-xs-8" [class.text-danger]="listItem.FicheApprovalStatId == approvalStats.xPendingDeleted">
+            <div class="row ml-2" (click)="openFiche()" style="cursor: pointer;">
+                <div class="col-xs-12">
+                    {{ficheTypeFakes[listItem.FicheTypeFakeId] | translate}}: {{listItem.FicheId}}
+                    <br>{{listItem.FicheGrandTotal | number:'1.2-2'}}
+                    <currency-icon [currencyId]="listItem.FicheCurrencyId"></currency-icon>
+
+                    <div class="row ml-0">
+                        <div class="col-xs-12">
+                            <label class="control-label mb-0" style="font-size: smaller">
+                                {{xCaption | translate}}:</label>
+                            <br>
+                            <label class="control-label font-weight-bold mb-0">
+                                {{relatedPersonFullName}}
+                                ({{personTypes[relatePersonTypeId] | translate}})
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row ml-2" *ngIf="listItem.FicheApprovalStatId == approvalStats.xPendingDeleted">
+                <div class="col-xs-12">
+                    {{'xPendingDeleted' | translate}}
+                </div>
+            </div>
+            <div class="row ml-2" *ngIf="!host.getIncomings">
+                <div class="col-xs-6">
+                    <button class="btn btn-outline-danger btn-sm" type="button" (click)="saveFiche(approvalStats.xPulledBack)">
+                        <fa [name]="'reply'"></fa>{{'xPullBack' | translate}}
+                    </button>
+                </div>
+            </div>
+            <div class="row ml-2" *ngIf="host.getIncomings">
+                <div class="col-xs-6">
+                    <button class="btn btn-outline-danger btn-sm" type="button" (click)="saveFiche(approvalStats.xRejected)">
+                        <fa [name]="'times'"></fa>{{'xReject' | translate}}
+                    </button>
+                </div>
+                <div class="col-xs-6 pl-2">
+                    <button class="btn btn-outline-primary btn-sm" type="button" (click)="saveFiche(approvalStats.xAccepted)">
+                        <fa [name]="'check'"></fa>{{'xAccept' | translate}}
+                    </button>
+                </div>
+            </div>
+            <div class="col-xs-12" (click)="openFiche()" style="cursor: pointer;">
+                <p class="app-notification__meta">{{listItem.CreateDateNumber | date:'dd.MM.yyyy HH:mm:ss'}}</p>
+            </div>
+        </div>
+    </div>
+</li>

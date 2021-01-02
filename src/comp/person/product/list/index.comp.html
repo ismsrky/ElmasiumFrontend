@@ -1,0 +1,37 @@
+<page-title [helpName]="'ProductsLabors'" [icon]="'barcode'" [title]="'xInventory'"></page-title>
+
+<person-product-list-criteria></person-product-list-criteria>
+
+<div class="tile">
+    <div class="row">
+        <div class="col-12 mb-2">
+            <button class="btn btn-success btn-sm float-right" [class.active]="isProductOfferOpen" type="button"
+                (click)="showProductOffer()">
+                <fa [name]="'plus'"></fa>{{'xNew' | translate}}
+            </button>
+        </div>
+        <div class="col-12 mb-4" *ngIf="isProductOfferOpen" [@expandCollapse]>
+            <product-offer [personId]="criteriaDto.ShopId"></product-offer>
+        </div>
+    </div>
+
+    <div class="container-fluid">
+        <div class="row">
+            <ng-container *ngFor="let product of productList;">
+                <div class="col-md-4" [@expandCollapse]>
+                    <person-product-list-item [listItem]="product"></person-product-list-item>
+                </div>
+                <div class="col-12" *ngIf="product.IsActivitiesOpen" [@expandCollapse]>
+                    <person-product-activity-list-index [IsInside]="true" [IsOpen]="product.IsActivitiesOpen">
+                    </person-product-activity-list-index>
+                </div>
+            </ng-container>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <ngx-loading [show]="busy"></ngx-loading>
+    </div>
+</div>

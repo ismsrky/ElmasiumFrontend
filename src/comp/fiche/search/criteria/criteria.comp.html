@@ -1,0 +1,32 @@
+<div class="card mb-2 border-info">
+    <div class="card-body p-2">
+        <div class="row">
+            <div class="col-12">
+                <input type="text" name="ProductCode" (input)="selectionChanged()" class="form-control" #txtCode
+                    [appAutofocus]="true" placeholder="{{'xPlaceHolderSearchProduct' | translate}}" autocomplete="off">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <label class="control-label">
+                    {{'xInventoryType' | translate}}
+                </label>
+                <select (change)="selectionChanged()" class="form-control" name="ProductTypeId">
+                    <option [ngValue]="null">{{'xAll' | translate}}</option>
+                    <option *ngFor="let item of productTypes | enums" [ngValue]="item.key">{{item.value | translate}}
+                    </option>
+                </select>
+            </div>
+            <div class="col-md-6">
+                <label class="control-label">
+                    {{'xStockStatus' | translate}}
+                </label>
+                <select (change)="selectionChanged()" class="form-control" name="StockStatId">
+                    <option [ngValue]="null">{{'xAll' | translate}}</option>
+                    <option *ngFor="let item of stockStats | enums" [ngValue]="item.key">{{item.value | translate}}
+                    </option>
+                </select>
+            </div>
+        </div>
+    </div>
+</div>

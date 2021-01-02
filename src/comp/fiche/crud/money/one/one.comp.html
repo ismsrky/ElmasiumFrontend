@@ -1,0 +1,87 @@
+<ngx-loading [show]="busy"></ngx-loading>
+
+<div class="card mb-2 text-black bg-light">
+    <div class="card-body p-2">
+        <div class="row mb-2">
+            <div class="col-md-4">
+                <label class="control-label">*{{'xAmount' | translate}}</label>
+                <input class="form-control" #total="ngModel" [(ngModel)]="this.host.ficheDto.MoneyList[0].Total"
+                    name="Totalll" currencyMask type="tel" [options]="config"
+                    (tap)="$event.target.select()" (input)="changeCalculation()"
+                    placeholder="{{'xAmount' | translate}}">
+            </div>
+            <div class="col-md-4 pb-2" *ngIf="host.ficheDto.IsCreditMaster">
+                <label class="control-label">
+                    *{{'xSenderWallet' | translate}}
+                </label>
+                <select style="font-family: FontAwesome, sans-serif;" class="form-control"
+                    #creditPersonAccountId="ngModel" required
+                    [class.is-invalid]="creditPersonAccountId.invalid && (creditPersonAccountId.touched)"
+                    [(ngModel)]="this.host.ficheDto.MoneyList[0].CreditPersonAccountId" name="CreditPersonAccountId"
+                    (change)="changeAccount()">
+                    <option [ngValue]="null">{{'xSenderWallet' | translate}}</option>
+                    <ng-template ngFor let-accountCmbItem [ngForOf]="creditAccountCmbBo">
+                        <optgroup label="{{accountTypes[accountCmbItem.accountTypeId] | translate}}">
+                            <option *ngFor="let account of accountCmbItem.accountList" [ngValue]="account.Id">
+                                {{account.Name}} ({{account.Balance | number:'1.2-2'}}
+                                <currency-icon [currencyId]="account.CurrencyId" [useString]="true"></currency-icon>
+                                )
+                            </option>
+                        </optgroup>
+                    </ng-template>
+                </select>
+                <div class="invalid-tooltip">{{'xSenderWallet' | translate}}</div>
+            </div>
+            <div class="col-md-4 pb-2" *ngIf="!host.ficheDto.IsCreditMaster">
+                <label class="control-label">
+                    *{{'xHowReceiveMoney' | translate}}
+                </label>
+                <select class="form-control" #creditPersonAccountTypeId="ngModel" required
+                    [class.is-invalid]="creditPersonAccountTypeId.invalid && (creditPersonAccountTypeId.touched)"
+                    [(ngModel)]="this.host.ficheDto.MoneyList[0].CreditPersonAccountTypeId"
+                    name="CreditPersonAccountTypeId">
+                    <option [ngValue]="null">Parayı alan hesap tipi</option>
+                    <option *ngFor="let item of accountTypes | enums" [ngValue]="item.key">
+                        {{item.value | translate}}</option>
+                </select>
+                <div class="invalid-tooltip">{{'xHowReceiveMoney' | translate}}</div>
+            </div>
+            <div class="col-md-4 pb-2" *ngIf="host.ficheDto.IsDebtMaster">
+                <label class="control-label">
+                    *{{'xReceiverWallet' | translate}}
+                </label>
+                <select style="font-family: FontAwesome, sans-serif;" class="form-control"
+                    #debtPersonAccountId="ngModel" required
+                    [class.is-invalid]="debtPersonAccountId.invalid && (debtPersonAccountId.touched)"
+                    [(ngModel)]="this.host.ficheDto.MoneyList[0].DebtPersonAccountId" name="DebtPersonAccountId"
+                    (change)="changeAccount()">
+                    <option [ngValue]="null">{{'xReceiverWallet' | translate}}</option>
+                    <ng-template ngFor let-accountCmbItem [ngForOf]="debtAccountCmbBo">
+                        <optgroup label="{{accountTypes[accountCmbItem.accountTypeId] | translate}}">
+                            <option *ngFor="let account of accountCmbItem.accountList" [ngValue]="account.Id">
+                                {{account.Name}} ({{account.Balance | number:'1.2-2'}}
+                                <currency-icon [currencyId]="account.CurrencyId" [useString]="true"></currency-icon>
+                                )
+                            </option>
+                        </optgroup>
+                    </ng-template>
+                    <div class="invalid-tooltip">{{'xReceiverWallet' | translate}}</div>
+                </select>
+            </div>
+            <div class="col-md-4 pb-2" *ngIf="!host.ficheDto.IsDebtMaster">
+                <label class="control-label">
+                    *{{'xHowSendMoney' | translate}}
+                </label>
+                <select class="form-control" #debtPersonAccountTypeId="ngModel" required
+                    [class.is-invalid]="debtPersonAccountTypeId.invalid && (debtPersonAccountTypeId.touched)"
+                    [(ngModel)]="this.host.ficheDto.MoneyList[0].DebtPersonAccountTypeId"
+                    name="DebtPersonAccountTypeId">
+                    <option [ngValue]="null">Parayı alan hesap tipi</option>
+                    <option *ngFor="let item of accountTypes | enums" [ngValue]="item.key">
+                        {{item.value | translate}}</option>
+                </select>
+                <div class="invalid-tooltip">{{'xHowSendMoney' | translate}}</div>
+            </div>
+        </div>
+    </div>
+</div>

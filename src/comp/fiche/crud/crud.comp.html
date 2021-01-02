@@ -1,0 +1,93 @@
+<ngx-loading [show]="busy"></ngx-loading>
+<div class="tile border" style="border-width:3px !important;" [class.border-warning]="!isDebt"
+    [class.border-success]="isDebt">
+
+    <fiche-crud-header></fiche-crud-header>
+
+    <!--<fiche-money-list-index *ngIf="(ficheDto.FicheTypeId == ficheTypes.xMoneyTransfer || ficheDto.FicheTypeId == ficheTypes.xPayment) && ficheDto.DebtPersonId && ficheDto.CreditPersonId"></fiche-money-list-index>-->
+
+    <fiche-money-one
+        *ngIf="(ficheDto.FicheTypeId == ficheTypes.xMoneyTransfer || ficheDto.FicheTypeId == ficheTypes.xPayment) && ficheDto.DebtPersonId && ficheDto.CreditPersonId">
+    </fiche-money-one>
+    <fiche-product-list-index
+        *ngIf="ficheDto.FicheTypeId == ficheTypes.xInvoice && ficheDto.DebtPersonId != null && ficheDto.CreditPersonId != null">
+    </fiche-product-list-index>
+
+    <fiche-relation-list-index
+        *ngIf="ficheDto.FicheTypeId == ficheTypes.xPayment && ficheDto.DebtPersonId && ficheDto.CreditPersonId">
+    </fiche-relation-list-index>
+
+    <div class="card mb-2 text-black bg-light"
+        *ngIf="ficheDto.DebtPersonId && ficheDto.CreditPersonId && ficheDto.ProductList && ficheDto.ProductList.length > 0">
+        <div class="card-body p-2">
+            <div class="row">
+                <div class="col-12">
+                    <h4>{{'xTotals' | translate}}</h4>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <label class="control-label">{{'xVat' | translate}}</label>
+                    <div class="row" *ngFor="let vatTotal of ficheDto.VatTotalList">
+                        <div class="col-12">
+                            % {{vatTotal.VatRate}}: {{vatTotal.VatTotal | number:'1.2-2'}}
+                            <currency-icon [currencyId]="ficheDto.CurrencyId"></currency-icon>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4"></div>
+                <div class="col-md-4">
+                    <label class="control-label float-right">
+                        {{'xGrandTotal' | translate}}:
+                        <h2 class="text-danger">{{ficheDto.GrandTotal | number:'1.2-2'}}
+                            <currency-icon [currencyId]="ficheDto.CurrencyId"></currency-icon>
+                        </h2>
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card mb-2 text-black bg-light" *ngIf="ficheDto.DebtPersonId && ficheDto.CreditPersonId
+    && 
+    (
+        (ficheDto.FicheTypeId == ficheTypes.xInvoice && ficheDto.ProductList.length > 0)
+        || ((ficheDto.FicheTypeId == ficheTypes.xMoneyTransfer || ficheDto.FicheTypeId == ficheTypes.xPayment) && ficheDto.MoneyList.length > 0)
+        || ficheDto.FicheTypeId == ficheTypes.xDebtCredit
+    )">
+        <div class="card-body p-2">
+            <div class="row">
+                <div class="col-md-4 mb-2" *ngIf="ficheDto.FicheTypeId == ficheTypes.xDebtCredit">
+                    <label class="control-label">*{{'xAmount' | translate}}</label>
+                    <input class="form-control" #total="ngModel" [(ngModel)]="ficheDto.GrandTotal" name="Totalll"
+                        currencyMask type="tel" [options]="config" (input)="changeCalculation()"
+                        (tap)="$event.target.select()" placeholder="{{'xAmount' | translate}}">
+                </div>
+                <div class="col-md-4 mb-2">
+                    <label class="control-label">{{'xNotes' | translate}}</label>
+                    <textarea class="form-control" maxlength="255" [(ngModel)]="ficheDto.Notes" name="Notes" type="text"
+                        placeholder="{{'xNotes' | translate}}" rows="1" cols="50"></textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card mb-2 text-black bg-light">
+        <div class="card-body p-2">
+            <div class="row">
+                <div class="col-12">
+                    <div class="pull-right ml-2">
+                        <button class="btn btn-success btn-block" type="button" (click)="save()">
+                            <fa [name]="xSave=='xSave'?'check':'paper-plane'"></fa>{{xSave | translate}}
+                        </button>
+                    </div>
+                    <div class="pull-right">
+                        <button class="btn btn-danger btn-block" type="button" (click)="cancel()">
+                            <fa [name]="'ban'"></fa>{{'xCancel' | translate}}
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,190 @@
+<page-title [helpName]="'Dashboard'" [icon]="'home'" [title]="'xHomePage'"></page-title>
+
+
+<!--
+  <div class="row">
+  <div class="col-12">
+    <dashboard-slider></dashboard-slider>
+  </div>
+</div>
+
+-->
+
+<div class="row" *ngIf="!isRealLogin">
+  <div class="col-12">
+    <a [routerLink]="'/Login'">
+      <button class="btn btn-primary btn-lg text-white ml-2 mb-2 float-right" type="button">
+        <fa [name]="'sign-in'"></fa>{{'xLogin' | translate}}
+      </button>
+    </a>
+    <a [routerLink]="'/Register'">
+      <button class="btn btn-success btn-lg text-white ml-2 mb-2 float-right" type="button">
+        <fa [name]="'caret-right'"></fa>{{'xRegister' | translate}}
+      </button>
+    </a>
+  </div>
+</div>
+
+<div class="row mb-4" *ngIf="amIShopOwner && isRealLogin">
+  <div class="col-md-6 col-lg-4">
+    <div class="widget-small warning coloured-icon">
+      <i class="icon fa fa-upload fa-3x"></i>
+      <div class="info">
+        <h4>{{'xDebtTotal' | translate}}</h4>
+        <p>
+          <b>{{personSummaryDto.DebtTotal | number:'1.2-2'}} <currency-icon [currencyId]="currencyId"></currency-icon>
+          </b>
+        </p>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6 col-lg-4">
+    <div class="widget-small success coloured-icon">
+      <i class="icon fa fa-download fa-3x"></i>
+      <div class="info">
+        <h4>{{'xCreditTotal' | translate}}</h4>
+        <p>
+          <b>{{personSummaryDto.CreditTotal | number:'1.2-2'}} <currency-icon [currencyId]="currencyId"></currency-icon>
+          </b>
+        </p>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6 col-lg-4">
+    <div class="widget-small coloured-icon" [class.success]="personSummaryDto.BalanceStatId == balanceStats.xCreditor"
+      [class.warning]="personSummaryDto.BalanceStatId == balanceStats.xDebtor"
+      [class.info]="personSummaryDto.BalanceStatId == balanceStats.xZero">
+      <i class="icon fa fa-3x" [class.fa-upload]="personSummaryDto.BalanceStatId == balanceStats.xDebtor"
+        [class.fa-download]="personSummaryDto.BalanceStatId == balanceStats.xCreditor"
+        [class.fa-check-circle]="personSummaryDto.BalanceStatId == balanceStats.xZero"></i>
+      <div class="info">
+        <h4>{{'xBalance' | translate}}</h4>
+        <p>
+          <b>{{personSummaryDto.Balance | number:'1.2-2'}} <currency-icon [currencyId]="currencyId"></currency-icon>
+          </b>
+          ({{balanceStats[personSummaryDto.BalanceStatId] | translate}})
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-12">
+    <ngx-loading [show]="busy"></ngx-loading>
+  </div>
+</div>
+<div *ngIf="profile.PersonTypeId == personTypes.xShop && amIShopOwner && isRealLogin" [@expandCollapse]>
+  <div class="row">
+    <div class="col-md-6 col-lg-4 mb-2">
+      <h3>{{'xSalesData' | translate}}</h3>
+    </div>
+    <div class="col-md-6 col-lg-4 mb-2">
+      <!--
+        <select [(ngModel)]="includingPurchases" name="IncludingPurch" #includingPur="ngModel" class="form-control border border-primary line-head"
+        (change)="search()">
+        <option value="false">{{'xExcludingPurchases' | translate}}</option>
+        <option value="true">{{'xIncludingPurchases' | translate}}</option>
+      </select>
+     -->
+    </div>
+    <div class="col-md-6 col-lg-4 mb-2">
+      <select class="form-control" (change)="search()" [(ngModel)]="dateRange" name="dateRange">
+        <option *ngFor="let item of dateRanges" [ngValue]="item.key">{{item.value | translate}}</option>
+      </select>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6 col-lg-4">
+      <div class="widget-small danger coloured-icon">
+        <i class="icon fa fa-shopping-basket fa-3x"></i>
+        <div class="info">
+          <h4>{{'xTurnover' | translate}}</h4>
+          <p>
+            <b>{{personSummaryDto.SaleGrandTotal | number:'1.2-2'}} <currency-icon [currencyId]="currencyId">
+              </currency-icon></b>
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6 col-lg-4">
+      <div class="widget-small warning coloured-icon">
+        <i class="icon fa fa-hand-rock-o fa-3x"></i>
+        <div class="info">
+          <h4>~ {{'xCost' | translate}}</h4>
+          <p>
+            <b>{{personSummaryDto.SaleCostTotal | number:'1.2-2'}} <currency-icon [currencyId]="currencyId">
+              </currency-icon></b>
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6 col-lg-4">
+      <div class="widget-small success coloured-icon">
+        <i class="icon fa fa-smile-o fa-3x"></i>
+        <div class="info">
+          <h4>~ {{'xProfit' | translate}}</h4>
+          <p>
+            <b>{{personSummaryDto.SaleGrandTotal - personSummaryDto.SaleCostTotal | number:'1.2-2'}} <currency-icon
+                [currencyId]="currencyId"></currency-icon>
+            </b>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6 col-lg-4">
+      <div class="widget-small success coloured-icon">
+        <i class="icon fa fa-money fa-3x"></i>
+        <div class="info">
+          <h4>{{'xRevenue' | translate}} ({{'xCash' | translate}})</h4>
+          <p>
+            <b>{{personSummaryDto.RevenueCashTotal | number:'1.2-2'}} <currency-icon [currencyId]="currencyId">
+              </currency-icon></b>
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6 col-lg-4">
+      <div class="widget-small success coloured-icon">
+        <i class="icon fa fa-credit-card fa-3x"></i>
+        <div class="info">
+          <h4>{{'xRevenue' | translate}} (Pos)</h4>
+          <p>
+            <b>{{personSummaryDto.RevenueBankTotal | number:'1.2-2'}} <currency-icon [currencyId]="currencyId">
+              </currency-icon></b>
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6 col-lg-4">
+      <div class="widget-small warning coloured-icon">
+        <i class="icon fa fa-undo fa-3x"></i>
+        <div class="info">
+          <h4>{{'xChargeSale' | translate}}</h4>
+          <p>
+            <b>{{personSummaryDto.ChargeSaleTotal | number:'1.2-2'}} <currency-icon [currencyId]="currencyId">
+              </currency-icon>
+            </b>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<order-list-index [top10]="true" *ngIf="isRealLogin"></order-list-index>
+<fiche-list-index [IsInside]="true" [top10]="true" *ngIf="isRealLogin"></fiche-list-index>
+<mh-new [IsInside]="true" [ShowNewProfile]="false" [ShowNewFiche]="true" *ngIf="isRealLogin"></mh-new>
+
+<div class="row">
+  <div class="col-12 mb-2">
+    <button class="btn btn-primary float-right" type="button" (click)="showAbout = !showAbout"
+      [class.active]="showAbout">
+      <fa [name]="'question'"></fa>{{'xAbout' | translate}}
+    </button>
+  </div>
+  <div class="col-12 mb-2" *ngIf="showAbout" [@expandCollapse]>
+    <app-about [IsInside]="true"></app-about>
+  </div>
+</div>

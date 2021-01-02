@@ -1,0 +1,33 @@
+<div *ngIf="pagerInfoBo && pagerInfoBo.Pages && pagerInfoBo.Pages.length > 1" [@expandCollapse]>
+    <nav>
+        <ul class="pagination mb-0 flex-wrap pagination-rounded d-flex justify-content-center">
+            <li class="page-item" *ngIf="pagerInfoBo.CurrentPage  > 1">
+                <a class="page-link" (click)="goToPage(1)">
+                    <fa [name]="'angle-double-left'"></fa>
+                </a>
+            </li>
+
+            <li class="page-item" *ngIf="pagerInfoBo.CurrentPage  > 1">
+                <a class="page-link" (click)="goToPage(pagerInfoBo.CurrentPage - 1)">
+                    <fa [name]="'angle-left'"></fa>
+                </a>
+            </li>
+
+            <li *ngFor="let page of pagerInfoBo.Pages" class="page-item"
+                [class.active]="page == pagerInfoBo.CurrentPage">
+                <a class="page-link" (click)="goToPage(page)">{{page}}</a>
+            </li>
+
+            <li class="page-item" *ngIf="pagerInfoBo.CurrentPage < pagerInfoBo.TotalPages">
+                <a class="page-link" (click)="goToPage(pagerInfoBo.CurrentPage + 1)">
+                    <fa [name]="'angle-right'"></fa>
+                </a>
+            </li>
+            <li class="page-item" *ngIf="pagerInfoBo.CurrentPage < pagerInfoBo.TotalPages">
+                <a class="page-link" (click)="goToPage(pagerInfoBo.TotalPages)">
+                    <fa [name]="'angle-double-right'"></fa>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</div>

@@ -1,0 +1,145 @@
+<ngx-loading [show]="listItem.Busy"></ngx-loading>
+
+<div class="tile pl-2 pr-2 pt-1 pb-1 mb-1">
+    <div *ngIf="host.isNarrow">
+        <div class="row" (click)="goToProductProfile()">
+            <div class="col-6">
+                <h6 class="mb-0">{{listItem.ProductName}} </h6>
+            </div>
+            <div class="col-6">
+                <span class="float-right">
+                    {{listItem.OnlineSalePrice | number:'1.2-2'}}
+                    <currency-icon [currencyId]="host.profile.SelectedCurrencyId"></currency-icon>
+                </span>
+            </div>
+        </div>
+        <div class="row" (click)="goToProductProfile()">
+            <div class="col-3">
+                <img [popover]="popTemplate" triggers="mouseenter:mouseleave" placement="auto"
+                    src="assets/no-image_64_64.png" *ngIf="listItem.PortraitImageUniqueIdStr == null" width="64px"
+                    height="64px" alt="No Image" class="rounded mx-auto">
+                <img [popover]="popTemplate" triggers="mouseenter:mouseleave" placement="auto"
+                    src="{{environment.productImageSource}}thumbnail/{{listItem.PortraitImageUniqueIdStr}}"
+                    *ngIf="listItem.PortraitImageUniqueIdStr != null" width="auto" height="auto" alt="Product Image"
+                    class="rounded mx-auto">
+            </div>
+            <div class="col-9">
+                <span style="font-size: 14px">
+                    {{listItem.Notes}}
+                </span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <button class="btn btn-outline-primary btn-sm btn-naked float-right ml-2"
+                    *ngIf="host.shopProfileDto.ShopIsAvailable && listItem.IsSaleForOnline && !listItem.IsTemporarilyUnavaible"
+                    type="button" (click)="host.addToBasket(false, listItem)">
+                    <fa [name]="'cart-plus'"></fa>{{'xAddToBasket' | translate}}
+                </button>
+                <button class="btn btn-outline-success btn-naked btn-sm float-right ml-2"
+                    *ngIf="host.shopProfileDto.ShopIsAvailable && listItem.IsSaleForOnline && !listItem.IsTemporarilyUnavaible"
+                    type="button" (click)="host.addToBasket(true, listItem)">
+                    <fa [name]="'hand-o-right'"></fa>{{'xBuyNow' | translate}}
+                </button>
+                <button class="btn btn-outline-primary btn-sm btn-naked ml-2 float-right"
+                    *ngIf="host.shopProfileDto.IsShopOwner" [class.active]="isSettingsOpen" type="button"
+                    (click)="showSettingGeneral()">
+                    <fa [name]="'cogs'"></fa>{{'xSettings' | translate}}
+                </button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <h6 class="blink text-danger float-right ml-2 cursor-pointer" (click)="goToProductProfile()"
+                    *ngIf="!host.shopProfileDto.ShopIsAvailable">
+                    {{'xShopNotTakeOrdersNow' | translate}}
+                    <br>
+                </h6>
+                <h6 class="blink text-danger float-right ml-2 cursor-pointer" (click)="goToProductProfile()"
+                    *ngIf="!listItem.IsSaleForOnline">
+                    {{'xNotSaleForOnline' | translate}}
+                </h6>
+                <h6 class="blink text-danger float-right ml-2 cursor-pointer" (click)="goToProductProfile()"
+                    *ngIf="listItem.IsTemporarilyUnavaible && listItem.IsSaleForOnline">
+                    {{'xTemporarilyUnavaible' | translate}}
+                </h6>
+            </div>
+        </div>
+    </div>
+    <div class="row" *ngIf="!host.isNarrow" style="min-height: 75px">
+        <div class="col-md-2 cursor-pointer" (click)="goToProductProfile()">
+            <img [popover]="popTemplate" triggers="mouseenter:mouseleave" placement="auto"
+                src="assets/no-image_64_64.png" *ngIf="listItem.PortraitImageUniqueIdStr == null" width="64px"
+                height="64px" alt="No Image" class="rounded mx-auto">
+            <img [popover]="popTemplate" triggers="mouseenter:mouseleave" placement="auto"
+                src="{{environment.productImageSource}}thumbnail/{{listItem.PortraitImageUniqueIdStr}}"
+                *ngIf="listItem.PortraitImageUniqueIdStr != null" style="max-height: 64px"
+                alt="Product Image" class="rounded mx-auto">
+        </div>
+        <div class="col-md-10">
+            <div class="row cursor-pointer" (click)="goToProductProfile()">
+                <div class="col-md-9">
+                    <h6 class="mb-0">{{listItem.ProductName}} </h6>
+                </div>
+
+                <div class="col-md-3">
+                    <span class="float-right">
+                        {{listItem.OnlineSalePrice | number:'1.2-2'}}
+                        <currency-icon [currencyId]="host.profile.SelectedCurrencyId"></currency-icon>
+                    </span>
+                </div>
+            </div>
+            <div class="row cursor-pointer" (click)="goToProductProfile()">
+                <div class="col-12">
+                    <span style="font-size: small">
+                        {{listItem.Notes}}
+                    </span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12" style="position: absolute;bottom: 0">
+                    <button class="btn btn-outline-primary btn-sm btn-naked float-right ml-2"
+                        *ngIf="host.shopProfileDto.ShopIsAvailable && listItem.IsSaleForOnline && !listItem.IsTemporarilyUnavaible"
+                        type="button" (click)="host.addToBasket(false, listItem)">
+                        <fa [name]="'cart-plus'"></fa>{{'xAddToBasket' | translate}}
+                    </button>
+                    <button class="btn btn-outline-success btn-naked btn-sm float-right ml-2"
+                        *ngIf="host.shopProfileDto.ShopIsAvailable && listItem.IsSaleForOnline && !listItem.IsTemporarilyUnavaible"
+                        type="button" (click)="host.addToBasket(true, listItem)">
+                        <fa [name]="'hand-o-right'"></fa>{{'xBuyNow' | translate}}
+                    </button>
+                    <button class="btn btn-outline-primary btn-sm btn-naked ml-2 float-right"
+                        *ngIf="host.shopProfileDto.IsShopOwner" [class.active]="isSettingsOpen" type="button"
+                        (click)="showSettingGeneral()">
+                        <fa [name]="'cogs'"></fa>{{'xSettings' | translate}}
+                    </button>
+                    <h6 class="blink text-danger float-right ml-2 cursor-pointer" (click)="goToProductProfile()"
+                        *ngIf="!host.shopProfileDto.ShopIsAvailable">
+                        {{'xShopNotTakeOrdersNow' | translate}}
+                        <br>
+                    </h6>
+                    <h6 class="blink text-danger float-right ml-2 cursor-pointer" (click)="goToProductProfile()"
+                        *ngIf="!listItem.IsSaleForOnline">
+                        {{'xNotSaleForOnline' | translate}}
+                    </h6>
+                    <h6 class="blink text-danger float-right ml-2 cursor-pointer" (click)="goToProductProfile()"
+                        *ngIf="listItem.IsTemporarilyUnavaible && listItem.IsSaleForOnline">
+                        {{'xTemporarilyUnavaible' | translate}}
+                    </h6>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12" *ngIf="isSettingsOpen && host.shopProfileDto.IsShopOwner">
+            <person-product-setting [openAtBegin]="true" [isInside]="true"></person-product-setting>
+        </div>
+    </div>
+</div>
+
+<ng-template #popTemplate>
+    <img src="assets/urun_yok.jpeg" *ngIf="listItem.PortraitImageUniqueIdStr == null" width="100%" height="100%"
+        alt="No Image">
+    <img src="{{environment.productImageSource}}{{listItem.PortraitImageUniqueIdStr}}"
+        *ngIf="listItem.PortraitImageUniqueIdStr != null" alt="Produc Image">
+</ng-template>

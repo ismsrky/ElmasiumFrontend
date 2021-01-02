@@ -1,0 +1,76 @@
+<div class="card mb-2 border-info">
+    <div class="card-body p-2">
+        <div class="row">
+            <div class="col-md-4 mb-2">
+                <label class="control-label">{{listItem.ProductName}}</label>
+                <span class="blink text-warning" *ngIf="listItem.FromPool" [popover]="popTemplateFirstUse"
+                    triggers="mouseenter:mouseleave" placement="auto">
+                    <br>
+                    <fa [name]="'exclamation'"></fa>
+                    {{'xFirstUse' | translate}}
+                </span>
+            </div>
+            <div class="col-md-2 mb-2">
+                <label class="control-label">{{'xQuantity' | translate}}</label>
+                <input class="form-control" #quantity="ngModel" currencyMask [options]="configQuantity"
+                    autocomplete="off" type="tel" (tap)="$event.target.select()"
+                    (ngModelChange)="host.checkQuantity(listItem, $event);" [ngModel]="listItem.Quantity"
+                    name="Quantity" placeholder="{{'xAmount' | translate}}">
+            </div>
+            <div class="col-md-2 mb-2">
+                <label class="control-label">{{'xUnitPrice' | translate}}</label>
+                <input class="form-control" #unitPrice="ngModel" currencyMask type="tel" [options]="configCurrency"
+                    (tap)="$event.target.select()" (ngModelChange)="listItem.UnitPrice=$event;host.itemValueChanged()"
+                    [ngModel]="listItem.UnitPrice" name="UnitPrice" placeholder="{{'xAmount' | translate}}">
+            </div>
+            <div class="col-md-2 mb-2">
+                <label class="control-label">{{'xVat' | translate}}(%)</label>
+                <input class="form-control" #vatRate="ngModel" currencyMask type="tel" [options]="configPercentage"
+                    (tap)="$event.target.select()" (ngModelChange)="listItem.VatRate=$event;host.itemValueChanged()"
+                    [ngModel]="listItem.VatRate" name="VatRate" placeholder="{{'xAmount' | translate}}">
+            </div>
+            <div class="col-md-2 mb-2">
+                <label class="control-label">{{'xDiscount' | translate}}(%)</label>
+                <input class="form-control" #discountRate="ngModel" currencyMask type="tel" [options]="configPercentage"
+                    (tap)="$event.target.select()"
+                    (ngModelChange)="listItem.DiscountRate=$event;host.itemValueChanged()"
+                    [ngModel]="listItem.DiscountRate" name="DiscountRate" placeholder="{{'xAmount' | translate}}">
+            </div>
+        </div>
+        <div class="row mb-2">
+            <div class="col-md-8 col-12" *ngIf="listItem.CodeList && listItem.CodeList.length > 0">
+                <small class="text-secondary" *ngFor="let codeItem of listItem.CodeList">
+                    {{productCodeTypes[codeItem.ProductCodeTypeId] | translate}}:
+                    {{codeItem.Code}}
+                </small>
+            </div>
+            <div class="col-md-2 col-12">
+                <small class="text-secondary float-right">
+                    {{'xType' | translate}}: {{productTypes[listItem.ProductTypeId] | translate}}
+                </small>
+            </div>
+            <div class="col-md-2 col-12">
+                <a [routerLink]="getProductProfileUrl()" class="text-secondary float-right" target="_blank"
+                    style="font-size: small">
+                    {{'xGo' | translate}}
+                </a>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4 col-6 mb-2">
+                <button class="btn btn-danger btn-sm float-left" type="button" (click)="host.delete(listItem.Id)">
+                    <fa [name]="'times'"></fa>{{'xDelete' | translate}}
+                </button>
+            </div>
+            <div class="col-md-8 col-6 mb-2">
+                <h5 class="float-right">{{listItem.GrandTotal | number:'1.2-2'}}
+                    <currency-icon [currencyId]="listItem.CurrencyId"></currency-icon>
+                </h5>
+            </div>
+        </div>
+    </div>
+</div>
+
+<ng-template #popTemplateFirstUse>
+    {{'xTextFirstUse' | translate}}
+</ng-template>

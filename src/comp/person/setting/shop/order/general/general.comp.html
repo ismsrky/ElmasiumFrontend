@@ -1,0 +1,41 @@
+<div class="tile">
+    <ngx-loading [show]="busy"></ngx-loading>
+
+    <h5>Sipariş ayarları</h5>
+    <form class="needs-validation" #shopOrderGeneralForm="ngForm" novalidate>
+        <div class="row">
+            <div class="col-12 mb-4">
+                <div class="utility">
+                    <div class="animated-checkbox">
+                        <label>
+                            <input type="checkbox" [(ngModel)]="orderGeneralDto.TakesOrder" name="rememberMe">
+                            <span class="label-text">{{'xTakesOrder' | translate}}</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 mb-4">
+                <span>{{'xPaymentMethods' | translate}}</span>
+                <ng-select [searchable]="false" [items]="accountTypeList" bindLabel="value" bindValue="key"
+                    [multiple]="true" [(ngModel)]="orderGeneralDto.OrderAccountList" name="OrderAccountList"
+                    placeholder="{{'xNA' | translate}}">
+                </ng-select>
+            </div>
+            <div class="col-12 mb-4">
+                <span>{{'xPaymentCurrencies' | translate}}</span>
+                <ng-select [searchable]="false" [items]="currencyList" bindLabel="value" bindValue="key"
+                    [multiple]="true" [(ngModel)]="orderGeneralDto.OrderCurrencyList" name="OrderCurrencyList"
+                    placeholder="{{'xNA' | translate}}">
+                </ng-select>
+            </div>
+            <div class="col-12">
+                <button class="btn btn-success btn-sm float-right" type="button" (click)="save()">
+                    <fa [name]="'check'"></fa>{{'xSave' | translate}}
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<person-setting-shop-order-working-hours></person-setting-shop-order-working-hours>
+<person-setting-shop-order-area-list-index></person-setting-shop-order-area-list-index>

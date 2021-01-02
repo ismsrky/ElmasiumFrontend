@@ -1,0 +1,21 @@
+<ul class="app-notification dropdown-menu dropdown-menu-right navbar-dropdown preview-list" [class.show]="show">
+    <li>
+        <p class="mb-0 font-weight-normal float-left dropdown-header">
+            <fa [name]="notificationSummaryDto.xNotifications > 0?'bell':'bell-o'" [size]=1></fa>
+            <span *ngIf="notificationSummaryDto.xNotifications > 0">
+                {{'xNotifications' | translate}}
+            </span>
+            <span *ngIf="notificationSummaryDto.xNotifications == 0">
+                {{'xNoNewNotifications' | translate}}
+            </span>
+        </p>
+    </li>
+    <div class="app-notification__content" style="max-height: 220px;" (scroll)="onScroll($event)" #scrollDiv>
+        <notification-small-list-item [listItem]="notification" *ngFor="let notification of notificationList"
+            [@expandCollapse]> </notification-small-list-item>
+    </div>
+    <li class="app-notification__content">
+        <ngx-loading [show]="busy"></ngx-loading>
+    </li>
+
+</ul>

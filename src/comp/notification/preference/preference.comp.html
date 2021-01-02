@@ -1,0 +1,36 @@
+<div *ngFor="let listItem of listDto" [@expandCollapse]>
+    <h5 style="border-bottom: 1px double;" *ngIf="listDto.length > 1">
+        {{listItem.RelatedPersonFullName}} -
+        {{relationTypes[listItem.RelationTypeId] | translate}}
+    </h5>
+
+    <div class="row">
+        <div class="col-md" *ngFor="let typeItem of listItem.TypeList">
+            <div class="card mb-2 text-black bg-light">
+                <div class="card-body p-2">
+                    <div class="row">
+                        <div class="col-12">
+                            {{notificationPreferenceTypes[typeItem.NotificationPreferenceTypeId] | translate}}
+                        </div>
+                        <div class="col-6" *ngFor="let subItem of typeItem.SubList">
+                            <div class="animated-checkbox">
+                                <label>
+                                    <input type="checkbox" [(ngModel)]="subItem.Preference" name="preferenceValue">
+                                    <span
+                                        class="label-text">{{notificationChannels[subItem.NotificationChannelId] | translate}}</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-12">
+        <button class="btn btn-success btn-sm float-right" type="button" (click)="save()">
+            <fa [name]="'check'"></fa>{{'xSave' | translate}}
+        </button>
+    </div>
+</div>

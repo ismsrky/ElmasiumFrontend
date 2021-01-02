@@ -1,0 +1,9 @@
+<nav class="mobile-bottom-nav" *ngIf="isNarrow && navMenuList && navMenuList.length > 0">
+    <div *ngFor="let menu of navMenuList" [@expandCollapse] class="mobile-bottom-nav__item"
+        [class.mobile-bottom-nav__item--active]="menu.Active">
+        <a class="mobile-bottom-nav__item-content aLink" [routerLink]="[menu.Url?menu.Url:'']">
+            <fa [name]="menu.IconClass" class="menu-icon" [ngClass]="menu.IconColor"></fa>
+            {{menu.Name | translate}}
+        </a>
+    </div>
+</nav>

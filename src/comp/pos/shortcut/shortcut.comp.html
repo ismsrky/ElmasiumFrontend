@@ -1,0 +1,40 @@
+<div class="card mb-2">
+    <div class="card-body p-2">
+        <div class="row">
+            <div class="col-12">
+                <h6>{{'xShortcutKeys' | translate }}
+                    <fa [name]="'plus'" (click)="saveGroup(null)" [size]=1 class="text-primary float-right"
+                        style="cursor:pointer"></fa>
+                </h6>
+            </div>
+        </div>
+        <div class="row mb-2">
+            <div class="col-12">
+                <ul class="nav nav-tabs">
+                    <li class="nav-item" *ngFor="let shortcutGroup of shortcutList">
+                        <a class="nav-link" [class.active]="shortcutGroup.Selected" (press)="groupPress(shortcutGroup)"
+                            (tap)="tabPageSelected(shortcutGroup)">
+                            <strong>{{shortcutGroup.Name}}</strong>
+                        </a>
+                    </li>
+                    <li class="nav-item mt-2 ml-2">
+                        <fa [name]="'edit'" (click)="saveGroup(selectedGroup)" [size]=1 class="text-primary"
+                            style="cursor:pointer"></fa>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="row ml-1"
+            *ngIf="selectedGroup && selectedGroup.ProductList && selectedGroup.ProductList.length > 0">
+            <div class="col-mb-* mb-2 mr-2" *ngFor="let shortcut of selectedGroup.ProductList">
+                <button class="btn btn-primary btn-sm" (press)="productPress(shortcut)" type="button"
+                    (tap)="productTapped(shortcut)">
+                    {{shortcut.ProductName}}
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<pos-shortcut-group *ngIf="isGroupModalOpen"></pos-shortcut-group>
+<ngx-loading [show]="busy"></ngx-loading>

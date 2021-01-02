@@ -1,0 +1,97 @@
+<ngx-loading [show]="busy"></ngx-loading>
+<div class="tile" [class.border]="personAccountListDto && personAccountListDto.IsCrudOpen"
+    [class.border-danger]="personAccountListDto && personAccountListDto.IsCrudOpen">
+    <div class="row mb-2">
+        <div class="col-12">
+            <h5>{{'xWallet' | translate}}
+                <button type="button" class="close pull-right" aria-label="Close"
+                    (click)="personAccountListDto.IsCrudOpen=false">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </h5>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+
+            <form class="needs-validation" #personAccountForm="ngForm" (submit)="save()" novalidate>
+                <div class="row mb-2">
+                    <div class="col-12">
+                        <label class="control-label">
+                            *{{'xWalletName' | translate}}
+                        </label>
+                        <input class="form-control" #accountName="ngModel" required
+                            [class.is-invalid]="accountName.invalid && (accountName.touched || personAccountForm.submitted)"
+                            [(ngModel)]="personAccountDto.Name" name="Name" [appAutofocus]="true" type="text"
+                            placeholder="{{'xWalletName' | translate}}">
+                        <div class="invalid-tooltip">{{'xWalletNameCantBeEmpty' | translate}}</div>
+                    </div>
+                </div>
+                <div class="row mb-2">
+                    <div class="col-md-6">
+                        <label class="control-label">
+                            *{{'xWalletType' | translate}}
+                        </label>
+                        <select class="form-control" #accountTypeId="ngModel" required
+                            [class.is-invalid]="accountTypeId.invalid && (accountTypeId.touched || personAccountForm.submitted)"
+                            [(ngModel)]="personAccountDto.AccountTypeId" name="AccountTypeId">
+                            <option [ngValue]="null">{{'xSelectWalletType' | translate}}</option>
+                            <option *ngFor="let item of accountTypes | enums" [ngValue]="item.key">{{item.value |
+                                translate}}</option>
+                        </select>
+                        <div class="invalid-tooltip">{{'xSelectWalletType' | translate}}</div>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="control-label">
+                            *{{'xCurrency' | translate}}
+                        </label>
+                        <select class="form-control" #currencyId="ngModel" required disabled
+                            [class.is-invalid]="currencyId.invalid && (currencyId.touched || personAccountForm.submitted)"
+                            [(ngModel)]="personAccountDto.CurrencyId" name="CurrencyId">
+                            <option [ngValue]="null">{{'xSelectCurrency' | translate}}</option>
+                            <option *ngFor="let item of currencies | enums" [ngValue]="item.key">{{item.value |
+                                translate}}</option>
+                        </select>
+                        <div class="invalid-tooltip">{{'xSelectCurrency' | translate}}</div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="mb-2 col-12">
+                        <label class="control-label">{{'xNotes' | translate}}</label>
+                        <textarea class="form-control" [(ngModel)]="personAccountDto.Notes" name="Notes" type="text"
+                            placeholder="{{'xNotes' | translate}}"></textarea>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 col-6">
+                        <select class="form-control" #statId="ngModel" [(ngModel)]="personAccountDto.StatId"
+                            name="StatId">
+                            <option *ngFor="let item of stats | enums" [ngValue]="item.key">{{item.value | translate}}
+                            </option>
+                        </select>
+                    </div>
+                    <div class="col-md-8 col-6"
+                        *ngIf="profile.PersonTypeId == personTypes.xShop && (personAccountDto.AccountTypeId == accountTypes.xBank || personAccountDto.AccountTypeId == accountTypes.xCash)">
+                        <div class="animated-checkbox float-right">
+                            <label>
+                                <input type="checkbox" [(ngModel)]="personAccountDto.IsFastRetail" name="isFastRetail">
+                                <span class="label-text">{{'xFastSale' | translate}}</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-12">
+                        <button class="btn btn-success pull-right ml-2" type="submit">
+                            <fa [name]="'check'"></fa>{{'xSave' | translate}}
+                        </button>
+                        <button class="btn btn-danger pull-right" type="button" (click)="cancel()">
+                            <fa [name]="'ban'"></fa>{{'xCancel' | translate}}
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,93 @@
+<page-title [helpName]="'Login'" [icon]="'sign-in'" *ngIf="show" [title]="'xLogin'" [@expandCollapse]></page-title>
+
+<ngx-loading [show]="busy"></ngx-loading>
+
+<div class="tile" *ngIf="show" [@expandCollapse]>
+    <div class="row">
+        <div class="col-md-6 d-flex align-items-center justify-content-center">
+            <div class="row">
+                <div class="col-12">
+                    <img src="assets/common/elmasium_logo_small.png" class="blink" alt="logo">
+                </div>
+            </div>
+
+        </div>
+        <div class="col-md-6">
+            <div class="row">
+                <div class="col-12">
+                    <h6 class="font-weight-light float-right">{{'ItsFree' | translate}}</h6>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <form #loginForm="ngForm" (submit)="login()" class="login-form needs-validation pt-3" novalidate>
+                        <div class="form-group">
+                            <label class="control-label">{{'xEmail' | translate}}</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend bg-transparent">
+                                    <span class="input-group-text bg-transparent border-right-0">
+                                        <i class="mdi mdi-account-outline text-primary"></i>
+                                        <fa [name]="'user'"></fa>
+                                    </span>
+                                </div>
+                                <input #username="ngModel" [class.is-invalid]="username.invalid && loginForm.submitted"
+                                    class="form-control" required [(ngModel)]="loginDto.Username" name="Username"
+                                    type="text" placeholder="{{'xEmail' | translate}}" [appAutofocus]="true"
+                                    autocomplete="off">
+                                <div class="invalid-tooltip" *ngIf="!username.hasError('email')">
+                                    {{'xEmailCantBeEmpty' | translate}}</div>
+                                <div class="invalid-tooltip" *ngIf="username.hasError('email')">
+                                    {{'xEnterValidMailAddress' | translate}}</div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label">{{'xPassword' | translate}}</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend bg-transparent">
+                                    <span class="input-group-text bg-transparent border-right-0">
+                                        <fa [name]="'lock'"></fa>
+                                    </span>
+                                </div>
+                                <input #Password="ngModel" class="form-control" required
+                                    [class.is-invalid]="Password.invalid && loginForm.submitted"
+                                    [(ngModel)]="loginDto.Password" name="Password" type="password"
+                                    placeholder="{{'xPassword' | translate}}">
+                                <div class="invalid-tooltip">{{'xPasswordCantBeEmpty' | translate}}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="animated-checkbox">
+                                    <label>
+                                        <input type="checkbox" [(ngModel)]="rememberMe" name="rememberMe">
+                                        <span class="label-text">{{'xRememberMe' | translate}}</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-6 mb-4">
+                                <button type="submit" class="btn btn-primary font-weight-medium float-right">
+                                    <i class="fa fa-sign-in fa-lg fa-fw"></i>{{'xLogin' | translate}}
+                                </button>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 col-12 mb-4">
+                                <a routerLink="" (click)="forgotPasswordClick()"
+                                    class="text-black">{{'xForgotPassword' | translate}}</a>
+                            </div>
+                            <div class="col-md-8 col-12">
+                                <span class="float-right">
+                                    {{'xDontHaveAccount' | translate}}
+                                    <a routerLink="" (click)="registerClick()"
+                                        class="text-primary">{{'xRegister' | translate}}</a>
+                                </span>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

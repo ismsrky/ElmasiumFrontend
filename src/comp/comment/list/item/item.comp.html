@@ -1,0 +1,88 @@
+<ngx-loading [show]="busy"></ngx-loading>
+
+<div class="card mb-0 border-info">
+    <div class="card-body p-2">
+        <div class="row" *ngIf="listItem.CommentTypeId == commentTypes.ReplyPerson || listItem.CommentTypeId == commentTypes.ReplyPersonProduct">
+            <div class="col-12">
+                <h5>İşletme Cevabı:</h5>
+            </div>
+        </div>
+        <div class="row" *ngIf="listItem.CommentTypeId == commentTypes.PersonProduct || listItem.CommentTypeId == commentTypes.Person">
+            <div class="col-md-8 col-6">
+                <h5>{{listItem.AuthorPersonFullName}}</h5>
+            </div>
+            <div class="col-md-4 col-6">
+                <rating class="float-right" [(ngModel)]="listItem.Star" [max]="5" [readonly]="true"
+                    style="color: #daa710;font-size: 25px"
+                    [titles]="['berbat','kötünün iyisi','idare eder','güzel','mükemmel']"></rating>
+            </div>
+        </div>
+        <div class="row" *ngIf="listItem.CommentTypeId == commentTypes.PersonProduct && (caseId == 2 || caseId == 3)">
+            <div class="col-12">
+                <h5>Ürün yorumu: {{listItem.ProductName}}</h5>
+            </div>
+        </div>
+        <div class="row" *ngIf="listItem.CommentTypeId == commentTypes.Person && caseId == 2">
+            <div class="col-12">
+                <h5 *ngIf="listItem.IsAuthorSeller">Müşteri yorumu: {{listItem.PersonFullName}}</h5>
+                <h5 *ngIf="!listItem.IsAuthorSeller">İşletme yorumu: {{listItem.PersonFullName}}</h5>
+            </div>
+        </div>
+        <div class="row mb-2">
+            <div class="col-12">
+                {{listItem.Comment}}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <span class="float-left">
+                    {{listItem.CreateDateNumber | date:'dd.MM.yyyy HH:mm:ss'}}
+                    <span *ngIf="listItem.UpdateDateNumber">
+                        -
+                        {{listItem.UpdateDateNumber | date:'dd.MM.yyyy HH:mm:ss'}}
+                        ({{'xEdited' | translate}})
+                    </span>
+                </span>
+                <button class="btn btn-outline-warning text-dark btn-sm float-left mr-2" style="border:0px"
+                    (click)="warn(listItem)">
+                    {{'xWarn' | translate}}
+                </button>
+                <span class="float-right">
+                    <fa [name]="listItem.MyLike == true ? 'thumbs-up' : 'thumbs-o-up'" [size]="1" class="text-success"
+                        style="cursor: pointer;" (click)="saveLike(listItem, true)"></fa>
+                    {{listItem.LikeCount}}
+                    <fa [name]="listItem.MyLike == false ? 'thumbs-down' : 'thumbs-o-down'" [size]="1"
+                        class="text-danger ml-2" style="cursor: pointer;" (click)="saveLike(listItem, false)"></fa>
+                    {{listItem.DislikeCount}}
+                </span>
+            </div>
+        </div>
+
+        <div class="row" *ngIf="listItem.ActionsDto" [@expandCollapse]>
+            <!--
+                Add later:
+                <div class="col-* ml-2 mb-2" *ngIf="listItem.ActionsDto.Deletable">
+                <button class="btn btn-danger btn-sm" type="button" (click)="delete(listItem)">
+                    <fa [name]="'times'"></fa>{{'xDeleteMyComment' | translate}}
+                </button>
+            </div>
+            -->
+            <div class="col-* ml-2 mb-2" *ngIf="listItem.ActionsDto.Editable">
+                <button class="btn btn-outline-primary btn-sm btn-naked" type="button" (click)="edit(listItem)">
+                    <fa [name]="'pencil'"></fa>{{'xEdit' | translate}}
+                </button>
+            </div>
+            <div class="col-* ml-2 mb-2" *ngIf="listItem.ActionsDto.Replyable">
+                <button class="btn btn-outline-success btn-sm btn-naked" type="button" (click)="reply(listItem)">
+                    <fa [name]="'reply'"></fa>{{'xReply' | translate}}
+                </button>
+            </div>
+        </div>
+
+        <div class="row p-4" *ngIf="replyCommentDto">
+            <div class="col-12">
+                <comment-list-item [listItem]="replyCommentDto" [caseId]="4"></comment-list-item>
+            </div>
+        </div>
+    </div>
+</div>

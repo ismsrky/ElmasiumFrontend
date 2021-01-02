@@ -1,0 +1,47 @@
+<div class="card" [class.border-primary]="isValid" [class.border-danger]="!isValid">
+    <div class="card-body p-2">
+        <div class="row mb-4">
+            <div class="col-sm-4 pl-2">
+                <label class="control-label">
+                    <h5 class="text-danger">{{dayName | translate}}</h5>
+                </label>
+            </div>
+            <div class="col-sm-8">
+                <select class="form-control" (change)="workingTypeChange($event.target.value)" [(ngModel)]="workingType"
+                    name="workingType">
+                    <option [value]="-1">{{'xClosed' | translate}}</option>
+                    <option [value]="0">{{'xOpen24Hour' | translate}}</option>
+                    <option [value]="1">{{'xOpensAt' | translate}}</option>
+                </select>
+            </div>
+        </div>
+        <div class="row" *ngIf="workingType==1">
+            <div class="col-sm-6">
+                <label class="control-label">
+                    <strong>{{'xOpeningTime' | translate}}</strong>
+                </label>
+                <div class="text-center">
+                    <timepicker #tpOpeningDate (ngModelChange)="changedDate()" [(ngModel)]="openingDate"
+                        [minuteStep]="1" [disabled]="workingType!=1" [showMeridian]="false" [showSpinners]="false"
+                        [min]="minTime" [max]="maxTime"></timepicker>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <label class="control-label">
+                    <strong>{{'xClosingTime' | translate}}</strong>
+                </label>
+                <div class="text-center">
+                    <timepicker #tpClosingDate (ngModelChange)="changedDate()" [(ngModel)]="closingDate"
+                        [minuteStep]="1" [disabled]="workingType!=1" [showMeridian]="false" [showSpinners]="false">
+                    </timepicker>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6">
+                <button *ngIf="isShowApplyAll" class="btn btn-outline-info btn-sm" (click)="applyAllClicked()"
+                    type="button">{{'xApplyToAll' | translate}}</button>
+            </div>
+        </div>
+    </div>
+</div>

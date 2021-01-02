@@ -1,0 +1,66 @@
+[
+    {
+        "Id": 0,
+        "FicheTypeId": 0
+    },
+    {
+        "Id": 1,
+        "FicheTypeId": 0
+    },
+    {
+        "Id": 2,
+        "FicheTypeId": 0
+    },
+    {
+        "Id": 3,
+        "FicheTypeId": 0
+    },
+    {
+        "Id": 4,
+        "FicheTypeId": 0
+    },
+    {
+        "Id": 100,
+        "FicheTypeId": 1
+    },
+    {
+        "Id": 101,
+        "FicheTypeId": 1
+    },
+    {
+        "Id": 102,
+        "FicheTypeId": 1
+    },
+    {
+        "Id": 200,
+        "FicheTypeId": 2
+    },
+    {
+        "Id": 201,
+        "FicheTypeId": 2
+    },
+    {
+        "Id": 202,
+        "FicheTypeId": 2
+    },
+    {
+        "Id": 400,
+        "FicheTypeId": 4
+    },
+    {
+        "Id": 401,
+        "FicheTypeId": 4
+    },
+    {
+        "Id": 402,
+        "FicheTypeId": 4
+    },
+    {
+        "Id": 403,
+        "FicheTypeId": 4
+    },
+    {
+        "Id": 404,
+        "FicheTypeId": 4
+    }
+]

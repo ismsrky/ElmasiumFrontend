@@ -1,0 +1,6 @@
+<ngx-loading [show]="busy"></ngx-loading>
+<div class="row mb-2" [style.height]="accountList.length < 5 ? 'auto' : '250px'" style="overflow-y: auto;" *ngIf="accountList.length > 0">
+    <div class="col-12" *ngFor="let account of accountList">
+        <person-account-search-list-item [listItem]="account"></person-account-search-list-item>
+    </div>
+</div>

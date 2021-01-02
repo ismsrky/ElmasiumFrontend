@@ -1,0 +1,39 @@
+<ngx-loading [show]="busy"></ngx-loading>
+
+<ul class="app-notification dropdown-menu-right preview-list pb-0 pt-2"
+ [class.show]="true" style="top:80px;max-height: 220px;">
+    <!--
+        <li class="app-notification__title">
+        {{'xFicheRequests' | translate}}
+    </li>
+    <ul class="nav nav-tabs">
+        <li class="nav-item">
+            <a class="nav-link" [class.active]="getIncomings" [routerLink]="" (click)="loadData(true)">
+                <span>
+                    {{'xIncomings' | translate}}
+                    ({{notificationSummaryDto.xFicheIncomings}})
+                </span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" [class.active]="!getIncomings" [routerLink]="" (click)="loadData(false)">
+                <strong>
+                    {{'xOutgoings' | translate}}
+                    ({{notificationSummaryDto.xFicheOutgoings}})
+                </strong>
+            </a>
+        </li>
+    </ul>
+   -->
+    <li class="app-notification__footer" *ngIf="getIncomings && approvalFicheList && approvalFicheList.length == 0">
+        {{'xNoIncomingRequest' | translate}}
+    </li>
+    <li class="app-notification__footer" *ngIf="!getIncomings && approvalFicheList && approvalFicheList.length == 0">
+        {{'xNoOutgoingRequest' | translate}}
+    </li>
+    <div class="app-notification__content" *ngIf="approvalFicheList">
+        <div *ngFor="let approval of approvalFicheList">
+            <approval-fiche-small-list-item [listItem]="approval"></approval-fiche-small-list-item>
+        </div>
+    </div>
+</ul>

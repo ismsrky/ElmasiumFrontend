@@ -1,0 +1,127 @@
+<div class="card mb-1" [class.border-warning]="!listItem.IsDeleted" [class.border-danger]="listItem.IsDeleted">
+    <div class="card-body p-2">
+        <div class="row">
+            <div class="col-12">
+                <div class="row">
+                    <div class="col-md-8 col-6">
+                        <h5>
+                            <span *ngIf="listItem.IsDeleted" class="text-danger blink">{{'xDeleted' | translate}} -
+                            </span>
+
+                            <span *ngIf="!listItem.IsNameInEdit" [@expandCollapse]>
+                                {{listItem.ProductName}}
+                                <button class="btn btn-outline-primary btn-sm btn-naked" type="button"
+                                    (click)="host.editProductName(listItem)">
+                                    <fa [name]="'edit'"></fa>
+                                </button>
+                            </span>
+
+                            <div *ngIf="listItem.IsNameInEdit" [@expandCollapse]>
+                                <input class="form-control p-2" #productName="ngModel" required
+                                    [class.is-invalid]="productName.invalid && (productName.touched)"
+                                    [(ngModel)]="listItem.ProductName" name="ProductName" type="text"
+                                    placeholder="{{'xName' | translate}}" [appAutofocus]="listItem.IsNameInEdit">
+                                <div class="invalid-tooltip">{{'xNameCantBeEmpty' | translate}}</div>
+
+                                <button class="btn btn-outline-success btn-sm btn-naked pull-right" 
+                                    type="button" (click)="host.saveProductName(listItem)">
+                                    <fa [name]="'check'"></fa>{{'xSave' | translate}}
+                                </button>
+                                <button class="btn btn-outline-danger btn-sm btn-naked pull-right" 
+                                    type="button" (click)="host.cancelEditProductName(listItem)">
+                                    <fa [name]="'ban'"></fa>{{'xCancel' | translate}}
+                                </button>                                
+                            </div>
+
+
+                            <span class="blink text-warning" *ngIf="listItem.FromPool" [popover]="popTemplateFirstUse"
+                                triggers="mouseenter:mouseleave" placement="auto">
+                                <fa [name]="'exclamation'"></fa>
+                                {{'xFirstUse' | translate}}
+                            </span>
+                        </h5>
+                    </div>
+                    <div class="col-md-4 col-6">
+                        <h5 class="float-right">{{listItem.GrandTotal | number:'1.2-2'}}
+                            <currency-icon [currencyId]="listItem.CurrencyId"></currency-icon>
+                            <button *ngIf="!listItem.IsDeleted" type="button" class="close mr-2 ml-2" aria-label="Close"
+                                (click)="host.delete(listItem.Id)">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-2 mb-2" [popover]="popTemplate" triggers="mouseenter:mouseleave" placement="auto">
+                <img src="assets/no-image_64_64.png" *ngIf="listItem.PortraitImageUniqueIdStr == null" width="64px"
+                    height="64px" alt="No Image" class="rounded mx-auto d-block">
+                <img src="{{environment.productImageSource}}thumbnail/{{listItem.PortraitImageUniqueIdStr}}"
+                    *ngIf="listItem.PortraitImageUniqueIdStr != null" width="auto" height="auto" alt="Product Image"
+                    class="rounded mx-auto d-block">
+            </div>
+            <div class="col-md-2 mb-2">
+                <label class="control-label">{{'xVat' | translate}}(%)</label>
+                <input class="form-control" #vatRate="ngModel" currencyMask type="tel" [options]="configPercentage"
+                    (tap)="$event.target.select()" (ngModelChange)="listItem.VatRate=$event;host.itemValueChanged()"
+                    [ngModel]="listItem.VatRate" name="VatRate" placeholder="{{'xAmount' | translate}}"
+                    [disabled]="listItem.IsDeleted">
+            </div>
+            <div class="col-md-2 mb-2">
+                <label class="control-label">{{'xDiscount' | translate}}(%)</label>
+                <input class="form-control" #discountRate="ngModel" currencyMask type="tel" [options]="configPercentage"
+                    (tap)="$event.target.select()"
+                    (ngModelChange)="listItem.DiscountRate=$event;host.itemValueChanged()"
+                    [ngModel]="listItem.DiscountRate" name="DiscountRate" placeholder="{{'xAmount' | translate}}"
+                    [disabled]="listItem.IsDeleted">
+            </div>
+            <div class="col-md-3 mb-2">
+                <label class="control-label">{{'xUnitPrice' | translate}}</label>
+                <input class="form-control" #unitPrice="ngModel" currencyMask type="tel" [options]="configCurrency"
+                    (tap)="$event.target.select()" (ngModelChange)="listItem.UnitPrice=$event;host.itemValueChanged()"
+                    [ngModel]="listItem.UnitPrice" name="UnitPrice" placeholder="{{'xAmount' | translate}}"
+                    [disabled]="listItem.IsDeleted">
+            </div>
+            <div class="col-md-3 mb-2">
+                <label class="control-label">{{'xQuantity' | translate}}</label>
+                <fa [name]="'thumb-tack'" class="float-right" (click)="host.shortcutAddClicked(listItem)"
+                    style="cursor:pointer"></fa>
+                <input class="form-control" #quantity="ngModel" (tap)="$event.target.select()" autocomplete="off"
+                    currencyMask [options]="configQuantity" type="tel" max="1000000"
+                    (ngModelChange)="host.checkQuantity(listItem, $event);" [ngModel]="listItem.Quantity"
+                    name="Quantity" placeholder="{{'xAmount' | translate}}" [disabled]="listItem.IsDeleted">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-8 col-12" *ngIf="listItem.CodeList && listItem.CodeList.length > 0">
+                <small class="text-secondary" *ngFor="let codeItem of listItem.CodeList">
+                    {{productCodeTypes[codeItem.ProductCodeTypeId] | translate}}:
+                    {{codeItem.Code}}
+                </small>
+            </div>
+            <div class="col-md-2 col-12">
+                <small class="text-secondary float-right">
+                    {{'xType' | translate}}: {{productTypes[listItem.ProductTypeId] | translate}}
+                </small>
+            </div>
+            <div class="col-md-2 col-12">
+                <a [routerLink]="getProductProfileUrl()" class="text-secondary float-right" target="_blank"
+                    style="font-size: small">
+                    {{'xGo' | translate}}
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<ng-template #popTemplate>
+    <img src="assets/urun_yok.jpeg" *ngIf="listItem.PortraitImageUniqueIdStr == null" width="100%" height="100%"
+        alt="No Image">
+    <img src="{{environment.productImageSource}}{{listItem.PortraitImageUniqueIdStr}}"
+        *ngIf="listItem.PortraitImageUniqueIdStr != null" alt="Produc Image">
+</ng-template>
+
+<ng-template #popTemplateFirstUse>
+    {{'xTextFirstUse' | translate}}
+</ng-template>

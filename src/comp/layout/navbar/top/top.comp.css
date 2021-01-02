@@ -1,0 +1,11 @@
+.lefPerson:hover{
+    background:rgb(12, 48, 76);
+    border-radius: 8px;
+    color: #fdffa0;
+    cursor: pointer;
+}
+
+.currentProfile{
+    background: #0a436f;
+    border-radius: 10px;
+}

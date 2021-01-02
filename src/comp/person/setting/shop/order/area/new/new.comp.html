@@ -1,0 +1,112 @@
+<div class="tile">
+    <h5>{{'xNewOrderArea' | translate}} </h5>
+    <form class="register-form needs-validation" #newAreaForm="ngForm" (submit)="createArea()" novalidate>
+        <div class="row mb-2">
+            <div class="col-12">
+                {{'xSelectAddressBoundary' | translate}}
+            </div>
+        </div>
+        <div class="row mb-4">
+            <div class="col-12">
+
+                <div class="btn-group btn-group-toggle" *ngFor="let item of addressBoundaries | enums">
+                    <label class="btn btn-primary ml-2 mb-2"
+                        [class.active]="item.key == orderAreaDto.AddressBoundaryId">
+                        <input id="option2" type="radio" name="options" autocomplete="off"
+                            (change)="addressBoundaryChange(item.key)"> {{item.value | translate}}
+                    </label>
+                </div>
+                <button class="btn btn-success ml-2 blink" type="submit"
+                    *ngIf="newAreaForm.valid && orderAreaDto.AddressBoundaryId != null">
+                    <fa [name]="'plus'"></fa>{{addArea | translate}}
+                </button>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-* ml-2 mb-2" *ngIf="showCountry">
+                <ngx-loading [show]="busyCountry"></ngx-loading>
+                <label class="control-label">{{'xSelectCountry' | translate}}</label>
+                <select class="form-control" #countrySelect="ngModel" required
+                    [class.is-invalid]="countrySelect.invalid && (countrySelect.touched || newAreaForm.submitted)"
+                    [(ngModel)]="orderAreaDto.AddressCountryId" name="CountrySelect" (change)="countrySelected()">
+                    <option [ngValue]="null">{{'xSelectCountry' | translate}}</option>
+                    <option *ngFor="let country of countryListDto" [value]="country.Id">
+                        {{country.Name}}</option>
+                </select>
+            </div>
+
+            <div class="col-md-* ml-2 mb-2"
+                *ngIf="showState && (!getSelectedCountry() || getSelectedCountry().HasStates)">
+                <ngx-loading [show]="busyState"></ngx-loading>
+                <label class="control-label">{{'xSelectState' | translate}}</label>
+                <select class="form-control" #stateSelect="ngModel" required
+                    [class.is-invalid]="stateSelect.invalid && (stateSelect.touched || newAreaForm.submitted)"
+                    [(ngModel)]="orderAreaDto.AddressStateId" name="StateSelect" (change)="stateSelected()">
+                    <option [ngValue]="null">{{'xSelectState' | translate}}</option>
+                    <option *ngFor="let state of stateListDto" [value]="state.Id">
+                        {{state.Name}}</option>
+                </select>
+            </div>
+
+            <div class="col-md-* ml-2 mb-2" *ngIf="showCity">
+                <ngx-loading [show]="busyCity"></ngx-loading>
+                <label class="control-label">{{'xSelectCity' | translate}}</label>
+                <select class="form-control" #citySelect="ngModel" required
+                    [class.is-invalid]="citySelect.invalid && (citySelect.touched || newAreaForm.submitted)"
+                    [(ngModel)]="orderAreaDto.AddressCityId" name="CitySelect" (change)="citySelected()">
+                    <option [ngValue]="null">{{'xSelectCity' | translate}}</option>
+                    <option *ngFor="let city of cityListDto" [value]="city.Id">
+                        {{city.Name}}</option>
+                </select>
+            </div>
+
+            <div class="col-md-* ml-2 mb-2" *ngIf="showDistrict">
+                <ngx-loading [show]="busyDistrict"></ngx-loading>
+                <label class="control-label">{{'xSelectDistrict' | translate}}</label>
+                <select class="form-control" #districtSelect="ngModel" required
+                    [class.is-invalid]="districtSelect.invalid && (districtSelect.touched || newAreaForm.submitted)"
+                    [(ngModel)]="orderAreaDto.AddressDistrictId" name="DistrictSelect">
+                    <option [ngValue]="null">{{'xSelectDistrict' | translate}}</option>
+                    <option *ngFor="let district of districtListDto" [value]="district.Id">
+                        {{district.Name}}</option>
+                </select>
+            </div>
+
+            <div class="col-md-* ml-2 mb-2" *ngIf="orderAreaDto.AddressBoundaryId != null">
+                <label class="control-label">{{'xSelectOrderDeliveryType' | translate}}</label>
+                <select class="form-control" #orderDeliveryTypeSelect="ngModel" required
+                    [class.is-invalid]="orderDeliveryTypeSelect.invalid && (orderDeliveryTypeSelect.touched || newAreaForm.submitted)"
+                    [(ngModel)]="orderAreaDto.OrderDeliveryTypeId" name="OrderDeliveryTypeSelect">
+                    <option [ngValue]="null">{{'xSelectOrderDeliveryType' | translate}}</option>
+                    <option *ngFor="let item of orderDeliveryTypes | enums" [ngValue]="item.key">
+                        {{item.value | translate}}
+                    </option>
+                </select>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <!--
+                    <label class="control-label">{{'xSelectCurrency' | translate}}</label>
+                <select class="form-control" #currencyId="ngModel" required
+                    [class.is-invalid]="currencyId.invalid && (currencyId.touched || newAreaForm.submitted)"
+                    [(ngModel)]="orderAreaDto.CurrencyId" name="CurrencyId">
+                    <option [ngValue]="null">{{'xSelectCurrency' | translate}}</option>
+                    <option *ngFor="let item of currencies | enums" [ngValue]="item.key">{{item.value | translate}}
+                    </option>
+                </select>
+                -->
+            </div>
+            <div class="col-12">
+
+                <button class="btn btn-danger btn-sm pull-right" type="button" (click)="cancel()">
+                    <fa [name]="'ban'"></fa>{{'xCancel' | translate}}
+                </button>
+            </div>
+        </div>
+    </form>
+
+</div>
+
+<person-setting-shop-order-area-crud *ngIf="isAreaCrudOpen"></person-setting-shop-order-area-crud>

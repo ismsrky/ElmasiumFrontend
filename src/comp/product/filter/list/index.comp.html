@@ -1,0 +1,32 @@
+<div class="row">
+    <div class="col-12">
+        <ngx-loading [show]="busy"></ngx-loading>
+    </div>
+    <div class="col-12">
+        <h3 class="no-records mb-0" *ngIf="busy"> {{'xPleaseWait' | translate}} </h3>
+    </div>
+</div>
+
+<div class="row" *ngIf="productListDto.length > 0" [@expandCollapse]>
+    <div class="col-12" *ngFor="let listItem of productListDto">
+        <product-filter-list-item [listItem]="listItem"></product-filter-list-item>
+    </div>
+    <!--
+                <div class="col-md-3 col-12" *ngFor="let listItem of productListDto">
+        <product-filter-list-item [listItem]="listItem"></product-filter-list-item>
+    </div>
+            -->
+</div>
+
+<div class="row" *ngIf="showNotFound">
+    <div class="col-12 d-flex justify-content-center">
+        <h2>Maalesef, aradığınız kriterlerde hiç bir şey bulunamadı.</h2>
+    </div>
+    <div class="col-12 d-flex justify-content-center">
+        <img src="assets/shrug-smiley_400_400.png" class="img-fluid" alt="notfound">
+    </div>
+</div>
+
+<div class="p-2">
+    <app-pager></app-pager>
+</div>

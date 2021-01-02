@@ -1,0 +1,57 @@
+<form class="needs-validation mb-2" #ficheMoneyForm="ngForm" novalidate>
+    <div class="row">
+        <div class="col-md-6">
+            <label class="control-label">{{'xAmount' | translate}} </label>
+            <strong class="ml-2">{{ficheMoneyDto.Total | number:'1.2-2'}}</strong>
+            <currency-icon [currencyId]="currencyId"></currency-icon>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 bg-warning text-white pb-2" *ngIf="host.creditAccountCmbBo">
+            <label class="control-label">
+                *{{'xSenderWallet' | translate}}
+            </label>
+            <select class="form-control" #creditPersonAccountId="ngModel" required [class.is-invalid]="creditPersonAccountId.invalid && (creditPersonAccountId.touched || ficheMoneyForm.submitted)"
+                [(ngModel)]="ficheMoneyDto.CreditPersonAccountId" name="CreditPersonAccountId">
+                <option [ngValue]="null">{{'xSenderWallet' | translate}}</option>
+                <ng-template ngFor let-accountCmbItem [ngForOf]="personAccountCmbBo">
+                    <optgroup label="{{accountTypes[accountCmbItem.accountTypeId] | translate}}">
+                        <option *ngFor="let account of accountCmbItem.accountList" [ngValue]="account.Id">{{account.Name}}
+                            ({{account.Balance | number:'1.2-2'}} <currency-icon [currencyId]="currencyId" [useString]="true"></currency-icon>)</option>
+                    </optgroup>
+                </ng-template>
+            </select>
+            <div class="invalid-tooltip">{{'xSenderWallet' | translate}}</div>
+        </div>
+        <div class="col-md-6 bg-warning text-white pb-2" *ngIf="!host.creditAccountCmbBo">
+            <label class="control-label">
+                <strong>Parayı gönderen hesap tipi</strong>
+            </label>
+            <input value="{{accountTypes[ficheMoneyDto.CreditPersonAccountTypeId] | translate}}" disabled class="form-control"
+                type="text">
+        </div>
+        <div class="col-md-6  bg-success text-white pb-2" *ngIf="host.debtAccountCmbBo">
+            <label class="control-label">
+                *{{'xReceiverWallet' | translate}}
+            </label>
+            <select class="form-control" #debtPersonAccountId="ngModel" required [class.is-invalid]="debtPersonAccountId.invalid && (debtPersonAccountId.touched || ficheMoneyForm.submitted)"
+                [(ngModel)]="ficheMoneyDto.DebtPersonAccountId" name="DebtPersonAccountId">
+                <option [ngValue]="null">{{'xReceiverWallet' | translate}}</option>
+                <ng-template ngFor let-accountCmbItem [ngForOf]="personAccountCmbBo">
+                    <optgroup label="{{accountTypes[accountCmbItem.accountTypeId] | translate}}">
+                        <option *ngFor="let account of accountCmbItem.accountList" [ngValue]="account.Id">{{account.Name}}
+                            ({{account.Balance | number:'1.2-2'}} <currency-icon [currencyId]="currencyId" [useString]="true"></currency-icon>)</option>
+                    </optgroup>
+                </ng-template>
+                <div class="invalid-tooltip">{{'xReceiverWallet' | translate}}</div>
+            </select>
+        </div>
+        <div class="col-md-6 bg-success text-white pb-2" *ngIf="!host.debtAccountCmbBo">
+            <label class="control-label">
+                <strong>Parayı alan hesap tipi</strong>
+            </label>
+            <input value="{{accountTypes[ficheMoneyDto.DebtPersonAccountTypeId] | translate}}" disabled class="form-control"
+                type="text">
+        </div>
+    </div>
+</form>

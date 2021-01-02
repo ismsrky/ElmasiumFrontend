@@ -1,0 +1,67 @@
+//Tree
+
+.tree-ngx {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+.node {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+}
+
+.node-children {
+  display: flex;
+  flex: 1 1 auto;
+}
+
+.node-name {
+  display: inline-block;
+  padding: 5px 0px 5px 7px;
+  cursor: pointer;
+  //width: 100%;
+  padding-left: 0.25em !important;
+
+  &:hover{
+    background: #e0e0e0;    
+  }
+
+  &.markSelected {
+    padding: 5px 0px 5px 2px;
+    border-left: 5px #226699 solid;
+    background: #e0e0e0;
+  }
+
+  .active {
+    cursor: pointer;
+  }
+}
+
+.node-offset {
+  display: flex;
+  margin-left: 20px;
+}
+
+.node-icon-wrapper {
+  position: relative;
+  display: inline-block;
+  width: 20px;
+  height: 18px;
+  //top: 30px;
+  //left: -10px;
+
+  &.disabled {
+    cursor: default;
+  }
+}
+
+.collapsable {
+  cursor: pointer;
+}
+
+.node-container {
+  display: inline-block; //Empty container to align nodes with no collapse
+}

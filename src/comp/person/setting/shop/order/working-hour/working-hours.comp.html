@@ -1,0 +1,56 @@
+<div class="tile">
+    <div class="row mb-2">
+        <div class="col-12">
+            <h5>{{'xWorkingHours' | translate}}</h5>
+        </div>
+    </div>
+    <ngx-loading [show]="busy"></ngx-loading>
+    <form class="needs-validation" #workingHoursForm="ngForm" novalidate>
+        <div class="row">
+            <div class="col-md-4 mb-2">
+                <person-setting-shop-order-working-hours-day #monday [DayofWeek]="days.xMonday">
+                </person-setting-shop-order-working-hours-day>
+            </div>
+            <div class="col-md-4 mb-2">
+                <person-setting-shop-order-working-hours-day #tuesday [DayofWeek]="days.xTuesday">
+                </person-setting-shop-order-working-hours-day>
+            </div>
+            <div class="col-md-4 mb-2">
+                <person-setting-shop-order-working-hours-day #wednesday [DayofWeek]="days.xWednesday">
+                </person-setting-shop-order-working-hours-day>
+            </div>
+            <div class="col-md-4 mb-2">
+                <person-setting-shop-order-working-hours-day #thursday [DayofWeek]="days.xThursday">
+                </person-setting-shop-order-working-hours-day>
+            </div>
+            <div class="col-md-4 mb-2">
+                <person-setting-shop-order-working-hours-day #friday [DayofWeek]="days.xFriday">
+                </person-setting-shop-order-working-hours-day>
+            </div>
+            <div class="col-md-4 mb-2">
+                <person-setting-shop-order-working-hours-day #saturday [DayofWeek]="days.xSaturday">
+                </person-setting-shop-order-working-hours-day>
+            </div>
+            <div class="col-md-4 mb-2">
+                <person-setting-shop-order-working-hours-day #sunday [DayofWeek]="days.xSunday">
+                </person-setting-shop-order-working-hours-day>
+            </div>
+            <div class="col-md-4 mb-2">
+                <div class="utility">
+                    <div class="animated-checkbox">
+                        <label>
+                            <input type="checkbox" [(ngModel)]="workingHoursDto.TakesOrderOutTime"
+                                name="takesOrderOutTime">
+                            <span class="label-text">{{'xTakesOrderOutOfWorkingHoursToo' | translate}}</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-2">
+                <button class="btn btn-success float-right" type="button" (click)="update()">
+                    <fa [name]="'check'"></fa>{{'xSave' | translate}}
+                </button>
+            </div>
+        </div>
+    </form>
+</div>

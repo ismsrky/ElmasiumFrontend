@@ -1,0 +1,190 @@
+<ngx-loading [show]="busy"></ngx-loading>
+
+<div class="tile pb-0 pt-2">
+    <div class="row" *ngIf="host.isNarrow">
+        <div class="col-md-10">
+            <!--Product-->
+            <div class="row">
+                <div class="col-6" (click)="goToProductProfile()" *ngIf="extraDto" [@expandCollapse]>
+                    <img src="assets/no-image_500_500.png" *ngIf="extraDto.PortraitImageUniqueIdStr == null"
+                        class="itemImage img-fluid" alt="No Image">
+                    <img src="{{environment.productImageSource}}thumbnail/{{extraDto.PortraitImageUniqueIdStr}}"
+                        *ngIf="extraDto.PortraitImageUniqueIdStr != null" class="itemImage img-fluid"
+                        alt="Product Image">
+                </div>
+                <div class="col-6" (click)="goToProductProfile()">
+                    <div class="row">
+                        <div class="col-12">
+                            <h4 class="m-1 float-right">
+                                {{listItem.OnlineSalePrice | number:'1.2-2'}}
+                                <currency-icon [currencyId]="host.profile.SelectedCurrencyId"></currency-icon>
+                            </h4>
+                        </div>
+                        <div class="col-12">
+                            <app-star [max]="5" [value]="listItem.StarAverage" class="float-right"
+                                style="font-size: 12px">
+                            </app-star>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12" (click)="goToProductProfile()">
+                    <div class="row">
+                        <div class="col-12">
+                            {{listItem.ProductName}}
+
+                        </div>
+                        <div class="col-12" style="font-size: smaller">
+                            {{listItem.Notes}}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div class="row">
+                        <div class="col-12 mt-2">
+                            <button class="btn btn-outline-primary btn-sm btn-naked float-right pl-0" type="button"
+                                (click)="host.addToBasket(false, listItem)">
+                                <fa [name]="'cart-plus'"></fa>{{'xAddToBasket' | translate}}
+                            </button>
+                            <button class="btn btn-outline-success btn-sm btn-naked float-right" type="button"
+                                (click)="host.addToBasket(true, listItem)">
+                                <fa [name]="'hand-o-right'"></fa>{{'xBuyNow' | translate}}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12" *ngIf="extraDto && extraDto.CodeList && extraDto.CodeList.length > 0"
+                    [@expandCollapse]>
+                    <small style="font-size: 10px" class="text-secondary" *ngFor="let codeItem of extraDto.CodeList">
+                        {{productCodeTypes[codeItem.ProductCodeTypeId] | translate}}:
+                        {{codeItem.Code}}
+                    </small>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2" (click)="goToShopProfile()">
+            <!--Shop-->
+            <div class="row mb-2 pt-2" style="font-size: 12px; border-top: 1px dotted;">
+                <div class="col-12">
+                    <span>{{listItem.ShopFullName}}</span>
+                    <app-star [max]="5" [value]="listItem.ShopStarAverage" class="float-right"></app-star>
+                </div>
+                <div class="col-12">
+                    <span class="float-right">{{listItem.ShopTypeName}}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row" *ngIf="!host.isNarrow">
+        <div class="col-md-10">
+            <!--Product-->
+            <div class="row">
+                <div class="col-md-2 cursor-pointer" (click)="goToProductProfile()" *ngIf="extraDto" [@expandCollapse]>
+                    <img src="assets/no-image_500_500.png" *ngIf="extraDto.PortraitImageUniqueIdStr == null"
+                        class="itemImage img-fluid" alt="No Image">
+                    <img src="{{environment.productImageSource}}thumbnail/{{extraDto.PortraitImageUniqueIdStr}}"
+                        *ngIf="extraDto.PortraitImageUniqueIdStr != null" class="itemImage img-fluid"
+                        alt="Product Image">
+                </div>
+                <div class="col-md-6 cursor-pointer" (click)="goToProductProfile()">
+                    <div class="row">
+                        <div class="col-12">
+                            {{listItem.ProductName}}
+
+                        </div>
+                        <div class="col-12" style="font-size: smaller">
+                            {{listItem.Notes}}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="row">
+                        <div class="col-12 cursor-pointer" (click)="goToProductProfile()">
+                            <h4 class="m-1 float-right">
+                                {{listItem.OnlineSalePrice | number:'1.2-2'}}
+                                <currency-icon [currencyId]="host.profile.SelectedCurrencyId"></currency-icon>
+                            </h4>
+                        </div>
+                        <div class="col-12 cursor-pointer" (click)="goToProductProfile()">
+                            <app-star [max]="5" [value]="listItem.StarAverage" class="float-right"
+                                style="font-size: 12px"></app-star>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">                
+                <div class="col-12 mt-2">
+                    <button class="btn btn-outline-primary btn-sm btn-naked float-right" type="button"
+                        (click)="host.addToBasket(false, listItem)">
+                        <fa [name]="'cart-plus'"></fa>{{'xAddToBasket' | translate}}
+                    </button>
+                    <button class="btn btn-outline-success btn-sm btn-naked float-right" type="button"
+                        (click)="host.addToBasket(true, listItem)">
+                        <fa [name]="'hand-o-right'"></fa>{{'xBuyNow' | translate}}
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2 cursor-pointer" (click)="goToShopProfile()" style="border-left: 1px dotted">
+            <!--Shop-->
+            <div class="row" style="font-size: 12px">
+                <div class="col-12">
+                    <span>{{listItem.ShopFullName}}</span>
+                </div>
+                <div class="col-12 mb-2">
+                    <app-star [max]="5" [value]="listItem.ShopStarAverage"></app-star>
+                </div>
+                <div class="col-12">
+                    {{listItem.ShopTypeName}}
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!--
+            <div class="row">
+            <div class="col-12">
+                {{listItem.ProductName}}
+            </div>
+            <div class="col-12">
+                <app-star [max]="5" [value]="listItem.StarAverage"></app-star>
+            </div>
+            <div class="col-12" *ngIf="extraDto" [@expandCollapse]>
+                <img src="assets/no-image_500_500.png" *ngIf="extraDto.PortraitImageUniqueIdStr == null"
+                 width="64" height="64"   class="img-fluid" alt="No Image">
+                <img src="{{environment.productImageSource}}{{extraDto.PortraitImageUniqueIdStr}}"
+                width="64" height="64" *ngIf="extraDto.PortraitImageUniqueIdStr != null" class="img-fluid" alt="Product Image">
+            </div>
+            <div class="col-12" *ngIf="extraDto && extraDto.CodeList && extraDto.CodeList.length > 0" [@expandCollapse]>
+                <small style="font-size: 10px" class="text-secondary" *ngFor="let codeItem of extraDto.CodeList">
+                    {{productCodeTypes[codeItem.ProductCodeTypeId] | translate}}:
+                    {{codeItem.Code}}
+                </small>
+            </div>
+            <div class="col-12">
+                <h3 class="m-1">
+                    {{listItem.OnlineSalePrice | number:'1.2-2'}}
+                    <currency-icon [currencyId]="host.profile.SelectedCurrencyId"></currency-icon>
+                </h3>
+            </div>
+        </div>
+        <hr class="m-1">
+        <div class="row" style="font-size: 12px">
+            <div class="col-12">
+                {{listItem.ShopFullName}}
+            </div>
+            <div class="col-12">
+                <app-star [max]="5" [value]="listItem.ShopStarAverage"></app-star>
+            </div>
+        </div>
+       -->
+</div>
+
+<!--
+    <a [routerLink]="getProductProfileUrl()">
+
+                        </a>
+-->

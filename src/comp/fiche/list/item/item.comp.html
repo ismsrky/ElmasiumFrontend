@@ -1,0 +1,161 @@
+<ngx-loading [show]="busy"></ngx-loading>
+
+<div class="card mb-1" *ngIf="listItem"
+    [class.border-success]="listItem.IsDebtor == 1 && listItem.ApprovalStatId != approvalStats.xUncompleted"
+    [class.border-warning]="listItem.IsDebtor == 0 && listItem.ApprovalStatId != approvalStats.xUncompleted"
+    [class.border-secondary]="listItem.IsDebtor == 2 && listItem.ApprovalStatId != approvalStats.xUncompleted"
+    [class.border-danger]="listItem.ApprovalStatId == approvalStats.xUncompleted">
+    <div class="card-body p-2">
+        <div class="row">
+            <div class="col-xl-4 col-md-4">
+                {{ficheTypeFakes[listItem.FicheTypeFakeId] | translate}}
+                -
+                {{listItem.IssueDateNumber | date:'dd.MM.yyyy'}}
+                -
+                {{listItem.Id}}
+            </div>
+            <div class="col-xl-4 col-md-8">
+                <label class="control-label" *ngIf="!listItem.IsDebtor">{{listItem.DebtPersonFullName}}</label>
+                <label class="control-label" *ngIf="listItem.IsDebtor">{{listItem.CreditPersonFullName}}</label>
+            </div>
+            <div class="col-xl-2 col-md-6 col-6">
+                <span
+                    [class.text-danger]="listItem.ApprovalStatId == approvalStats.xPending || listItem.ApprovalStatId == approvalStats.xPendingDeleted || listItem.ApprovalStatId == approvalStats.xDeleted || listItem.ApprovalStatId == approvalStats.xUncompleted"
+                    [class.text-success]="listItem.ApprovalStatId == approvalStats.xAccepted"
+                    [class.text-warning]="listItem.ApprovalStatId == approvalStats.xRejected"
+                    [class.text-info]="listItem.ApprovalStatId == approvalStats.xPulledBack"
+                    [class.blink]="listItem.ApprovalStatId == approvalStats.xUncompleted">
+                    {{approvalStats[listItem.ApprovalStatId] | translate}}
+                </span>
+            </div>
+            <div class="col-xl-2 col-md-6 col-6">
+                <b class="float-right">
+                    {{listItem.GrandTotal | number:'1.2-2'}}
+                    <currency-icon [currencyId]="listItem.CurrencyId"></currency-icon>
+                </b>
+            </div>
+        </div>
+        <div class="row"
+            *ngIf="listItem.FicheTypeId == ficheTypes.xReceipt || listItem.FicheTypeId == ficheTypes.xInvoice">
+            <div class="col-xl-2 col-md-4">
+                <span>
+                    {{paymentStats[listItem.PaymentStatId] | translate}}
+                    <span class="text-danger" *ngIf="listItem.PaymentStatId == paymentStats.xPartialPaid">
+                        ({{'xRemaining' | translate}}:
+                        {{(listItem.GrandTotal - listItem.PaidTotal) | number:'1.2-2'}}
+                        <currency-icon [currencyId]="listItem.CurrencyId"></currency-icon>)
+                    </span>
+                </span>
+            </div>
+            <div class="col-xl-2 col-md-4">
+                <span *ngIf="listItem.IncludingVat">{{'xIncludingVat' | translate}}</span>
+                <span *ngIf="!listItem.IncludingVat">{{'xExcludingVat' | translate}}</span>
+            </div>
+            <div class="col-xl-2 col-md-4">
+                {{'xRowDiscountTotal' | translate}}: {{listItem.RowDiscountTotal}} <currency-icon
+                    [currencyId]="listItem.CurrencyId"></currency-icon>
+            </div>
+            <div class="col-xl-4 col-md-4">
+                <span *ngIf="listItem.FicheTypeId == ficheTypes.xReceipt">{{'xReceiptDiscount' | translate}}</span>
+                <span *ngIf="listItem.FicheTypeId == ficheTypes.xInvoice">{{'xInvoiceDiscount' | translate}}</span>
+                : {{listItem.UnderDiscountRate}} % / {{listItem.UnderDiscountTotal}} <currency-icon
+                    [currencyId]="listItem.CurrencyId"></currency-icon>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xl-5 col-md-8">
+                <button class="btn btn-outline-secondary btn-sm mb-2" type="button" [class.active]="showProductList"
+                    (click)="getProductListClick()"
+                    *ngIf="listItem.FicheTypeId == ficheTypes.xReceipt || listItem.FicheTypeId == ficheTypes.xInvoice || listItem.FicheTypeId == ficheTypes.xWayBill">
+                    <fa [name]="'barcode'"></fa>{{'xInventory' | translate}}
+                </button>
+                <button class="btn btn-outline-secondary btn-sm mb-2" type="button" [class.active]="showMoneyList"
+                    (click)="getMoneyListClick()"
+                    [class.ml-2]="listItem.FicheTypeId != ficheTypes.xPayment && listItem.FicheTypeId != ficheTypes.xMoneyTransfer"
+                    *ngIf="listItem.FicheTypeId == ficheTypes.xPayment || listItem.FicheTypeId == ficheTypes.xMoneyTransfer">
+                    <fa [name]="'money'"></fa>{{'xMoney' | translate}}
+                </button>
+
+                <button class="btn btn-outline-secondary btn-sm ml-2 mb-2" type="button" (click)="getRelatedFicheList()"
+                    [class.active]="showRelatedFicheList" *ngIf="!forRelated">
+                    <fa [name]="'link'"></fa>{{'xRelatedFiches' | translate}}
+                </button>
+                <button class="btn btn-outline-secondary btn-sm ml-2 mb-2" type="button"
+                    (click)="showNotes = !showNotes" [class.active]="showNotes">
+                    <fa [name]="listItem.Notes == null ? 'comment-o' : 'commenting-o'"></fa>
+                    {{'xNotes' | translate}}
+                </button>
+                <button class="btn btn-outline-secondary btn-sm ml-2 mb-2" type="button"
+                    (click)="getFicheApprovalHistoryList()" [class.active]="showHistoryList">
+                    <fa [name]="'history'"></fa>{{'xHistory' | translate}}
+                </button>
+            </div>
+            <div class="col-xl-2 col-md-4">
+                {{'xDueDate' | translate}}:
+                <span *ngIf="listItem.DueDateNumber == null">{{'xNA' | translate}}</span>
+                <span *ngIf="listItem.DueDateNumber != null">{{listItem.DueDateNumber | date:'dd.MM.yyyy'}}</span>
+            </div>
+            <div class="col-xl-2 col-md-4">
+                {{'xPrintedCode' | translate}}:
+                <span *ngIf="listItem.PrintedCode != null">{{listItem.PrintedCode}}</span>
+                <span *ngIf="listItem.PrintedCode == null">{{'xNA' | translate}}</span>
+            </div>
+            <div class="col-xl-3 col-12">               
+                <button class="btn btn-outline-danger btn-sm float-right mb-2" *ngIf="ficheActionsDto.Deletable"
+                    type="button" (click)="delete(listItem)">
+                    <fa [name]="'trash-o'"></fa>{{'xDelete' | translate}}
+                </button>
+                <button class="btn btn-outline-primary ml-2 mb-2 btn-sm float-right"
+                    (click)="save(approvalStats.xAccepted)" *ngIf="ficheActionsDto.Acceptable" type="button">
+                    <fa [name]="'check'"></fa>{{'xAccept' | translate}}
+                </button>
+                <button class="btn btn-outline-danger btn-sm float-right mb-2" (click)="save(approvalStats.xRejected)"
+                    *ngIf="ficheActionsDto.Rejectable" type="button">
+                    <fa [name]="'times'"></fa>{{'xReject' | translate}}
+                </button>
+                <button class="btn btn-outline-danger btn-sm float-right mb-2" (click)="save(approvalStats.xPulledBack)"
+                    *ngIf="ficheActionsDto.PullBackable" type="button">
+                    <fa [name]="'reply'"></fa>{{'xPullBack' | translate}}
+                </button>
+            </div>
+        </div>
+
+        <div class="row mb-2" *ngIf="showNotes" [@expandCollapse]>
+            <div class="col-12 p-2">
+                <div class="card border-info">
+                    <div class="card-body p-2">
+                        <h4 class="text-danger no-records" *ngIf="listItem.Notes == null">
+                            {{'xNoNotes' | translate}}
+                        </h4>
+                        {{listItem.Notes}}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row" *ngIf="showProductList" [@expandCollapse]>
+            <div class="col-12 p-2">
+                <fiche-list-item-product-list [ficheListDto]="listItem" [ficheProductList]="ficheProductList"
+                    [ficheActionsDto]="ficheActionsDto">
+                </fiche-list-item-product-list>
+            </div>
+        </div>
+        <div class="row" *ngIf="showMoneyList" [@expandCollapse]>
+            <div class="col-12 p-2">
+                <fiche-list-item-money-list [ficheListDto]="listItem" [ficheMoneyList]="ficheMoneyList">
+                </fiche-list-item-money-list>
+            </div>
+        </div>
+        <div class="row" *ngIf="!forRelated && showRelatedFicheList" [@expandCollapse]>
+            <div class="col-12 p-2">
+                <fiche-list-index [IsInside]="true" [IsOpen]="showRelatedFicheList" [forRelated]="true">
+                </fiche-list-index>
+            </div>
+        </div>
+        <div class="row" *ngIf="showHistoryList" [@expandCollapse]>
+            <div class="col-12 p-2">
+                <fiche-approval-history-list></fiche-approval-history-list>
+            </div>
+        </div>
+    </div>
+</div>

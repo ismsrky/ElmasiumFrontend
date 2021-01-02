@@ -1,0 +1,66 @@
+<div class="tile p-2 page-title-fixed cursor-pointer" style="border-radius: 8px 0px 0px 8px !important"
+    *ngIf="fixedScroll && !isNarrow" [@expandCollapse] (click)="goUp()">
+    <div class="row">
+        <div class="col-12">
+            <fa [name]="icon" [ngClass]="iconColor"></fa> {{title | translate}}
+            <span *ngIf="isTest"> - {{'xPageInTest' | translate}}</span>
+        </div>
+    </div>
+</div>
+<div class="page-title" [style.margin-top]="operator.IsAnonymous && isNarrow ? '-25px': ''">
+    <div class="row">
+        <div class="col-10">
+            <h3>
+                <fa [name]="icon" [ngClass]="iconColor"></fa> {{title | translate}}
+                <span *ngIf="isTest"> - {{'xPageInTest' | translate}}</span>
+            </h3>
+        </div>
+        <div class="col-2">
+            <p>
+                <button class="btn btn-outline-info btn-sm float-right" type="button" tabIndex="-1" style="border:none"
+                    (click)="toggleHelp()" [class.active]="isHelpOpen">
+                    <fa [name]="'question'"></fa>{{'xHelp' | translate}} - F1
+                </button>
+            </p>
+        </div>
+    </div>
+</div>
+<div class="row" *ngIf="!isEmailVerified" [@expandCollapse]>
+    <div class="col-12">
+        <span class="float-right text-danger blink" style="cursor: pointer" (click)="openVerifyEmail()">
+            {{'xVerifyEmail' | translate}}
+        </span>
+    </div>
+</div>
+<div class="row" *ngIf="latestVersion != null || newVersionReleased" [@expandCollapse]>
+    <div class="col-12">
+        <span class="float-right text-danger blink" style="cursor: pointer" (click)="forceRefresh()">
+            {{'xNewVersionPublished' | translate}} {{'xRefreshPage' | translate}}
+            <button class="btn btn-outline-info btn-sm float-right btn-naked" type="button" (click)="forceRefresh()">
+                <fa [name]="'refresh'"></fa>{{'xRefresh' | translate}}
+            </button>
+        </span>
+    </div>
+</div>
+<div class="row" *ngIf="isHelpOpen" [@expandCollapse]>
+    <div class="clearfix"></div>
+    <div class="col-12" *ngFor="let help of helpList;">
+        <div class="tile">
+            <div class="tile-title-w-btn">
+                <h3 class="title">{{help.Caption}}</h3>
+            </div>
+            <div class="tile-body" *ngIf="!help.IsTextHtml">
+                {{help.Text}}
+            </div>
+            <div class="tile-body" [innerHTML]="help.Text" *ngIf="help.IsTextHtml">
+            </div>
+            <div class="tile-body embed-container" *ngIf="help.SafeVideoUrl">
+                <iframe [src]="help.SafeVideoUrl" frameborder="0" width="560" height="315"
+                    allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                    allowfullscreen></iframe>
+            </div>
+        </div>
+    </div>
+</div>
+
+<verify-email *ngIf="isVerifyEmailOpen"></verify-email>

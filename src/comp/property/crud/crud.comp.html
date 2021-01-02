@@ -1,0 +1,51 @@
+<ngx-loading [show]="busy"></ngx-loading>
+
+<div class="modal fade" bsModal #modal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="dialog-events-name">
+    <div class="modal-dialog modal-md modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header pl-2 pb-2 pt-2">
+                <h5 id="dialog-events-name" class="modal-title pull-left">Özellik oluştur</h5>
+                <button type="button" class="close pull-right" aria-label="Close" (click)="modal.hide()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form class="needs-validation" #propertySaveForm="ngForm" (submit)="save()" novalidate>
+                <div class="modal-body p-2">
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <label class="control-label">
+                                *{{'xName' | translate}}
+                            </label>
+                            <input class="form-control" #name="ngModel" required
+                                [class.is-invalid]="name.invalid && (name.touched || propertySaveForm.submitted)"
+                                [(ngModel)]="propertySaveDto.Name" name="Name" [appAutofocus]="true" type="text"
+                                placeholder="{{'xName' | translate}}">
+                            <div class="invalid-tooltip">{{'xNameCantBeEmpty' | translate}}</div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 mb-2">
+                            <textarea class="form-control" #propertyNameList="ngModel"
+                                [(ngModel)]="propertySaveDto.PropertyNameListStr" name="PropertyNameListStr" type="text"
+                                rows="20" required placeholder="'Özellikleri girin'"></textarea>
+                            <div class="invalid-tooltip">
+                                Özellikleri girin</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer pl-2 pb-2 pt-2">
+                    <div class="pull-right">
+                        <button class="btn btn-danger btn-sm" type="button" (click)="close()">
+                            <fa [name]="'ban'"></fa>{{'xCancel' | translate}}
+                        </button>
+                    </div>
+                    <div class="pull-right ml-2">
+                        <button class="btn btn-success btn-sm" type="submit">
+                            <fa [name]="'check'"></fa>{{'xSave' | translate}}
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

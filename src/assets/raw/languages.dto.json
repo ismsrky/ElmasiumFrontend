@@ -1,0 +1,12 @@
+[
+    {
+        "Id": 0,
+        "Name": "xTurkish",
+        "CultureCode": "tr"
+    },
+    {
+        "Id": 1,
+        "Name": "xAmericanDollar",
+        "CultureCode": "en"
+    }
+]

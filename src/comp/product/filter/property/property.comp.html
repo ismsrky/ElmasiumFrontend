@@ -1,0 +1,57 @@
+<div class="row" *ngIf="isAdmin" [@expandCollapse]>
+    <div class="col-6 mb-2">
+        <button class="btn btn-danger btn-sm" type="button" (click)="openSaveIncludeExclude(false)">
+            <fa [name]="'plus'"></fa> {{'xExcluding' | translate}}
+        </button>
+    </div>
+    <div class="col-6 mb-2">
+        <button class="btn btn-info btn-sm" type="button" (click)="openSaveIncludeExclude(true)">
+            <fa [name]="'plus'"></fa> {{'xExtra' | translate}}
+        </button>
+    </div>
+    <div class="col-6 mb-2">
+        <button class="btn btn-success btn-sm" type="button" (click)="openSaveProperty()">
+            <fa [name]="'plus'"></fa> Özellik
+        </button>
+    </div>
+    <div class="col-6 mb-2">
+        <button class="btn btn-primary btn-sm" type="button" (click)="openSaveOption()">
+            <fa [name]="'plus'"></fa> {{'xOption' | translate}}
+        </button>
+    </div>
+</div>
+<ng-template ngFor let-propertyGroup [ngForOf]="filterSummaryDto.PropertyList">
+    <div class="tile p-2" *ngIf="showGroup(propertyGroup)">
+        <div class="row">
+            <div class="col-12">
+                <h5>{{propertyGroup.Name}} </h5>
+                <hr class="m-2">
+                <div class="row" *ngFor="let property of propertyGroup.PropertyList;let i=index;">
+                    <div class="col-12" [@expandCollapse]>
+                        <div class="animated-checkbox" *ngIf="property.Count > 0">
+                            <label>
+                                <input type="checkbox" [(ngModel)]="property.IsChecked" name="property{{i}}"
+                                    (change)="propertyChanged()">
+                                <span class="label-text">{{property.Name}} ({{property.Count}})</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" *ngIf="showExpand(propertyGroup)">
+                    <div class="col-12">
+                        <button class="btn btn-outline-secondary btn-sm btn-naked float-right" type="button"
+                            (click)="propertyGroup.IsExpanded = !propertyGroup.IsExpanded">
+                            <fa [name]="propertyGroup.IsExpanded?'angle-up':'angle-down'"></fa>
+                            <span *ngIf="propertyGroup.IsExpanded">{{'xCollapse' | translate}}</span>
+                            <span *ngIf="!propertyGroup.IsExpanded">{{'xExpand' | translate}}</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-template>
+
+<property-crud *ngIf="isPropertyModalOpen"></property-crud>
+<option-crud *ngIf="isOptionModalOpen"></option-crud>
+<include-exclude-crud></include-exclude-crud>

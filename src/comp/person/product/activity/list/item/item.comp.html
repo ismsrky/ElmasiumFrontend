@@ -1,0 +1,38 @@
+<ngx-loading [show]="busy"></ngx-loading>
+
+<div class="card mb-1" [class.border-success]="listItem.IsDebt" [class.border-warning]="!listItem.IsDebt">
+    <div class="card-body p-2">
+        <div class="row">
+            <div class="col-xl-4">
+                <span>{{'xQuantity' | translate}}: {{listItem.Quantity}}</span>
+                -
+                {{listItem.FicheIssueDateNumber | date:'dd.MM.yyyy'}}
+                <span class="float-right mr-2">{{xCaption | translate}}</span>
+            </div>
+            <div class="col-xl-4">
+                <label class="control-label">
+                    {{listItem.ProductName}} ({{productTypes[listItem.ProductTypeId] | translate}})
+                </label>
+            </div>
+            <div class="col-xl-2 col-6 mb-2">
+                <button class="btn btn-outline-primary btn-sm" type="button" [class.active]="showFiche"
+                    (click)="showFicheClick()">
+                    <fa [name]="'barcode'"></fa>{{'xShowFiche' | translate}}
+                </button>
+            </div>
+            <div class="col-xl-2 col-6 mb-2">
+                <span class="control-label float-right"
+                    [class.text-danger]="listItem.FicheApprovalStatId==approvalStats.xPending"
+                    [class.text-success]="listItem.FicheApprovalStatId==approvalStats.xAccepted"
+                    [class.text-warning]="listItem.FicheApprovalStatId==approvalStats.xRejected"
+                    [class.text-info]="listItem.FicheApprovalStatId==approvalStats.xPulledBack">
+                    {{approvalStats[listItem.FicheApprovalStatId] | translate}}</span>
+            </div>
+        </div>
+        <div class="row" *ngIf="showFiche" [@expandCollapse]>
+            <div class="col-12 p-2">
+                <fiche-list-item [listItem]="ficheListDto"></fiche-list-item>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,297 @@
+<div class="horizontal-menu">
+    <nav class="navbar top-navbar col-lg-12 col-12 p-0" style="height: 60px;">
+        <div class="container">
+            <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
+                <a class="navbar-brand brand-logo" routerLink="">
+                    <img src="assets/common/elmasium_logo_small.png" alt="logo">
+                    <span class="text-white">Elmasium</span>
+                </a>
+                <a class="navbar-brand brand-logo-mini" routerLink="">
+                    <img src="assets/common/elmasium_logo_small.png" alt="logo">
+                </a>
+            </div>
+            <div class="navbar-menu-wrapper d-flex align-items-center">
+                <ul class="navbar-nav navbar-nav-right" style="height: 50px;" [class.p-2]="isNarrow"
+                    [class.pr-2]="!isNarrow" [class.pl-2]="!isNarrow" [class.currentProfile]="isRealLogin">
+                    <li class="nav-item dropdown ml-0 mr-0" *ngIf="isNarrow">
+                        <a class="text-white" (click)="openProfile()" style="font-size: small;"
+                            *ngIf="!operator.IsAnonymous && profile != null">{{profile.FullName}}</a>
+                        <a class="text-white nav-link" *ngIf="operator.IsAnonymous" routerlink="">Elmasium</a>
+                    </li>
+                    <li class="lefPerson pr-2 pl-2"
+                        *ngIf="!isNarrow && profile != null && !operator.IsAnonymous && myPersonList && myPersonList.length > 0"
+                        [@expandCollapse]>
+                        <span class="nav-profile-name text-secondary float-right" (click)="leftPersonClick()">
+                            <span *ngIf="leftPerson">{{leftPerson.RelatedPersonFullName}}</span>
+                            <br>
+                            <fa [name]="'angle-double-down'" *ngIf="myPersonList && myPersonList.length > 1"
+                                class="menu-icon menu-arrow cursor-pointer float-right" (click)="leftPersonClick()">
+                            </fa>
+                            <small class="float-right mr-2" style="font-style: italic;">
+                                {{leftPersonTitle | translate}}
+                            </small>
+                        </span>
+                    </li>
+                    <li *ngIf="!isNarrow && profile != null && !operator.IsAnonymous && myPersonList && myPersonList.length > 1"
+                        class="nav-item nav-profile dropdown mr-0 mr-sm-2" [class.show]="showProfileList">
+                        <fa class="menu-icon menu-arrow cursor-pointer" (click)="leftPersonClick()">
+                        </fa>
+                        <div class="dropdown-menu dropdown-menu-right navbar-dropdown pt-0"
+                            [class.show]="showProfileList">
+                            <a class="dropdown-item" (click)="myPersonChanged(myPerson)"
+                                *ngFor="let myPerson of myPersonList" [@expandCollapse]
+                                style="border-bottom: 1px solid #ddd;"
+                                [class.font-weight-bold]="myPerson.RelatedPersonId == operator.Id">
+                                {{myPerson.RelatedPersonFullName}}
+                                <span *ngIf="myPerson.RelatedPersonId == operator.Id">
+                                    ({{'xMe' | translate}})
+                                </span>
+                            </a>
+                        </div>
+                    </li>
+                    <li class="nav-item dropdown mr-0 ml-2">
+                        <a class="nav-link count-indicator dropdown-toggle d-flex align-items-center justify-content-center"
+                            id="notificationDropdown" data-toggle="dropdown" [routerLink]="'/' + appRoutes.myBaskets">
+                            <fa [name]="'shopping-basket'" [size]=1></fa>
+                            <span class="fa-stack" *ngIf="notificationSummaryDto.xBasket > 0"
+                                style="font-size: 10px;position: absolute;padding-top: 0px;margin-top: -15px;margin-left: -12px;">
+                                <span class="fa fa-circle fa-stack-2x text-danger"></span>
+                                <strong class="fa-stack-1x text-light">{{notificationSummaryDto.xBasket}}</strong>
+                            </span>
+                        </a>
+                    </li>
+
+                    <li class="nav-item dropdown mr-0 ml-2" *ngIf="!operator.IsAnonymous">
+                        <a class="nav-link count-indicator dropdown-toggle d-flex align-items-center justify-content-center"
+                            id="notificationDropdown" (click)="approvalAllClick()" data-toggle="dropdown">
+                            <fa [name]="'bolt'" [size]=1></fa>
+                            <span *ngIf="notificationSummaryDto.TotalIncomings > 0" class="fa-stack"
+                                style="font-size: 10px;position: absolute;padding-top: 0px;margin-top: -15px;margin-left: -12px;">
+                                <span class="fa fa-circle fa-stack-2x text-danger"></span>
+                                <strong
+                                    class="fa-stack-1x text-light">{{notificationSummaryDto.TotalIncomings}}</strong>
+                            </span>
+                        </a>
+
+                        <div *ngIf="showApprovalAll" [@expandCollapse]>
+                            <approval-all></approval-all>
+                        </div>
+                    </li>
+                    <li class="nav-item dropdown mr-0 ml-2" *ngIf="!operator.IsAnonymous">
+                        <a class="nav-link count-indicator dropdown-toggle d-flex align-items-center justify-content-center"
+                            id="notificationDropdown" (click)="notificationClick()" data-toggle="dropdown">
+                            <fa [name]="'bell-o'" [size]=1></fa>
+                            <span *ngIf="notificationSummaryDto.xNotifications > 0" class="fa-stack"
+                                style="font-size: 10px;position: absolute;padding-top: 0px;margin-top: -15px;margin-left: -12px;">
+                                <span class="fa fa-circle fa-stack-2x text-danger"></span>
+                                <strong
+                                    class="fa-stack-1x text-light">{{notificationSummaryDto.xNotifications}}</strong>
+                            </span>
+                        </a>
+                        <div *ngIf="showNotification" [@expandCollapse]>
+                            <notification-small-list-index></notification-small-list-index>
+                        </div>
+                    </li>
+                    <li class="nav-item nav-profile mr-0 mr-sm-2" *ngIf="!isNarrow">
+                        <a class="nav-link cursor-pointer"
+                            *ngIf="operator != null && profile != null && !operator.IsAnonymous"
+                            (click)="openProfile()">
+                            <!--
+                                    This will be added later when real person can add thier own profile photos:
+                                <img *ngIf="profile.PersonTypeId == personTypes.xRealPerson" width="30px" height="30px"
+                                    src="{{operator.GenderId==genders.xMan?'assets/man_who.png':'assets/woman_who.png'}}"
+                                    alt="User Image">
+                                <img *ngIf="profile.PersonTypeId == personTypes.xShop" src="assets/shop-icon.png"
+                                    width="30px" height="30px" alt="User Image" class="mr-2">
+                                -->
+                        </a>
+                        <!--
+                            <a class="nav-link" *ngIf="operator != null && profile != null && operator.IsAnonymous"
+                            style="cursor: pointer;" (click)="gotoLogin()">
+                            <img width="30px" height="30px" src="assets/man_who.png" alt="User Image">
+                        </a>
+                        -->
+                    </li>
+
+                    <li *ngIf="!isNarrow && profile != null && !operator.IsAnonymous" class="pl-2 pr-2"
+                        style="background:rgb(12, 48, 76);border-radius: 8px;color: #fdffa0;">
+                        <div class="row cursor-pointer" (click)="openProfile()">
+                            <div class="col-12">
+                                <span class="nav-profile-name float-right">{{profile.FullName}}
+                                </span>
+                            </div>
+                        </div>
+                        <div class="row" *ngIf="currencyDto != null" [@expandCollapse]>
+                            <div class="col-12">
+                                <a class="float-right cursor-pointer" style="font-size: 10px"
+                                    (click)="openCurrencyModal()">
+                                    {{currencyDto.Name | translate}} ({{currencyDto.Code}})
+                                    <span *ngIf="currencyDto.IconClass == null">{{currencyDto.Code}} </span>
+                                    <fa *ngIf="currencyDto.IconClass" [name]="currencyDto.IconClass"></fa>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="row"
+                            *ngIf="profile != null && profile.DefaultCurrencyId != profile.SelectedCurrencyId"
+                            [@expandCollapse]>
+                            <div class="col-12">
+                                <a class="float-right text-warning blink cursor-pointer" style="font-size: 10px"
+                                    (click)="switchDefaultCurrency()">
+                                    {{'xSwitchDefaultCurrency' | translate}}
+                                </a>
+                            </div>
+                        </div>
+                    </li>
+                    <li *ngIf="!isNarrow && profile != null && operator.IsAnonymous">
+                        <div class="row cursor-pointer" (click)="gotoLogin()">
+                            <div class="col-12">
+                                <fa [name]="'sign-in'" [size]=1></fa>
+                                {{'xLogin' | translate}}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <a class="float-right cursor-pointer" style="font-size: 10px" (click)="gotoRegister()">
+                                    <fa [name]="'caret-right'"></fa>
+                                    {{'xRegister' | translate}}
+                                </a>
+                            </div>
+                        </div>
+                    </li>
+
+                    <li class="nav-item nav-profile dropdown mr-0 mr-sm-2" [class.show]="showUserMenu">
+                        <fa [name]="'angle-down'" class="menu-icon menu-arrow cursor-pointer" (click)="userMenuClick()">
+                        </fa>
+                        <div class="dropdown-menu dropdown-menu-right navbar-dropdown" [class.show]="showUserMenu">
+                            <a class="dropdown-item" (click)="openProfile()" *ngIf="!operator.IsAnonymous">
+                                <fa [name]="'user'" [size]=1></fa>{{'xProfile' | translate}}
+                            </a>
+                            <a class="dropdown-item" (click)="openLanguageModal()">
+                                <fa [name]="'globe'" [size]=1></fa>{{'xLanguage' | translate}}
+                            </a>
+                            <a class="dropdown-item" (click)="openAbout()">
+                                <fa [name]="'question'" [size]=1></fa>{{'xAbout' | translate}}
+                            </a>
+                            <a class="dropdown-item" (mousedown)="logout()" style="border-top: 1px solid #ddd;"
+                                *ngIf="!operator.IsAnonymous">
+                                <fa [name]="'sign-out'" [size]=1></fa>{{'xExit' | translate}}
+                            </a>
+                        </div>
+                    </li>
+                </ul>
+                <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" *ngIf="isNarrow"
+                    type="button" data-toggle="horizontal-menu-toggle" (click)="headerToggleClick()">
+                    <fa [name]="'bars'" class="menu-icon menu-arrow">
+                    </fa>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <nav class="bottom-navbar header-toggled" *ngIf="isNarrow">
+        <div class="container" style="border-bottom: 1px solid #ddd;">
+            <div class="row">
+                <div class="col-6">
+                    <span
+                        *ngIf="isNarrow && profile != null && !operator.IsAnonymous && myPersonList && myPersonList.length > 0"
+                        [@expandCollapse] class="nav-profile-name text-secondary " (click)="leftPersonClick()">
+                        <small *ngIf="leftPerson">{{leftPerson.RelatedPersonFullName}}</small>
+                        <small class="mr-2" *ngIf="myPersonList.length > 1" style="font-style: italic;">
+                            {{leftPersonTitle | translate}}
+                        </small>
+                        <fa [name]="'angle-double-down'" *ngIf="myPersonList.length > 1"
+                            class="menu-icon menu-arrow cursor-pointer" (click)="leftPersonClick()">
+                        </fa>
+                    </span>
+                </div>
+                <div class="col-6">
+                    <a class="float-right" *ngIf="isNarrow && currencyDto != null && !operator.IsAnonymous"
+                        style="cursor: pointer;font-size: smaller" (click)="openCurrencyModal()">
+                        {{currencyDto.Name | translate}} ({{currencyDto.Code}})
+                        <span *ngIf="currencyDto.IconClass == null">{{currencyDto.Code}} </span>
+                        <fa *ngIf="currencyDto.IconClass" [name]="currencyDto.IconClass"></fa>
+                    </a>
+
+                    <a class="float-right text-warning blink" style="cursor: pointer;font-size: smaller"
+                        (click)="switchDefaultCurrency()"
+                        *ngIf="isNarrow && profile != null && profile.DefaultCurrencyId != profile.SelectedCurrencyId"
+                        [@expandCollapse]>
+                        {{'xSwitchDefaultCurrency' | translate}}
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+
+    <nav class="bottom-navbar" [class.header-toggled]="headerToggled">
+        <div class="container" style="margin-top: -5px;">
+            <ul class="nav page-navigation">
+                <a class="nav-link" *ngIf="isNarrow && operator != null && profile != null && operator.IsAnonymous"
+                    style="cursor: pointer;" (click)="gotoLogin()">
+
+                    <fa [name]="'sign-in'"></fa>
+                    {{'xLogin' | translate}}
+                </a>
+                <a class="nav-link mt-2" *ngIf="isNarrow && operator.IsAnonymous"
+                    style="cursor: pointer;font-size: 14px" (click)="gotoRegister()">
+                    <fa [name]="'caret-right'"></fa>
+                    {{'xRegister' | translate}}
+                </a>
+
+
+                <li class="nav-item" *ngFor="let menu of navMenuList" [@expandCollapse]
+                    [class.mega-menu]="menu.Range == 2" [class.show-submenu]="menu.Show">
+                    <a class="nav-link" [routerLink]="[menu.Url?menu.Url:'']" (mousedown)="showMenu(menu)">
+                        <fa [name]="menu.IconClass" class="menu-icon" [ngClass]="menu.IconColor"></fa>
+                        <span class="menu-title">{{menu.Name | translate}}</span>
+                        <i class="menu-arrow" *ngIf="menu.Range > 0"></i>
+                    </a>
+
+                    <div class="submenu" *ngIf="menu.Range == 1 && menu.SubMenuList && menu.SubMenuList.length > 0">
+                        <ul class="submenu-item">
+                            <li class="nav-item" *ngFor="let subMenu of menu.SubMenuList" [@expandCollapse]>
+                                <a class="nav-link" [class.active]="subMenu.Active" [routerLink]="[subMenu.Url]">
+                                    {{subMenu.Name | translate}}
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="submenu" *ngIf="menu.Range == 2 && menu.SubMenuList && menu.SubMenuList.length > 0">
+                        <div class="col-group-wrapper row">
+                            <div class="col-group col-md-4" *ngFor="let subMenu of menu.SubMenuList">
+                                <div class="row">
+                                    <div class="submenu-item">
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <p class="category-heading">{{subMenu.Name | translate}}</p>
+                                                <ul class="submenu-item">
+                                                    <li class="nav-item" *ngFor="let miniMenu of subMenu.SubMenuList"
+                                                        [@expandCollapse]>
+                                                        <a class="nav-link" [class.active]="miniMenu.Active"
+                                                            [routerLink]="[miniMenu.Url]">
+                                                            {{miniMenu.Name | translate}}
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</div>
+
+<person-mine-select *ngIf="isProfileModalOpen"></person-mine-select>
+<person-mine-currency *ngIf="isCurrencyModalOpen"></person-mine-currency>
+
+<approval-fiche-choice-index *ngIf="isChoiceModalOpen"></approval-fiche-choice-index>
+<lang-select *ngIf="isLangModalOpen"></lang-select>
+<fiche-list-item-modal *ngIf="isFicheItemModalOpen"></fiche-list-item-modal>

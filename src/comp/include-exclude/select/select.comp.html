@@ -1,0 +1,36 @@
+<div class="row" *ngIf="ieListDto && ieListDto.length > 0">
+    <div class="col-12">
+        <h5 style="cursor: pointer" (click)="isExpanded = !isExpanded">{{xCaptionStr | translate}}
+            <fa [name]="'plus'" *ngIf="showExpandBtn"></fa>
+        </h5>
+        <hr class="m-2" *ngIf="ieListDto && ieListDto.length > 0">
+    </div>
+</div>
+<div class="row" *ngIf="isInclude && (isExpanded || !showExpandBtn)" [@expandCollapse] style="font-size: smaller">
+    <div class="col-md-* ml-2" *ngFor="let ie of ieListDto" [@expandCollapse]>
+        <div class="animated-checkbox mt-2">
+            <label>
+                <input type="checkbox" [disabled]="isReadonly"  [(ngModel)]="ie.IsSelected" name="ie.Id"
+                    (change)="calculate()">
+                <span class="label-text">{{ie.Name}}
+                    <span *ngIf="ie.PriceGap != 0">
+                        (<span *ngIf="ie.PriceGap > 0">+</span>{{ie.PriceGap | number:'1.2-2'}}
+                        <currency-icon [currencyId]="shopCurrencyId" [useString]="true"></currency-icon>)
+                    </span>
+                </span>
+            </label>
+        </div>
+    </div>
+</div>
+<div class="row" *ngIf="!isInclude && (isExpanded || !showExpandBtn)" [@expandCollapse]>
+    <div class="col-md-* ml-2" *ngFor="let ie of ieListDto" [@expandCollapse]>
+        <button class="btn btn-outline-secondary btn-sm btn-naked" [disabled]="isReadonly"
+            [style.text-decoration]="ie.IsSelected ? 'line-through': ''" type="button" (click)="ieClick(ie)">
+            {{ie.Name}}
+            <span *ngIf="ie.PriceGap != 0">
+                (<span *ngIf="ie.PriceGap > 0">+</span>{{ie.PriceGap | number:'1.2-2'}}
+                <currency-icon [currencyId]="shopCurrencyId" [useString]="true"></currency-icon>)
+            </span>
+        </button>
+    </div>
+</div>

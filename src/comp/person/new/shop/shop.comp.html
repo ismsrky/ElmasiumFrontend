@@ -1,0 +1,66 @@
+<form class="needs-validation mb-2" #newShopForm="ngForm" (submit)="save()" novalidate>
+    <ngx-loading [show]="busy"></ngx-loading>
+    <div class="modal fade" bsModal #modal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="dialog-events-name">
+        <div class="modal-dialog modal-sm modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header pt-2 pb-2">
+                    <h5 id="dialog-events-name" class="modal-title pull-left">{{'xNewShop' | translate}}</h5>
+                    <button type="button" class="close pull-right" aria-label="Close" (click)="modal.hide()">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body pt-2">
+                    <div class="row">
+                        <div class="mb-2 col-12">
+                            <label class="control-label">*{{'xSignName' | translate}} </label>
+                            <input class="form-control" #signName="ngModel" required
+                                [(ngModel)]="registerShopDto.ShortName" name="signName" type="text"
+                                [class.is-invalid]="signName.invalid && (signName.touched || newShopForm.submitted)"
+                                placeholder="{{'xSignName' | translate}}" autocomplete="off">
+                            <div class="invalid-tooltip">{{'xShopSignNameCantBeEmpty' | translate}}</div>
+                        </div>
+                        <div class="mb-2 col-12">
+                            <label class="control-label">*{{'xShopType' | translate}} </label>
+                            <select class="form-control" #shopTypeId="ngModel" required
+                                [(ngModel)]="registerShopDto.ShopTypeId" name="shopTypeId"
+                                [class.is-invalid]="shopTypeId.invalid && (shopTypeId.touched || newShopForm.submitted)">
+                                <option [ngValue]="null">{{'xSelectShopType' | translate}}</option>
+                                <ng-template ngFor let-shopTypeGroup [ngForOf]="shopTypeList">
+                                    <optgroup label="{{shopTypeGroup.Name | translate}}">
+                                        <option *ngFor="let shopType of shopTypeGroup.TypeList" [ngValue]="shopType.Id">
+                                            {{shopType.Name | translate}}
+                                        </option>
+                                    </optgroup>
+                                </ng-template>
+                            </select>
+                            <div class="invalid-tooltip">{{'xSelectShopType' | translate}}</div>
+                        </div>
+
+                        <div class="mb-2 col-12">
+                            <label class="control-label">*{{'xDefaultCurrency' | translate}}</label>
+                            <select class="form-control" #defaultCurrencyId="ngModel" required
+                                [class.is-invalid]="defaultCurrencyId.invalid && (defaultCurrencyId.touched || newShopForm.submitted)"
+                                [(ngModel)]="registerShopDto.DefaultCurrencyId" name="DefaultCurrencyId">
+                                <option [ngValue]="null">{{'xSelectCurrency' | translate}}</option>
+                                <option *ngFor="let item of currencies | enums" [ngValue]="item.key">
+                                    {{item.value | translate}}
+                                </option>
+                            </select>
+                            <div class="invalid-tooltip">{{'xSelectCurrency' | translate}}</div>
+                            <span class="text-warning blink">{{'xShopDefaultCurrencyCannotChange' | translate}}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer pl-2 pb-2 pt-2">
+                    <button class="btn btn-danger btn-sm pull-right" type="button" (click)="modal.hide()">
+                        <fa [name]="'ban'"></fa>{{'xCancel' | translate}}
+                    </button>
+                    <button class="btn btn-success btn-sm pull-right" type="submit">
+                        <fa [name]="'check'"></fa>{{'xRegister' | translate}}
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

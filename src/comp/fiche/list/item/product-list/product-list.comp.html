@@ -1,0 +1,85 @@
+<div class="row">
+    <div class="col-12">
+        {{'xInventory' | translate}}
+    </div>
+</div>
+<div class="row" *ngFor="let product of ficheProductList">
+    <div class="col-12">
+        <div class="card mb-1" [class.border-warning]="!ficheListDto.IsDebtor && !product.IsDeleted"
+            [class.border-success]="ficheListDto.IsDebtor && !product.IsDeleted"
+            [class.border-danger]="product.IsDeleted">
+            <div class="card-body p-2">
+                <div class="row" *ngIf="!isNarrow">
+                    <div class="col-md-2">
+                        <label class="form-control-plaintext">{{'xName' | translate}}
+                            <span *ngIf="product.IsDeleted" class="text-danger blink"> -
+                                {{'xDeleted' | translate}}</span>
+                        </label>
+                        <label class="control-label font-weight-bold">{{product.ProductName}}</label>
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-control-plaintext">{{'xQuantity' | translate}}</label>
+                        <label class="control-label">{{product.Quantity}}</label>
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-control-plaintext">{{'xUnitPrice' | translate}}</label>
+                        <label class="control-label">{{product.UnitPrice | number:'1.2-2'}}
+                            <currency-icon [currencyId]="ficheListDto.CurrencyId"></currency-icon>
+                        </label>
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-control-plaintext">{{'xVat' | translate}}</label>
+                        <label class="control-label">{{product.VatRate | number:'1.2-2'}} %</label>
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-control-plaintext">{{'xDiscount' | translate}}</label>
+                        <label class="control-label">{{product.DiscountRate | number:'1.2-2'}} %</label>
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-control-plaintext">{{'xRowGrandTotal' | translate}}</label>
+                        {{product.GrandTotal | number:'1.2-2'}}
+                        <currency-icon [currencyId]="ficheListDto.CurrencyId"></currency-icon>
+                    </div>
+                </div>
+                <div class="row" *ngIf="isNarrow">
+                    <div class="col-lg-2 pt-1">
+                        <label class="control-label font-weight-bold">
+                            <span *ngIf="product.IsDeleted" class="text-danger blink">{{'xDeleted' | translate}}</span>
+                            - {{product.ProductName}}
+                        </label>
+                    </div>
+                    <div class="col-lg-2">
+                        <label class="form-control-plaintext">{{'xQuantity' | translate}}
+                            <label class="control-label float-right">{{product.Quantity}}</label>
+                        </label>
+                    </div>
+                    <div class="col-lg-2">
+                        <label class="form-control-plaintext">{{'xUnitPrice' | translate}}
+                            <label class="control-label float-right">{{product.UnitPrice | number:'1.2-2'}}
+                                <currency-icon [currencyId]="ficheListDto.CurrencyId"></currency-icon>
+                            </label>
+                        </label>
+                    </div>
+                    <div class="col-lg-2">
+                        <label class="form-control-plaintext">{{'xVat' | translate}}
+                            <label class="control-label float-right">{{product.VatRate | number:'1.2-2'}}
+                                %
+                            </label>
+                        </label>
+                    </div>
+                    <div class="col-lg-2">
+                        <label class="form-control-plaintext">{{'xDiscount' | translate}}
+                            <label class="control-label float-right">{{product.DiscountRate | number:'1.2-2'}}%</label>
+                        </label>
+                    </div>
+                    <div class="col-lg-2">
+                        <label class="form-control-plaintext">{{'xRowGrandTotal' | translate}}
+                            <label class="control-label float-right"> {{product.GrandTotal | number:'1.2-2'}}
+                                <currency-icon [currencyId]="ficheListDto.CurrencyId"></currency-icon> </label>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,28 @@
+<div class="card mb-1 border-info">
+    <div class="card-body p-2">
+        <div class="row">
+            <div class="col-sm-4 pr-0">
+                <fa [name]="'link'" class="float-right" *ngIf="!listItem.IsAlone"> </fa>
+                <strong>{{listItem.RelatedPersonFullName}}</strong>
+            </div>
+            <div class="col-sm-5 pr-0 col-8">
+                {{personTypes[listItem.RelatedPersonTypeId] | translate}} / {{listItem.Caption}}
+            </div>
+            <div class="col-sm-3 pr-0 col-4">
+                <button *ngIf="!host.criteriaBo.Multiple" class="btn btn-outline-primary btn-sm" type="button"
+                    (click)="selectItem()">
+                    <fa [name]="'check'"></fa>{{'xSelect' | translate}}
+                </button>
+                <div class="utility float-right mr-2" *ngIf="host.criteriaBo.Multiple">
+                    <div class="animated-checkbox">
+                        <label>
+                            <input type="checkbox" [(ngModel)]="listItem.Checked" name="Checked">
+                            <span class="label-text" *ngIf="listItem.Checked">{{'xUnselect' | translate}}</span>
+                            <span class="label-text" *ngIf="!listItem.Checked">{{'xSelect' | translate}}</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

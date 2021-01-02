@@ -1,0 +1,21 @@
+<div (mouseenter)="buttonShow = true" (mouseleave)="buttonShow = false" (click)="nameClick()" [class.markSelected]="state.markSelected && state.selected"
+  class="node-name">
+  <ng-container *ngIf="!nodeNameTemplate">
+    <span [class.active]="active">{{state.nodeItem.name}}</span>
+  </ng-container>
+
+  <ng-container *ngTemplateOutlet="nodeNameTemplate; context: { $implicit: state.nodeItem, node: state.nodeItem, context: _this }">
+  </ng-container>
+
+ 
+    <button *ngIf="buttonShow" class="btn btn-outline-primary btn-sm mr-auto" type="button" style="border:0px" (click)="newItemClick()">
+    Yeni alt kategori
+  </button>
+  <button *ngIf="buttonShow" class="btn btn-outline-primary btn-sm mr-auto" type="button" style="border:0px" (click)="editItemClick()">
+    Düzenle
+  </button>
+  <button *ngIf="buttonShow" class="btn btn-outline-danger btn-sm mr-auto" type="button" style="border:0px" (click)="deleteItemClick()">
+    Sil
+  </button>
+ 
+</div>

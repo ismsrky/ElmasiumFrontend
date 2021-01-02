@@ -1,0 +1,5 @@
+.bottomRight{
+    /*position: absolute !important;*/
+    bottom: 0 !important;
+    right: 5% !important;
+}

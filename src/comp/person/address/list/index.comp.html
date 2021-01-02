@@ -1,0 +1,46 @@
+<page-title *ngIf="!isInside" [helpName]="'MyAddress'" [icon]="'address-book'" [title]="'xMyAddress'">
+</page-title>
+
+<person-address-list-criteria *ngIf="!isInside"></person-address-list-criteria>
+
+<div [class.tile]="!isInside">
+    <div class="row mb-2">
+        <div class="col-12">
+            <h5>
+                <span *ngIf="selectAddressType != null">
+                    {{selectAddressText | translate}}
+                    <span class="text-danger blink" *ngIf="invalidSelect"
+                        [@expandCollapse]> - {{'xSelectAddress' | translate}}</span>
+                </span>
+                <button class="btn btn-primary btn-sm" [class.float-right]="selectAddressType != null" type="submit"
+                    (click)="openModal(0)">
+                    <fa [name]="'plus'"></fa>{{'xNew' | translate}}
+                </button>
+            </h5>
+            <hr class="mb-0">
+        </div>
+    </div>
+    <div class="row justify-content-center" *ngIf="newPersonAddressListDto.IsCrudOpen" [@expandCollapse]>
+        <div class="col-xs-12">
+            <person-address-crud #newPersonAddress [personAddressListDto]="newPersonAddressListDto">
+            </person-address-crud>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="row">
+            <ng-container *ngFor="let address of addressList; let index = index">
+                <div class="col-lg-4" [@expandCollapse]>
+                    <person-address-list-item [listItem]="address"></person-address-list-item>
+                </div>
+                <div class="col-lg-12" *ngIf="address.IsCrudOpen" [@expandCollapse]>
+                    <div class="row justify-content-center">
+                        <div class="col-xs-12">
+                            <person-address-crud #updatePersonAddress [personAddressListDto]="address">
+                            </person-address-crud>
+                        </div>
+                    </div>
+                </div>
+            </ng-container>
+        </div>
+    </div>
+</div>

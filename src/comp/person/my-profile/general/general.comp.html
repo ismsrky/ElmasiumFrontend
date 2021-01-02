@@ -1,0 +1,100 @@
+<div class="tile">
+    <form *ngIf="tabPageIndex==0" class="needs-validation" #myProfileForm="ngForm" (submit)="saveMyProfile()"
+        novalidate>
+        <div class="row">
+            <div class="col-12 mb-4">
+                <label class="control-label">{{'xEmail' | translate}}</label>
+                <input class="form-control" [(ngModel)]="realPersonDto.Username" name="Username" type="text" disabled>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6 mb-4">
+                <label class="control-label">{{'xFirstName' | translate}}</label>
+                <input class="form-control" #firstname="ngModel" required
+                    [class.is-invalid]="firstname.invalid && (firstname.touched || myProfileForm.submitted)"
+                    [(ngModel)]="realPersonDto.Name" name="Name" type="text" placeholder="{{'xFirstName' | translate}}">
+                <div class="invalid-tooltip">{{'xFirstNameCantBeEmpty' | translate}}</div>
+            </div>
+            <div class="col-md-6 mb-4">
+                <label class="control-label">{{'xLastName' | translate}}</label>
+                <input class="form-control" #lastname="ngModel" required
+                    [class.is-invalid]="lastname.invalid && (lastname.touched || myProfileForm.submitted)"
+                    [(ngModel)]="realPersonDto.Surname" name="Surname" type="text"
+                    placeholder="{{'xLastName' | translate}}">
+                <div class="invalid-tooltip">{{'xLastNameCantBeEmpty' | translate}}</div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6 mb-4">
+                <label class="control-label">{{'xBirthdate' | translate}}</label>
+                <div class="input-group">
+                    <input type="text" #birthdate="ngModel" required
+                        [class.is-invalid]="birthdate.invalid && (birthdate.touched || myProfileForm.submitted)"
+                        class="form-control" bsDatepicker #dhgjp="bsDatepicker" [(ngModel)]="realPersonDto.Birthdate"
+                        name="Birthdate" [placement]="'top'" [bsConfig]="{ containerClass: 'theme-blue' }"
+                        placeholder="{{'xShortDateText' | translate}}">
+                    <div class="invalid-tooltip">{{'xBirthdayCantBeEmpty' | translate}}</div>
+                    <div class="input-group-btn">
+                        <button class="btn btn-success" (click)="dhgjp.show(); $event.preventDefault();">
+                            <i class="fa fa-calendar"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 mb-4">
+                <label class="control-label">{{'xMobilePhone' | translate}}
+                    <span class="blink text-danger cursor-pointer" (click)="verifyPhone()"
+                        *ngIf="isPhoneVerified == false" [@expandCollapse]> - {{'xVerify' | translate}}</span>
+                    <fa class="text-success" [name]="'check'" *ngIf="isPhoneVerified == true" [@expandCollapse]></fa>
+                </label>
+                <input class="form-control" [(ngModel)]="realPersonDto.Phone" name="Phone" [clearIfNotMatch]="true"
+                    mask="(000) 000-0000" type="text">
+
+            </div>
+        </div>
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <label class="control-label">{{'xGender' | translate}}</label>
+                <div class="utility row mt-2"
+                    [class.custom-validate]="manChecked.invalid && (manChecked.touched || myProfileForm.submitted)">
+                    <div class="animated-radio-button col-md-6">
+                        <label>
+                            <input type="radio" required #manChecked="ngModel" [(ngModel)]="realPersonDto.GenderId"
+                                name="GenderId" [value]="0">
+                            <span class="label-text">{{'xMan' | translate}}</span>
+                        </label>
+                    </div>
+                    <div class="animated-radio-button col-md-6">
+                        <label>
+                            <input type="radio" required #womanChecked="ngModel" [(ngModel)]="realPersonDto.GenderId"
+                                name="GenderId" [value]="1">
+                            <span class="label-text">{{'xWoman' | translate}}</span>
+                        </label>
+                    </div>
+                </div>
+                <div class="invalid-tooltip">{{'xSelectGender' | translate}}</div>
+            </div>
+            <div class="col-md-6">
+                <label class="control-label">{{'xDefaultCurrency' | translate}}</label>
+                <select class="form-control" #defaultCurrencyId="ngModel" required
+                    [class.is-invalid]="defaultCurrencyId.invalid && (defaultCurrencyId.touched || myProfileForm.submitted)"
+                    [(ngModel)]="realPersonDto.DefaultCurrencyId" name="DefaultCurrencyId">
+                    <option [ngValue]="null">{{'xSelectCurrency' | translate}}</option>
+                    <option *ngFor="let item of currencies | enums" [ngValue]="item.key">{{item.value | translate}}
+                    </option>
+                </select>
+                <div class="invalid-tooltip">{{'xSelectCurrency' | translate}}</div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <button class="btn btn-success btn-sm ml-2 float-right" type="submit">
+                    <fa [name]="'check'"></fa>{{'xSave' | translate}}
+                </button>
+                <button class="btn btn-danger btn-sm float-right" type="button" (click)="cancel()">
+                    <fa [name]="'ban'"></fa> {{'xCancel' | translate}}
+                </button>
+            </div>
+        </div>
+    </form>
+</div>

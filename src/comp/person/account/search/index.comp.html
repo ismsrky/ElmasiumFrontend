@@ -1,0 +1,36 @@
+<div class="modal fade" bsModal #modal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="dialog-events-name">
+    <div class="modal-dialog modal-md modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 id="dialog-events-name" class="modal-title pull-left">{{'xSearchWallet' | translate}}</h5>
+                <button type="button" class="close pull-right" aria-label="Close" (click)="modal.hide()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-12">
+                        <person-account-search-criteria></person-account-search-criteria>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <person-account-search-list-index></person-account-search-list-index>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="pull-right ml-2" *ngIf="criteriaBo.Multiple">
+                            <button class="btn btn-primary btn-block" type="submit" (click)="ok()">
+                                <fa [name]="'check'"></fa>{{'xOk' | translate}}</button>
+                        </div>
+                        <div class="pull-right ml-2">
+                            <button class="btn btn-danger btn-block" type="button" (click)="modal.hide()">
+                                <fa [name]="'ban'"></fa>{{'xCancel' | translate}}</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

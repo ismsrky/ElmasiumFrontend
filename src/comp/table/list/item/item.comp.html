@@ -1,0 +1,13 @@
+<div class="tile" style="min-height: 100px;">
+    <div class="row">
+        <div class="col-12">
+            {{listItem.Name}} -
+            {{tableStats[listItem.PersonTableStatId] | translate}}
+
+            <fa [name]="'times'" class="text-danger float-right cursor-pointer" *ngIf="host.isShopOwner"
+                (click)="host.delete(listItem.Id)"></fa>
+            <fa [name]="'edit'" class="text-warning float-right cursor-pointer" *ngIf="host.isShopOwner"
+                (click)="host.openCrud(listItem.Id)"></fa>
+        </div>
+    </div>
+</div>

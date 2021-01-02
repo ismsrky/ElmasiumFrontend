@@ -1,0 +1,71 @@
+<div class="tile">
+    <ngx-loading [show]="busy"></ngx-loading>
+    <div class="row mb-2">
+        <div class="col-12">
+            <h5>{{'xGroup' | translate}}
+                <button type="button" class="close pull-right" aria-label="Close" (click)="cancel()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </h5>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <form class="needs-validation" #tableGroupForm="ngForm" (submit)="save()" novalidate>
+                <div class="row">
+                    <div class="mb-2 col-md-4">
+                        <label class="control-label">
+                            *{{'xName' | translate}}
+                        </label>
+                        <input class="form-control" #groupName="ngModel" required
+                            [class.is-invalid]="groupName.invalid && (groupName.touched || tableGroupForm.submitted)"
+                            [(ngModel)]="groupDto.Name" name="Name" [appAutofocus]="true" type="text"
+                            placeholder="{{'xName' | translate}}" autocomplete="off">
+                        <div class="invalid-tooltip">{{'xNameCantBeEmpty' | translate}}</div>
+                    </div>
+                    <div class="mb-2 col-md-4">
+                        <label class="control-label">
+                            *{{'xStatus' | translate}}
+                        </label>
+                        <select class="form-control" #tableGroupStatId="ngModel"
+                            [(ngModel)]="groupDto.PersonTableGroupStatId" name="TableGroupStatId">
+                            <option *ngFor="let item of tableGroupStats | enums" [ngValue]="item.key">
+                                {{item.value | translate}}
+                            </option>
+                        </select>
+                    </div>
+                    <div class="mb-2 col-md-4">
+                        <label class="control-label">
+                            *{{'xOrderSort' | translate}}
+                        </label>
+                        <input class="form-control" #order="ngModel" (tap)="$event.target.select()" autocomplete="off"
+                            type="tel" currencyMask [options]="configQuantity"
+                            (ngModelChange)="groupDto.Order=$event;" [ngModel]="groupDto.Order"
+                            name="OrderSort" placeholder="{{'xOrderSort' | translate}}">
+                    </div>
+                </div>
+                <div class="row mb-2">
+                    <div class="col-12">
+                        <label class="control-label">{{'xNotes' | translate}}</label>
+                        <textarea class="form-control" [(ngModel)]="groupDto.Notes" name="Notes" type="text"
+                            maxlength="255" rows="10" placeholder="{{'xNotes' | translate}}"></textarea>
+                    </div>
+                    <div class="col-12">
+                        <span *ngIf="!groupDto.Notes">0/255</span>
+                        <span class="float-left" *ngIf="groupDto.Notes">{{groupDto.Notes.length}}/255</span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <button class="btn btn-success btn-sm pull-right ml-2" type="submit">
+                            <fa [name]="'check'"></fa>{{'xSave' | translate}}
+                        </button>
+                        <button class="btn btn-danger btn-sm pull-right ml-2" type="button" (click)="cancel()">
+                            <fa [name]="'ban'"></fa>{{'xCancel' | translate}}
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,64 @@
+<div class="tile">
+    <div class="row mb-2">
+        <div class="col-12">
+            <input type="text" [(ngModel)]="criteriaDto.ProductNameCode" name="ProductCode" (input)="search()"
+                class="form-control" #txtCode [appAutofocus]="true"
+                placeholder="{{'xPlaceHolderSearchProduct' | translate}}" autocomplete="off">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <!--Quantity-->
+            <div class="row mb-2">
+                <div class="col-12">
+                    <div class="card bg-light">
+                        <div class="card-body p-2">
+                            <div class="row">
+                                <div class="col-12">
+                                    <h6 (click)="showQuantity=!showQuantity" style="cursor: pointer">
+                                        {{'xQuantity' | translate}}
+                                        <fa [name]="showQuantity?'minus':'plus'" class="float-right"></fa>
+                                    </h6>
+                                </div>
+                            </div>
+                            <div class="row" *ngIf="showQuantity">
+                                <div class="form-group col-md-6">
+                                    <input class="form-control" #quantityMin="ngModel" min="0"
+                                        [(ngModel)]="criteriaDto.QuantityMin" name="QuantityMin" currencyMask
+                                        [options]="configQuantity" type="tel" placeholder="{{'xMin' | translate}}"
+                                        [class.is-invalid]="quantityMin.value < 0 || quantityMin.invalid && (quantityMin.touched || criteriaForm.submitted)">
+                                    <div class="invalid-tooltip">{{'xCantBeLessThan0' | translate}}</div>
+                                </div>
+                                <div class="col-md-6">
+                                    <input class="form-control" #quantityMax="ngModel" min="0"
+                                        [(ngModel)]="criteriaDto.QuantityMax" name="QuantityMax" currencyMask
+                                        [options]="configQuantity" type="tel" placeholder="{{'xMax' | translate}}"
+                                        [class.is-invalid]="quantityMax.value < 0 || quantityMax.invalid && (quantityMax.touched || criteriaForm.submitted)">
+                                    <div class="invalid-tooltip">{{'xCantBeLessThan0' | translate}}</div>
+                                </div>
+                            </div>
+                            <div class="row" *ngIf="showQuantity" [@expandCollapse]>
+                                <div class="col-md-4">
+                                    <button class="btn btn-primary btn-sm float-left" type="button" (click)="search()">
+                                        <fa [name]="'search'"></fa>{{'xSearch' | translate}}
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <!--Clear-->
+            <div class="row">
+                <div class="col-12">
+                    <button class="btn btn-secondary btn-sm float-right" type="button" (click)="clear()">
+                        <fa [name]="'refresh'"></fa>{{'xClear' | translate}}
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

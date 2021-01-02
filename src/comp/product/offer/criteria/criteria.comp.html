@@ -1,0 +1,68 @@
+<ngx-loading [show]="busy"></ngx-loading>
+<div class="modal fade" bsModal #modal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="dialog-events-name">
+    <div class="modal-dialog modal-md modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header p-2">
+                <h5 class="modal-title pull-left">{{'xSearchCriteria' | translate}}
+                </h5>
+            </div>
+            <div class="modal-body pb-2">
+                <div class="row mb-2">
+                    <div class="col-12">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <label class="control-label mt-2">
+                                    {{'xInventoryType' | translate}}
+                                </label>
+                            </div>
+                            <div class="col-md-8">
+                                <select class="form-control" name="ProductTypeId"
+                                    [(ngModel)]="criteriaDto.ProductTypeId">
+                                    <option [ngValue]="null">{{'xAll' | translate}}</option>
+                                    <option *ngFor="let item of productTypes | enums" [ngValue]="item.key">
+                                        {{item.value | translate}}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 mb-2">
+                        <div class="animated-checkbox">
+                            <label>
+                                <input type="checkbox" [(ngModel)]="criteriaDto.OnlyInInventory" name="onlyInInventory">
+                                <span class="label-text">{{'xOnlyInInventory' | translate}}</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-2">
+                        <div class="animated-checkbox">
+                            <label>
+                                <input type="checkbox" [(ngModel)]="criteriaDto.OnlyInStock" name="onlyInStock"
+                                    (change)="onlyInStockChange()">
+                                <span class="label-text">{{'xOnlyInStock' | translate}}</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer p-2">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="pull-right ml-2">
+                            <button class="btn btn-primary btn-sm" type="submit" (click)="ok()">
+                                <fa [name]="'search'"></fa>{{'xSearch' | translate}}
+                            </button>
+                        </div>
+                        <div class="pull-right ml-2">
+                            <button class="btn btn-danger btn-sm" type="button" (click)="modal.hide()">
+                                <fa [name]="'ban'"></fa>{{'xCancel' | translate}}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

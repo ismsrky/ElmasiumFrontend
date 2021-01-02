@@ -1,0 +1,134 @@
+<div class="tile">
+    <ngx-loading [show]="busy"></ngx-loading>
+
+    <h5>Genel ayarlar</h5>
+    <form class="needs-validation" #generalShopForm="ngForm" novalidate>
+        <div class="row">
+            <div class="mb-2 col-md-4">
+                <label class="control-label">*{{'xSignName' | translate}} </label>
+                <input class="form-control" #signName="ngModel" required
+                    [class.is-invalid]="signName.invalid && (signName.touched || generalShopForm.submitted)"
+                    [(ngModel)]="generalDto.ShortName" name="signName" type="text"
+                    placeholder="{{'xSignName' | translate}}" autocomplete="off">
+                <div class="invalid-tooltip">{{'xShopSignNameCantBeEmpty' | translate}}</div>
+            </div>
+            <div class="mb-2 col-md-4">
+                <div class="row">
+                    <div class="col-12">
+                        <label class="control-label">{{'xPageName' | translate}} </label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 col-6 mt-2">
+                        <span>https://elmasium.com/</span>
+                    </div>
+                    <div class="col-md-6 col-6">
+                        <input class="form-control" #urlName="ngModel" [(ngModel)]="generalDto.UrlName" name="UrlName"
+                            type="text" placeholder="{{'xNotSpecified' | translate}}" autocomplete="off">
+                        <div class="invalid-tooltip">{{'xShopSignNameCantBeEmpty' | translate}}</div>
+                    </div>
+                </div>
+            </div>
+            <div class="mb-2 col-md-4">
+                <label class="control-label">*{{'xShopType' | translate}} </label>
+                <select class="form-control" #shopTypeId="ngModel" required [(ngModel)]="generalDto.ShopTypeId"
+                    name="shopTypeId"
+                    [class.is-invalid]="shopTypeId.invalid && (shopTypeId.touched || generalShopForm.submitted)">
+                    <option [ngValue]="null">{{'xSelectShopType' | translate}}</option>
+                    <ng-template ngFor let-shopTypeGroup [ngForOf]="shopTypeList">
+                        <optgroup label="{{shopTypeGroup.Name | translate}}">
+                            <option *ngFor="let shopType of shopTypeGroup.TypeList" [ngValue]="shopType.Id">
+                                {{shopType.Name | translate}}
+                            </option>
+                        </optgroup>
+                    </ng-template>
+                </select>
+                <div class="invalid-tooltip">{{'xSelectShopType' | translate}}</div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="mb-2 col-md-8">
+                <label class="control-label">*{{'xFullName' | translate}} </label>
+                <input class="form-control" #fullName="ngModel" required
+                    [class.is-invalid]="fullName.invalid && (fullName.touched || generalShopForm.submitted)"
+                    [(ngModel)]="generalDto.FullName" name="fullName" [appAutofocus]="true" type="text"
+                    placeholder="{{'xFullName' | translate}}" autocomplete="off">
+                <div class="invalid-tooltip">{{'xShopFullNameCantBeEmpty' | translate}}</div>
+            </div>
+            <div class="mb-2 col-md-4" popover="{{'xShopDefaultCurrencyCannotChange' | translate}}" triggers="mouseenter:mouseleave"
+                placement="auto">
+                <label class="control-label">{{'xDefaultCurrency' | translate}}</label>
+                <select class="form-control" #defaultCurrencyId="ngModel" required disabled
+                    [class.is-invalid]="defaultCurrencyId.invalid && (defaultCurrencyId.touched || generalShopForm.submitted)"
+                    [(ngModel)]="generalDto.DefaultCurrencyId" name="DefaultCurrencyId">
+                    <option [ngValue]="null">{{'xSelectCurrency' | translate}}</option>
+                    <option *ngFor="let item of currencies | enums" [ngValue]="item.key">{{item.value | translate}}
+                    </option>
+                </select>
+                <div class="invalid-tooltip">{{'xSelectCurrency' | translate}}</div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="mb-2 col-md-4">
+                <label class="control-label">{{'xVatOnPurchases' | translate}}</label>
+                <select class="form-control" [(ngModel)]="generalDto.IsIncludingVatPurhasePrice"
+                    name="IsIncludingVatPurhasePrice">
+                    <option [ngValue]="true">{{'xIncludingVat' | translate}}</option>
+                    <option [ngValue]="false">{{'xExcludingVat' | translate}}</option>
+                </select>
+            </div>
+            <div class="mb-2 col-md-4">
+                <label class="control-label">{{'xVatOnSales' | translate}}</label>
+                <select class="form-control" [(ngModel)]="generalDto.IsIncludingVatSalePrice"
+                    name="IsIncludingVatSalePrice">
+                    <option [ngValue]="true">{{'xIncludingVat' | translate}}</option>
+                    <option [ngValue]="false">{{'xExcludingVat' | translate}}</option>
+                </select>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4 mb-2">
+                <label class="control-label">{{'xTaxNumber' | translate}}</label>
+                <input class="form-control" #taxNumber="ngModel" [(ngModel)]="generalDto.TaxNumber" name="taxNumber"
+                    type="text" placeholder="{{'xTaxNumber' | translate}}" autocomplete="off">
+            </div>
+            <div class="col-md-4 mb-2">
+                <label class="control-label">{{'xTaxOffice' | translate}}</label>
+                <input class="form-control" #taxOffice="ngModel" [(ngModel)]="generalDto.TaxOffice" name="taxOffice"
+                    type="text" placeholder="{{'xTaxOffice' | translate}}" autocomplete="off">
+            </div>
+        </div>
+
+        <h5 class="mt-4">{{'xContact' | translate}}</h5>
+        <div class="row">
+            <div class="col-md-4 mb-2">
+                <label class="control-label">{{'xPhone' | translate}}</label>
+                <input class="form-control" #phone="ngModel" [(ngModel)]="generalDto.Phone" name="Phone" type="text"
+                    [clearIfNotMatch]="true" mask="(000) 000-0000" placeholder="{{'xPhone' | translate}}"
+                    autocomplete="off">
+            </div>
+            <div class="col-md-4 mb-2">
+                <label class="control-label">{{'xPhone' | translate}} 2</label>
+                <input class="form-control" #phone2="ngModel" [(ngModel)]="generalDto.Phone2" name="Phone2" type="text"
+                    [clearIfNotMatch]="true" mask="(000) 000-0000" placeholder="{{'xPhone' | translate}} 2"
+                    autocomplete="off">
+            </div>
+            <div class="col-md-4 mb-2">
+                <label class="control-label">{{'xEmail' | translate}}</label>
+                <input class="form-control" email #email="ngModel" [(ngModel)]="generalDto.Email" name="Email"
+                    [class.is-invalid]="email.invalid && (email.touched || generalShopForm.submitted)" type="text"
+                    placeholder="{{'xEmail' | translate}}" autocomplete="off">
+                <div class="invalid-tooltip"> {{'xEnterValidMailAddress' | translate}} </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12">
+                <button class="btn btn-success float-right" type="button" (click)="save()">
+                    <fa [name]="'check'"></fa>{{'xSave' | translate}}
+                </button>
+            </div>
+        </div>
+    </form>
+</div>

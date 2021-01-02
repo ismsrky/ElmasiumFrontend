@@ -1,0 +1,391 @@
+<ngx-loading [show]="busy"></ngx-loading>
+
+<page-title [helpName]="'Profile'" [icon]="'shopping-basket'"></page-title>
+
+<div class="row" *ngIf="found" [@expandCollapse]>
+    <div class="col-md-2 mb-2 d-flex justify-content-center">
+        <div class="row">
+            <div class="col-12">
+                <img src="assets/no-image_500_500.png" *ngIf="profileDto.PortraitImageUniqueIdStr == null"
+                    class="ImgClass" alt="No Image">
+                <img src="{{environment.profileImageSource}}{{profileDto.PortraitImageUniqueIdStr}}" class="ImgClass"
+                    *ngIf="profileDto.PortraitImageUniqueIdStr != null" alt="User Image">
+            </div>
+            <div class="col-12" *ngIf="profileDto.IsShopOwner">
+                <image-upload></image-upload>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-10">
+        <div class="row">
+            <!--Order area-->
+            <div class="col-md-12 col-lg-4 mb-2">
+                <div class="tile p-2 setting-widget"
+                    [style.height]="showOrderAreaList && orderAreaListDto && orderAreaListDto.length > 0 ? '100%' : '100px'">
+                    <ngx-loading [show]="busyOrderAreaList"></ngx-loading>
+                    <h6 *ngIf="profileDto.TakesOrder">{{'xThisShopTakesOrder' | translate}}</h6>
+                    <h6 *ngIf="!profileDto.TakesOrder">{{'xThisShopNotTakesOrder' | translate}}</h6>
+                    <div class="row" *ngIf="profileDto.TakesOrder" (mouseenter)="blinkOrderAreaList=true"
+                        (mouseleave)="blinkOrderAreaList=false">
+                        <div class="col-md-2 col-2">
+                            <img src="assets/delivery_64_64.png" width="50px" height="50px" alt="No Image">
+                        </div>
+                        <div class="col-md-5 col-5">
+                            {{'xMinOrderPrice' | translate}}
+                            <br>
+                            {{profileDto.OrderMinPrice | number:'1.2-2'}}
+                            <currency-icon [currencyId]="profileDto.OrderCurrencyId"></currency-icon>
+                        </div>
+                        <div class="col-md-5 col-5">
+                            {{'xDeliveryTime' | translate}}
+                            <br>
+                            {{orderDeliveryTimes[profileDto.OrderDeliveryTimeId] | translate}}
+                            <button class="btn btn-outline-primary btn-sm btn-naked float-right"
+                                [class.blink]="blinkOrderAreaList" [class.active]="showOrderAreaList" type="button"
+                                (click)="getOrderAreaList()">
+                                <fa [name]="(showOrderAreaList && orderAreaListDto)?'angle-up':'angle-down'"></fa>
+                            </button>
+                        </div>
+                        <div class="col-12" *ngIf="showOrderAreaList && orderAreaListDto" [@expandCollapse]>
+                            <div class="mt-2" *ngFor="let orderArea of orderAreaListDto" [@expandCollapse]>
+                                <hr>
+                                <span *ngIf="orderArea.AddressName">{{orderArea.AddressName}}</span>
+                                <span
+                                    *ngIf="!orderArea.AddressName">{{addressBoundaries[orderArea.AddressBoundaryId] | translate}}</span>
+                                <br>
+                                {{orderDeliveryTypes[orderArea.OrderDeliveryTypeId] | translate}}
+
+                                <div class="card border-info mb-2" *ngFor="let sub of orderArea.SubList"
+                                    [@expandCollapse]>
+                                    <div class="card-body p-2">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <h6>{{sub.AddressName}}</h6>
+                                            </div>
+                                            <div class="col-md-6">
+                                                {{orderDeliveryTimes[sub.OrderDeliveryTimeId] | translate}}
+                                                /
+                                                Min.
+                                                {{sub.OrderMinPrice}}
+                                                <currency-icon [currencyId]="orderArea.CurrencyId">
+                                                </currency-icon>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!--Working hours-->
+            <div class="col-md-12 col-lg-4 mb-2">
+                <div class="tile p-2 setting-widget"
+                    [style.height]="showWorkingHours && workingHoursDto ? '100%' : '100px'">
+                    <ngx-loading [show]="busyWorkingHours"></ngx-loading>
+                    <h6>{{'xWorkingHours' | translate}}
+                        <span *ngIf="!profileDto.HasWorkingHours">({{'xNotSpecified' | translate}})</span>
+                    </h6>
+                    <div class="row" *ngIf="profileDto.HasWorkingHours" (mouseenter)="blinkWorkingHours=true"
+                        (mouseleave)="blinkWorkingHours=false">
+                        <div class="col-md-4 col-4">
+                            <img src="assets/clock_64_64.png" width="40px" height="40px" alt="No Image">
+                        </div>
+                        <div class="col-md-8 col-8 pr-0 mt-3">
+                            <b style="font-size: 15px">{{profileDto.WorkingHoursTodayStr}}
+                                ({{'xToday' | translate}})
+                            </b>
+                            <button class="btn btn-outline-primary btn-sm btn-naked float-right"
+                                [class.blink]="blinkWorkingHours" [class.active]="showWorkingHours" type="button"
+                                (click)="getWorkingHours()">
+                                <fa [name]="(showWorkingHours && workingHoursDto)?'angle-up':'angle-down'"></fa>
+                            </button>
+                        </div>
+                        <div class="col-12">
+                            <div class="mt-2" *ngIf="showWorkingHours && workingHoursDto" [@expandCollapse]>
+                                <hr>
+                                {{'xMonday' | translate}}
+                                <br>
+                                <b>{{parseWorkingHours(workingHoursDto.MonStartEnd) | translate}}</b>
+                                <hr>
+
+                                {{'xTuesday' | translate}}
+                                <br>
+                                <b>{{parseWorkingHours(workingHoursDto.TuesStartEnd) | translate}}</b>
+                                <hr>
+
+                                {{'xWednesday' | translate}}
+                                <br>
+                                <b>{{parseWorkingHours(workingHoursDto.WedStartEnd) | translate}}</b>
+                                <hr>
+
+                                {{'xThursday' | translate}}
+                                <br>
+                                <b>{{parseWorkingHours(workingHoursDto.ThursStartEnd) | translate}}</b>
+                                <hr>
+
+                                {{'xFriday' | translate}}
+                                <br>
+                                <b>{{parseWorkingHours(workingHoursDto.FriStartEnd) | translate}}</b>
+                                <hr>
+
+                                {{'xSaturday' | translate}}
+                                <br>
+                                <b>{{parseWorkingHours(workingHoursDto.SatStartEnd) | translate}}</b>
+                                <hr>
+
+                                {{'xSunday' | translate}}
+                                <br>
+                                <b>{{parseWorkingHours(workingHoursDto.SunStartEnd) | translate}}</b>
+                                <hr>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <span
+                                *ngIf="profileDto.TakesOrder && profileDto.HasWorkingHours && profileDto.TakesOrderOutTime">{{'xTakesOrderOutOfWorkingHoursToo' | translate}}</span>
+                            <span
+                                *ngIf="profileDto.TakesOrder && profileDto.HasWorkingHours && !profileDto.TakesOrderOutTime">{{'xNotTakesOrderOutOfWorkingHours' | translate}}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!--Shop star-->
+            <div class="col-md-12 col-lg-4 mb-2">
+                <div class="tile p-2 setting-widget">
+                    <div class="row">
+                        <div class="col-8">
+                            <h6>İşletme yıldızı </h6>
+                            <div class="row">
+                                <div class="col-12">
+                                    <app-star [max]="5" [value]="profileDto.StarAverage"></app-star>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <h1 class="float-right mt-2">{{profileDto.StarAverage | number:'1.1-1'}}</h1>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <span class="float-right" *ngIf="profileDto.StarCount == 0">
+                                {{'xNoReviewsYet' | translate}}
+                            </span>
+                            <span class="float-right" *ngIf="profileDto.StarCount > 0">
+                                {{'xVotes' | translate}}: {{profileDto.StarCount}}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!--Payment methods-->
+            <div class="col-md-12 col-lg-4 mb-2">
+                <div class="tile p-2 setting-widget">
+                    <h6>{{'xPaymentMethods' | translate}}
+                        <span *ngIf="!profileDto.OrderAccountList">({{'xNotSpecified' | translate}})</span>
+                    </h6>
+                    <div class="row" *ngIf="profileDto.OrderAccountList">
+                        <div class="col-3">
+                            <img src="assets/payment_methods_64_64.png" width="50px" height="50px" alt="No Image">
+                        </div>
+                        <div class="col-9">
+                            <div class="row">
+                                <span *ngFor="let orderAccount of profileDto.OrderAccountList;let index = index"
+                                    [@expandCollapse]>
+                                    <div class="col-* ml-2 mb-2">
+                                        <fa [name]="'money'"></fa> {{accountTypes[orderAccount] | translate}}
+                                    </div>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!--Payment currencies-->
+            <!--
+                <div class="col-md-3">
+                <div class="tile pb-2">
+                    <h6>{{'xPaymentCurrencies' | translate}}
+                        <span *ngIf="!profileDto.OrderCurrencyList">({{'xNotSpecified' | translate}})</span>
+                    </h6>
+                    <div class="row" *ngIf="profileDto.OrderCurrencyList">
+                        <div class="col-3">
+                            <img src="assets/payment_currencies_64_64.png" width="50px" height="50px" alt="No Image">
+                        </div>
+                        <div class="col-9">
+                            <div class="row">
+                                <span *ngFor="let orderCurrency of profileDto.OrderCurrencyList" [@expandCollapse]>
+                                    <div class="col-* ml-2 mb-2">
+                                        <currency-icon [currencyId]="orderCurrency" [showName]="true"></currency-icon>
+                                    </div>
+                                </span>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+         -->
+
+            <!--Address-->
+            <div class="col-md-12 col-lg-4 mb-2">
+                <div class="tile p-2 setting-widget">
+
+                    <div class="row" *ngIf="profileDto.HasAddress">
+                        <div class="col-3">
+                            <div class="row">
+                                <div class="col-12">
+                                    <h6>{{'xAddress' | translate}}
+                                        <span *ngIf="!profileDto.HasAddress">({{'xNotSpecified' | translate}})</span>
+                                    </h6>
+                                </div>
+                                <div class="col-12">
+                                    <img src="assets/address_64_64.png" width="50px" height="50px" alt="No Image">
+                                </div>
+                            </div>
+
+
+                        </div>
+                        <div class="col-9">
+                            <span> {{profileDto.AddressNotes}}
+                                <br>
+                                <span *ngIf="profileDto.AddressLocalityName">{{profileDto.AddressLocalityName}} /
+                                </span>
+                                <span *ngIf="profileDto.AddressDistrictName">{{profileDto.AddressDistrictName}} /
+                                </span>
+                                <span *ngIf="profileDto.AddressCityName">{{profileDto.AddressCityName}} / </span>
+                                <span *ngIf="profileDto.AddressStateName">{{profileDto.AddressStateName}} / </span>
+                                {{profileDto.AddressCountryName | translate}}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!--Contact-->
+            <div class="col-md-12 col-lg-4 mb-2">
+                <div class="tile p-2 setting-widget">
+
+                    <div class="row">
+                        <div class="col-3">
+                            <div class="row">
+                                <div class="col-12">
+                                    <h6>{{'xContact' | translate}} </h6>
+                                </div>
+                                <div class="col-12">
+                                    <img src="assets/contact_64_64.png" width="50px" height="50px" alt="No Image">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-9">
+                            <span>
+                                Tel1:
+                                <span *ngIf="profileDto.Phone">0{{profileDto.Phone}}</span>
+                                <span *ngIf="!profileDto.Phone">{{'xNotSpecified' | translate}}</span>
+                                <br>
+                                Tel2:
+                                <span *ngIf="profileDto.Phone2">0{{profileDto.Phone2}}</span>
+                                <span *ngIf="!profileDto.Phone2">{{'xNotSpecified' | translate}}</span>
+                                <br>
+                                {{'xEmail' | translate}}:
+                                <span *ngIf="profileDto.Email">{{profileDto.Email}}</span>
+                                <span *ngIf="!profileDto.Email">{{'xNotSpecified' | translate}}</span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-12" *ngIf="profileDto.IsShopOwner">
+        <div class="tile">
+            <h5>{{'xSettings' | translate}}</h5>
+            <button class="btn btn-primary mb-2" [class.active]="isSettingShopGeneralOpen" type="button"
+                (click)="openSettingShopGeneral()">
+                <fa [name]="'cogs'"></fa>{{'xGeneral' | translate}}
+            </button>
+            <button class="btn btn-primary ml-2 mb-2" type="button" [class.active]="isSettingShopOrderGeneralOpen"
+                (click)="openSettingShopOrderGeneral()">
+                <fa [name]="'shopping-cart'"></fa>{{'xOrder' | translate}}
+            </button>
+            <button class="btn btn-primary ml-2 mb-2" type="button" [class.active]="isSettingShopAddressOpen"
+                (click)="openSettingShopAddressOpen()">
+                <fa [name]="'map-marker'"></fa>{{'xAddress' | translate}}
+            </button>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-12" *ngIf="isSettingShopGeneralOpen && found" [@expandCollapse]>
+        <person-setting-shop-general></person-setting-shop-general>
+    </div>
+    <div class="col-12" *ngIf="isSettingShopOrderGeneralOpen && found" [@expandCollapse]>
+        <person-setting-shop-order-general></person-setting-shop-order-general>
+    </div>
+    <div class="col-12" *ngIf="isSettingShopAddressOpen && found" [@expandCollapse]>
+        <person-address-crud [showLite]="true"></person-address-crud>
+    </div>
+</div>
+<div class="row" *ngIf="found" [@expandCollapse]>
+    <div class="col-md-6 col-lg-4 col-12" [class.order-2]="isNarrow">
+        <input class="form-control" #txtCode [formControl]="searchControl" name="Code" type="text"
+            placeholder="{{'xPlaceHolderSearchProduct' | translate}}" autocomplete="off" [appAutofocus]=!isMobile>
+    </div>
+    <div class="col-md-6 col-lg-8 col-12" [class.order-1]="isNarrow" [class.mb-2]="isNarrow">
+        <ul class="nav nav-tabs float-right">
+            <li class="nav-item" *ngIf="!profileDto.ShopIsFoodBeverage">
+                <a class="nav-link" [class.active]="tabIndex == 0" (click)="openProductList(productTypes.xShopping)">
+                    <fa [name]="'shopping-cart'" class="text-info"></fa> {{'xProducts' | translate}}
+                </a>
+            </li>
+            <!--
+                <li class="nav-item">
+                <a class="nav-link" [class.active]="tabIndex == 1" (click)="openProductList(productTypes.xService)">
+                    <fa [name]="'hand-rock-o'" class="text-danger"></fa> {{'xService' | translate}}
+                </a>
+            </li>
+            -->
+            <li class="nav-item" *ngIf="profileDto.ShopIsFoodBeverage">
+                <a class="nav-link" [class.active]="tabIndex == 2"
+                    (click)="openProductList(productTypes.xFoodBeverage)">
+                    <fa [name]="'cutlery'" class="text-warning"></fa> {{'xMenu' | translate}}
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" [class.active]="tabIndex == 3" (click)="openCommentList(1)">
+                    {{'xShopComments' | translate}}
+                    <span *ngIf="commentCountShop != null" [@expandCollapse]>({{commentCountShop}})</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" [class.active]="tabIndex == 4" (click)="openCommentList(3)">
+                    {{'xProductComments' | translate}}
+                    <span *ngIf="commentCountProducts != null" [@expandCollapse]>({{commentCountProducts}})</span>
+                </a>
+            </li>
+            <!--
+                <li class="nav-item" *ngIf="showMyComments">
+                <a class="nav-link" [class.active]="tabIndex == 5" (click)="openCommentList(2)">
+                    {{'xMyComments' | translate}}
+                    <span *ngIf="commentCountMines != null" [@expandCollapse]>({{commentCountMines}})</span>
+                </a>
+            </li>
+            -->
+        </ul>
+    </div>
+</div>
+<div class="row" *ngIf="isCommentListOpen && found" [@expandCollapse]>
+    <div class="col-12">
+        <div class="tile">
+            <comment-list-index></comment-list-index>
+        </div>
+    </div>
+</div>
+<div class="row" *ngIf="isProductListOpen && found" [@expandCollapse]>
+    <div class="col-12 mb-2">
+        <person-profile-product-list-index></person-profile-product-list-index>
+    </div>
+</div>

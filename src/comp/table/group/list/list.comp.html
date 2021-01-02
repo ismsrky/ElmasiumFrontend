@@ -1,0 +1,25 @@
+<div class="row">
+    <div class="mx-auto">
+        <ul class="nav nav-pills nav-pills-custom">
+            <li class="nav-item" *ngFor="let listItem of listDto" [@expandCollapse]>
+                <a class="nav-link cursor-pointer" [class.active]="selected != null && selected.Id == listItem.Id"
+                    (click)="select(listItem)">
+                    {{listItem.Name}}
+                    <fa [name]="'edit'" class="text-warning" *ngIf="isShopOwner" (click)="openCrud(listItem.Id)"></fa>
+                    <fa [name]="'times'" class="text-danger" *ngIf="isShopOwner" (click)="delete(listItem.Id)"></fa>
+                </a>
+            </li>
+            <li class="nav-item" *ngIf="isShopOwner">
+                <a class="nav-link cursor-pointer" (click)="openCrud(null)">
+                    <fa [name]="'plus'" class="text-primary"></fa> {{'xNewGroup' | translate}}
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<div class="row justify-content-center" *ngIf="isCrudOpen" [@expandCollapse]>
+    <div class="col-12">
+        <table-group-crud></table-group-crud>
+    </div>
+</div>

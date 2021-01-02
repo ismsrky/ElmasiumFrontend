@@ -1,0 +1,28 @@
+<div class="node">
+  <div class="node-container">
+
+    <div class="row" (click)="state.expanded = !state.expanded;">
+      <!--
+        <div class="col-md-1 col-1 pt-1" [class.pl-2]="!isNarrow" [class.pl-0]="isNarrow">
+        
+      </div>
+      -->
+      <div class="col-12 p-2" style="left:-10px">
+        <node-icon-wrapper [state]="state" *ngIf="state.children && state.children.length > 0"
+          [nodeCollapsibleTemplate]="nodeCollapsibleTemplate"></node-icon-wrapper>
+        <node-name [state]="state" [nodeNameTemplate]="nodeNameTemplate"></node-name>
+      </div>
+    </div>
+
+
+    <input #nodeCheckbox class="node-checkbox" *ngIf="state.showCheckBox" (click)="checkBoxClick()" [disabled]="state.nodeItem?.children?.length == 0 || treeService.options.mode === 3"
+      [checked]="state.selected" type="checkbox" />
+  </div>
+  <div *ngIf="state.nodeItem.children" class="collapsible-wrapper" [class.collapsed]="!state.expanded && state.nodeItem.children.length > 0 && state.filteredChildren.length > 0">
+    <div class="collapsible">
+      <node class="node-offset" [state]="child" [selectedState]="child.selectedState" [nodeCollapsibleTemplate]="nodeCollapsibleTemplate"
+        [nodeNameTemplate]="nodeNameTemplate" *ngFor="let child of state.filteredChildren">
+      </node>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,102 @@
+<ngx-loading [show]="busy"></ngx-loading>
+
+<div class="tile">
+    <form class="needs-validation" #generalShopForm="ngForm" novalidate>
+        <div class="row">
+            <div class="col-md-4 col-12">
+               <!--
+                    <div class="row">
+                    <div class="col-12">
+                        <input class="form-control" #productName="ngModel" required
+                            [class.is-invalid]="productName.invalid && (productName.touched || productForm.submitted)"
+                            [(ngModel)]="productDto.Name" name="ProductName" [appAutofocus]="true" type="text"
+                            placeholder="{{'xName' | translate}}">
+                        <div class="invalid-tooltip">{{'xNameCantBeEmpty' | translate}}</div>
+                    </div>
+                </div>
+               -->
+                <div class="row">
+                    <div class="col-md-12 col-12 mb-2" [class.col-lg-6]="!isInside">
+                        <label class="control-label">{{'xSalePrice' | translate}}</label>
+                        <input class="form-control" #salePrice="ngModel" currencyMask type="tel"
+                            [(ngModel)]="generalDto.SalePrice" [options]="configCurrency" (tap)="$event.target.select()"
+                            name="SalePrice" placeholder="{{'xSalePrice' | translate}}">
+                    </div>
+                    <div class="col-md-12 col-12 mb-2" [class.col-lg-6]="!isInside">
+                        <label class="control-label">{{'xOnlineSalePrice' | translate}}</label>
+                        <input class="form-control" #onlineSalePrice="ngModel" currencyMask type="tel"
+                            [(ngModel)]="generalDto.OnlineSalePrice" [options]="configCurrency"
+                            (tap)="$event.target.select()" name="OnlineSalePrice"
+                            placeholder="{{'xOnlineSalePrice' | translate}}">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12 col-12 mb-2" [class.col-lg-6]="!isInside">
+                        <label class="control-label">{{'xPurhasePrice' | translate}}</label>
+                        <input class="form-control" #purhasePrice="ngModel" currencyMask type="tel"
+                            [(ngModel)]="generalDto.PurhasePrice" [options]="configCurrency"
+                            (tap)="$event.target.select()" name="PurhasePrice"
+                            placeholder="{{'xPurhasePrice' | translate}}">
+                    </div>
+                    <div class="col-md-12 col-12 mb-2" [class.col-lg-6]="!isInside">
+                        <label class="control-label">{{'xVatRate' | translate}}</label>
+                        <input class="form-control" #saleVatRate="ngModel" currencyMask type="tel"
+                            [(ngModel)]="generalDto.SaleVatRate" [options]="configPercentage"
+                            (tap)="$event.target.select()" name="SaleVatRate"
+                            placeholder="{{'xSaleVatRate' | translate}}">
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 col-12 mb-2">
+                <div class="row">
+                    <div class="col-12">
+                        <label class="control-label">{{'xDescription' | translate}}
+                        </label>
+                        <textarea class="form-control" #notes="ngModel" [(ngModel)]="generalDto.Notes" name="Notes"
+                            type="text" maxlength="255" rows="6" placeholder="{{'xOptional' | translate}}"></textarea>
+                    </div>
+                    <div class="col-12">
+                        <span *ngIf="!generalDto.Notes">0/255</span>
+                        <span class="float-left" *ngIf="generalDto.Notes">{{generalDto.Notes.length}}/255</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 col-12">
+                <div class="row">
+                    <div class="col-12 mb-2">
+                        <div class="animated-checkbox">
+                            <label>
+                                <input type="checkbox" [(ngModel)]="generalDto.IsTemporarilyUnavaible"
+                                    name="isTemporarilyUnavaible">
+                                <span class="label-text">{{'xTemporarilyUnavaible' | translate}}</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-12 mb-2">
+                        <div class="animated-checkbox">
+                            <label>
+                                <input type="checkbox" [(ngModel)]="generalDto.IsSaleForOnline" name="isSaleForOnline">
+                                <span class="label-text">{{'xSaleForOnline' | translate}}</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-12 mb-2">
+                        <button class="btn btn-danger btn-sm float-right" type="button" (click)="delete()">
+                            <fa [name]="'times'"></fa>{{'xDelete' | translate}}
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <button class="btn btn-success btn-sm ml-2 float-right" type="button" (click)="save()">
+                    <fa [name]="'check'"></fa>{{'xSave' | translate}}
+                </button>
+                <button class="btn btn-danger btn-sm float-right" type="button" (click)="cancel()">
+                    <fa [name]="'ban'"></fa>{{'xCancel' | translate}}
+                </button>
+            </div>
+        </div>
+    </form>
+</div>

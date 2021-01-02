@@ -1,0 +1,57 @@
+<page-title [helpName]="'MyProfile'" [icon]="'user'" [title]="'xMyProfile'"></page-title>
+
+<div class="row" [@expandCollapse]>
+    <div class="col-12">
+        <ul class="nav nav-tabs">
+            <li class="nav-item">
+                <a class="nav-link" [class.active]="tabPageIndex == 0" (click)="openGeneral()">
+                    {{'xGeneral' | translate}}
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" [class.active]="tabPageIndex == 1" (click)="openCommentList()">
+                    {{'xMyComments' | translate}}
+                    <span *ngIf="commentCountMines != null" [@expandCollapse]>({{commentCountMines}})</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" [class.active]="tabPageIndex == 2" (click)="openAddress()">
+                    {{'xAddress' | translate}}
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" [class.active]="tabPageIndex == 3" (click)="openNotificationPreference()">
+                    {{'xNotification' | translate}}
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<div class="row" *ngIf="tabPageIndex == 0" [@expandCollapse]>
+    <div class="col-md-8">
+        <person-my-profile-general></person-my-profile-general>
+    </div>
+</div>
+
+<div class="row" *ngIf="tabPageIndex == 1" [@expandCollapse]>
+    <div class="col-12">
+        <div class="tile">
+            <comment-list-index></comment-list-index>
+        </div>
+    </div>
+</div>
+<div class="row" *ngIf="tabPageIndex == 2" [@expandCollapse]>
+    <div class="col-12">
+        <div class="tile">
+            <person-address-list-index [isInside]="true"></person-address-list-index>
+        </div>
+    </div>
+</div>
+<div class="row" *ngIf="tabPageIndex == 3" [@expandCollapse]>
+    <div class="col-12">
+        <div class="tile">
+            <notification-preference></notification-preference>
+        </div>
+    </div>
+</div>

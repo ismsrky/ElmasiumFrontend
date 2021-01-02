@@ -1,0 +1,42 @@
+<div class="card mb-2 border-info">
+    <div class="card-body p-2">
+        <div class="row">
+            <div class="col-md-5">
+                <p class="card text-white bg-warning pl-2 pt-1">
+                    <label class="control-label">
+                        {{'xPayerConnection' | translate}}:
+                        <span *ngIf="ficheDto.IsCreditMaster">{{listItem.CreditPersonAccountName}}</span>
+                        <span *ngIf="!ficheDto.IsCreditMaster">{{'xUnknown' | translate}}</span>
+                        ({{accountTypes[listItem.CreditPersonAccountTypeId] | translate}})</label>
+                </p>
+            </div>
+            <div class="col-md-5">
+                <p class="card text-white bg-success pl-2 pt-1">
+                    <label class="control-label">
+                        {{'xPayeeConnection' | translate}}:
+                        <span *ngIf="ficheDto.IsDebtMaster">{{listItem.DebtPersonAccountName}}</span>
+                        <span *ngIf="!ficheDto.IsDebtMaster">{{'xUnknown' | translate}}</span>
+                        ({{accountTypes[listItem.DebtPersonAccountTypeId] | translate}})</label>
+                </p>
+            </div>
+            <div class="col-md-2">
+                <h5 class="float-right">{{listItem.Total | number:'1.2-2'}}
+                    <currency-icon [currencyId]="listItem.CurrencyId"></currency-icon>
+                </h5>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4"> </div>
+            <div class="col-md-4"></div>
+            <div class="col-md-4">
+                <button class="btn btn-primary btn-sm float-right ml-2" type="submit"
+                    (click)="host.openModal(listItem.Id)">
+                    <fa [name]="'edit'"></fa>{{'xEdit' | translate}}
+                </button>
+                <button class="btn btn-danger btn-sm float-right" type="button" (click)="host.delete(listItem.Id)">
+                    <fa [name]="'times'"></fa>{{'xDelete' | translate}}
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

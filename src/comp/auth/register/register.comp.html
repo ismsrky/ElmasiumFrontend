@@ -1,0 +1,145 @@
+<page-title [helpName]="'Register'" [icon]="'caret-right'" *ngIf="show" [title]="'xRegister'" [@expandCollapse]>
+</page-title>
+
+<ngx-loading [show]="busy"></ngx-loading>
+
+<div class="tile" *ngIf="show" [@expandCollapse]>
+    <div class="row">
+        <div class="col-md-6 d-flex align-items-center justify-content-center">
+            <div class="row">
+                <div class="col-12">
+                    <img src="assets/common/elmasium_logo_small.png" class="blink" alt="logo">
+                </div>
+            </div>
+
+        </div>
+        <div class="col-md-6">
+            <div class="row">
+                <div class="col-12">
+                    <h6 class="font-weight-light float-right">{{'ItsFree' | translate}}</h6>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <form #registerForm="ngForm" (submit)="register()" class="login-form needs-validation pt-3"
+                        novalidate>
+                        <div class="form-group">
+                            <label class="control-label">{{'xEmail' | translate}}</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend bg-transparent">
+                                    <span class="input-group-text bg-transparent border-right-0">
+                                        <i class="mdi mdi-account-outline text-primary"></i>
+                                        <fa [name]="'user'"></fa>
+                                    </span>
+                                </div>
+                                <input #username="ngModel"
+                                    [class.is-invalid]="username.invalid && (username.touched || registerForm.submitted)"
+                                    class="form-control" required [(ngModel)]="registerDto.Username" name="Username"
+                                    type="text" placeholder="{{'xEmail' | translate}}" [appAutofocus]="true"
+                                    autocomplete="off" maxlength="255">
+                                <div class="invalid-tooltip" *ngIf="!username.hasError('email')">
+                                    {{'xEmailCantBeEmpty' | translate}}</div>
+                                <div class="invalid-tooltip" *ngIf="username.hasError('email')">
+                                    {{'xEnterValidMailAddress' | translate}}</div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label">{{'xFirstName' | translate}}</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend bg-transparent">
+                                    <span class="input-group-text bg-transparent border-right-0">
+                                        <i class="mdi mdi-account-outline text-primary"></i>
+                                        <fa [name]="'id-card-o'"></fa>
+                                    </span>
+                                </div>
+                                <input #firstname="ngModel" class="form-control" required
+                                    [class.is-invalid]="firstname.invalid && (firstname.touched || registerForm.submitted)"
+                                    [(ngModel)]="registerDto.Name" name="firstname" type="text"
+                                    placeholder="{{'xFirstName' | translate}}" maxlength="50" autocomplete="off">
+                                <div class="invalid-tooltip">{{'xFirstNameCantBeEmpty' | translate}} </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label">{{'xLastName' | translate}}</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend bg-transparent">
+                                    <span class="input-group-text bg-transparent border-right-0">
+                                        <i class="mdi mdi-account-outline text-primary"></i>
+                                        <fa [name]="'id-card-o'"></fa>
+                                    </span>
+                                </div>
+                                <input #lastname="ngModel" class="form-control" required
+                                    [class.is-invalid]="lastname.invalid && (lastname.touched || registerForm.submitted)"
+                                    [(ngModel)]="registerDto.Surname" name="lastname" type="text"
+                                    placeholder="{{'xLastName' | translate}}" maxlength="50" autocomplete="off">
+                                <div class="invalid-tooltip">{{'xLastNameCantBeEmpty' | translate}} </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label">{{'xPassword' | translate}}</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend bg-transparent">
+                                    <span class="input-group-text bg-transparent border-right-0">
+                                        <fa [name]="'lock'"></fa>
+                                    </span>
+                                </div>
+                                <input #password="ngModel" class="form-control" required
+                                    [class.is-invalid]="password.invalid && (password.touched || registerForm.submitted)"
+                                    [(ngModel)]="registerDto.Password" name="Password" type="password"
+                                    placeholder="{{'xPassword' | translate}}" autocomplete="off">
+                                <div class="invalid-tooltip">{{'xPasswordCantBeEmpty' | translate}}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="my-3">
+                            <button type="submit" class="btn btn-primary font-weight-medium auth-form-btn float-right">
+                                <i class="fa fa-sign-in fa-lg fa-fw"></i>{{'xRegister' | translate}}
+                            </button>
+                        </div>
+
+                        <div class="mt-4 font-weight-light">
+                            <div class="animated-checkbox">
+                                <label>
+                                    <input type="checkbox" [(ngModel)]="registerDto.HaveShopToo" name="HaveShopToo">
+                                    <span class="label-text">{{'xHaveShopToo' | translate}}</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group" *ngIf="registerDto.HaveShopToo" [@expandCollapse]>
+                            <label class="control-label">{{'xSignName' | translate}}</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend bg-transparent">
+                                    <span class="input-group-text bg-transparent border-right-0">
+                                        <i class="mdi mdi-account-outline text-primary"></i>
+                                        <fa [name]="'id-card-o'"></fa>
+                                    </span>
+                                </div>
+                                <input #signName="ngModel" class="form-control"
+                                    [class.is-invalid]="signName.invalid && (signName.touched || registerForm.submitted)"
+                                    [(ngModel)]="registerDto.ShopShortName" name="SignName" type="text"
+                                    placeholder="{{'xSignName' | translate}}" maxlength="50" autocomplete="off">
+                                <div class="invalid-tooltip">{{'xShopSignNameCantBeEmpty' | translate}} </div>
+                            </div>
+                        </div>
+                        <div class="form-group" *ngIf="registerDto.HaveShopToo" [@expandCollapse]>
+                            <label class="control-label">*{{'xShopType' | translate}} </label>
+                            <select class="form-control" #shopTypeId="ngModel" [(ngModel)]="registerDto.ShopTypeId"
+                                name="shopTypeId">
+                                <option [ngValue]="null">{{'xSelectShopType' | translate}}</option>
+                                <ng-template ngFor let-shopTypeGroup [ngForOf]="shopTypeList">
+                                    <optgroup label="{{shopTypeGroup.Name | translate}}">
+                                        <option *ngFor="let shopType of shopTypeGroup.TypeList" [ngValue]="shopType.Id">
+                                            {{shopType.Name | translate}}
+                                        </option>
+                                    </optgroup>
+                                </ng-template>
+                            </select>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

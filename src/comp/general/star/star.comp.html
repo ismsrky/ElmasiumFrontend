@@ -1,0 +1,7 @@
+<ng-template ngFor let-range let-i="index" [ngForOf]="fillArray(max)">
+    <fa class="text-warning" [name]="getIconName(i)" [size]="1">
+    </fa>
+</ng-template>
+<span *ngIf="showValue">
+    {{value | number:'1.1-1'}}
+</span>

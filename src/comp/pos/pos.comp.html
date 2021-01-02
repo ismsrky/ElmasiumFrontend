@@ -1,0 +1,145 @@
+<page-title [helpName]="'Retail'" [icon]="'barcode'" [title]="'xRetail'"></page-title>
+<span>
+    F9:{{'xCash' | translate}} | F10:{{'xCreditCard' | translate}} | F11:{{'xBankCard' | translate}} | F12:
+    {{'xChargeSale' | translate}}
+</span>
+<span class="float-right">
+    F8:{{'xSeePrice' | translate}} | F4:{{'xUpdateProducts' | translate}}
+</span>
+<ngx-loading [show]="busy"></ngx-loading>
+<div class="tile">
+    <div class="row">
+        <div class="col-md-8">
+            <div class="row">
+                <!--Customer-->
+                <div class="col-md-6 mb-2">
+                    <div class="card border-success">
+                        <div class="card-body p-2">
+                            <div class="row">
+                                <div class="col-12">
+                                    <h6>{{'xCustomer' | translate}}
+                                        <label class="control-label float-right">
+                                            {{personTypes[otherPersonRelation.RelatedPersonTypeId] | translate}}</label>
+                                    </h6>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="input-group" (click)="selectPerson(true)">
+                                        <input class="form-control" type="text"
+                                            [(ngModel)]="otherPersonRelation.RelatedPersonFullName"
+                                            name="debtPersonName" disabled placeholder="{{'xCustomer' | translate}}">
+                                        <div class="input-group-append">
+                                            <button class="btn btn-primary btn-sm btn-block" type="button">
+                                                <fa [name]="'search'"></fa>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row mt-1" *ngIf="otherPersonRelation">
+                                <div class="col-12">
+                                    {{otherPersonRelation.RelationTypesStr}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!--Barcode text-->
+                <div class="col-md-6">
+                    <div class="card mb-2">
+                        <div class="card-body p-2">
+                            <div class="row">
+                                <div class="col-12">
+                                    <h6>{{'xInventory' | translate}}
+                                        <button class="btn btn-outline-secondary btn-sm btn-naked float-right"
+                                            [class.active]="seePriceActive" type="button"
+                                            (click)="seePriceActive = !seePriceActive">
+                                            <fa [name]="'money'"></fa>{{'xSeePrice' | translate}}
+                                        </button>
+                                    </h6>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12 mb-1">
+                                    <!--
+                                                <input type="text" [(ngModel)]="codeStr" name="Code" (keydown)="keyDownFunction($event)"
+                                                class="form-control" #txtCode [appAutofocus]="!isMobile" placeholder="{{'xPlaceHolderSearchProduct' | translate}}"
+                                                autocomplete="off">
+                                           -->
+
+                                    <product-offer [personId]="ficheDto.CreditPersonId" [onTop]="true"
+                                        [onTopOpen1]="isPaymentModalOpen" [onTopOpen2]="isPersonSearchModalOpen">
+                                    </product-offer>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    {{'\u00A0'}}
+                                    <!--&nbsp equivalent in angular-->
+                                    <span *ngIf="seePriceActive" class="text-danger blink float-right">
+                                        {{'xScanBarcodeNow' | translate}}
+                                    </span>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <pos-product-list-index></pos-product-list-index>
+                </div>
+            </div>
+        </div>
+
+        <!--Right side-->
+        <div class="col-md-4">
+            <!--Grand total-->
+            <div class="row mb-2">
+                <div class="col-12">
+                    <div class="card text-black bg-light">
+                        <div class="card-body p-2">
+                            <div class="row">
+                                <div class="col-md-7">
+                                    <label class="control-label float-left">
+                                        <h6>{{'xGrandTotal' | translate}}</h6>
+                                        <h2 class="text-danger">{{ficheDto.GrandTotal | number:'1.2-2'}}
+                                            <currency-icon [currencyId]="ficheDto.CurrencyId"></currency-icon>
+                                        </h2>
+                                        <button class="btn btn-outline-secondary btn-sm btn-naked float-right mt-2"
+                                            type="button" (click)="updateProducts()">
+                                            <fa [name]="'pencil'"></fa>{{'xUpdateProducts' | translate}}
+                                        </button>
+                                    </label>
+                                </div>
+                                <div class="col-md-5">
+                                    <button class="btn btn-primary btn-block btn-lg" type="button" (click)="saveSlow()">
+                                        <fa [name]="'check'"></fa>{{'xSale' | translate}}
+                                    </button>
+                                    <button class="btn btn-danger btn-block btn-sm" type="button" (click)="cancel()">
+                                        <fa [name]="'ban'"></fa>{{'xCancel' | translate}}
+                                    </button>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!--Shortcuts-->
+            <div class="row mb-2">
+                <div class="col-12">
+                    <pos-shortcut></pos-shortcut>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<person-search-index *ngIf="isPersonSearchModalOpen"></person-search-index>
+<pos-payment *ngIf="isPaymentModalOpen"></pos-payment>

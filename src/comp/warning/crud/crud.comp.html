@@ -1,0 +1,61 @@
+<ngx-loading [show]="busy"></ngx-loading>
+
+<div class="modal fade" bsModal #modal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="dialog-events-name">
+    <div class="modal-dialog modal-md modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header pl-2 pb-2 pt-2">
+                <h5 id="dialog-events-name" class="modal-title pull-left">{{'xWarn' | translate}}</h5>
+                <button type="button" class="close pull-right" aria-label="Close" (click)="modal.hide()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form class="needs-validation" #warningForm="ngForm" (submit)="save()" novalidate>
+                <div class="modal-body pl-2 pb-2 pt-2">
+
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <select class="form-control" #warningTypeId="ngModel" required [class.is-invalid]="warningTypeId.invalid && (warningTypeId.touched || warningForm.submitted)"
+                                [(ngModel)]="warningDto.WarningTypeId" name="warningTypeId">
+                                <option [ngValue]="null">{{'xSelectType' | translate}}</option>
+                                <option *ngFor="let item of warningTypes | enums" [ngValue]="item.key">
+                                    {{item.value | translate}}</option>
+                            </select>
+                            <div class="invalid-tooltip">{{'xSelectType' | translate}}</div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="mb-2 col-12">
+                            <label class="control-label">
+                                <span *ngIf="warningDto.WarningTypeId == warningTypes.xOther">*</span>
+                                {{'xDescription' | translate}}
+                                <span *ngIf="warningDto.WarningTypeId != warningTypes.xOther">
+                                    ({{'xOptional' | translate}})
+                                </span>
+                            </label>
+                            <textarea class="form-control" #notes="ngModel" [required]="warningDto.WarningTypeId == warningTypes.xOther"
+                                [class.is-invalid]="notes.invalid && warningDto.WarningTypeId == warningTypes.xOther &&(notes.touched || warningForm.submitted)"
+                                [(ngModel)]="warningDto.Notes" name="Notes" type="text" maxlength="1000" placeholder="{{'xPleaseDescribeLittle' | translate}}"></textarea>
+                            <div class="invalid-tooltip" style="top:initial !important"> {{'xPleaseDescribeLittle' | translate}}
+                            </div>
+                            <span *ngIf="!warningDto.Notes">0/1000</span>
+                            <span class="float-left" *ngIf="warningDto.Notes">{{warningDto.Notes.length}}/1000</span>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer pl-2 pb-2 pt-2">
+                    <div class="pull-right">
+                        <button class="btn btn-danger btn-sm" type="button" (click)="close()">
+                            <fa [name]="'ban'"></fa>{{'xCancel' | translate}}
+                        </button>
+                    </div>
+                    <div class="pull-right ml-2">
+                        <button class="btn btn-success btn-sm" type="submit">
+                            <fa [name]="'check'"></fa>{{'xSave' | translate}}
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

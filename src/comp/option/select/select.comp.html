@@ -1,0 +1,21 @@
+<div class="row mb-2" *ngFor="let group of optionListDto">
+    <div class="col-4">
+        <label class="control-label mt-2">{{group.Name}}</label>
+    </div>
+    <div class="col-8">
+        <select class="form-control" #groupSelect="ngModel" [(ngModel)]="group.SelectedOptionId"
+            name="group{{group.Id}}" required (change)="calculate()"
+            [class.is-invalid]="groupSelect.invalid && (groupSelect.touched || isSubmitted)"
+            [disabled]="isReadonly">
+            <option [ngValue]="null" *ngIf="group.SelectedOptionId == null">{{'xPleaseSelect' | translate}}</option>
+            <option *ngFor="let option of group.OptionList" [value]="option.Id">
+                {{option.Name}}
+                <span *ngIf="option.PriceGap != 0">
+                    (<span *ngIf="option.PriceGap > 0">+</span>{{option.PriceGap | number:'1.2-2'}}
+                    <currency-icon [currencyId]="shopCurrencyId" [useString]="true"></currency-icon>)
+                </span>
+            </option>
+        </select>
+        <div class="invalid-tooltip">{{'xPleaseSelect' | translate}}</div>
+    </div>
+</div>

@@ -1,0 +1,116 @@
+<div class="row">
+    <div class="col-12">
+        <input class="form-control" style="height: 25px" (blur)="nameFocused = false" #txtName
+            (focus)="nameFocused = true" [formControl]="nameControl" name="ieName" type="text"
+            placeholder="{{'xSearch' | translate}}" autocomplete="off" [appAutofocus]=!isMobile>
+    </div>
+    <div class="col-12" *ngIf="!criteriaDto.Name" [@expandCollapse]>
+        <small class="text-secondary">
+            {{'xSearchHere' | translate}}
+        </small>
+    </div>
+</div>
+<div *ngIf="ieListDto.length > 0 && criteriaDto.Name" [@expandCollapse]>
+    <div class="border border-secondary bg-secondary mr-2"
+        style="z-index: 2;max-height: 400px;overflow-y: scroll;overflow-x: hidden" infinite-scroll
+        [scrollWindow]="false" [infiniteScrollDistance]="1" [infiniteScrollUpDistance]="2"
+        [infiniteScrollThrottle]="300" (scrolled)="search()">
+        <div class="row" *ngFor="let ie of ieListDto">
+            <div class="col-12" *ngIf="!ie.IsSelected" [@expandCollapse]>
+                <div class="card" style="cursor: pointer;"
+                    [style.background-color]="ie.IsFocused ? 'lightsteelblue' : 'white'"
+                    (mouseenter)="ie.IsFocused = true" (mouseleave)="ie.IsFocused = false">
+                    <div class="card-body p-2">
+                        <div class="row">
+                            <div class="col-12">
+                                <button class="btn btn-outline-primary btn-sm btn-naked pull-right" type="button"
+                                    (click)="add(ie)">
+                                    <fa [name]="'plus'"></fa>
+                                </button>
+                                {{ie.Name}}
+                            </div>
+                            <!--
+                                <div class="col-2">
+                                <button class="btn btn-outline-danger btn-sm btn-naked pull-right" type="button"
+                                    (click)="addToInventory(product)">
+                                    <fa [name]="'times'"></fa>
+                                </button>
+                            </div>
+                           -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row" *ngIf="busy" [@expandCollapse]>
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <ngx-loading [show]="busy"></ngx-loading>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row" *ngIf="nothingFound" [@expandCollapse]>
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body p-2">
+                <div class="row">
+                    <div class="col-md-2 col-4">
+                        <img src="assets/shrug-smiley_64_64.png" width="50px" height="50px" alt="User Image">
+                    </div>
+                    <div class="col-md-10 col-8">
+                        <span class="text-center">{{'xNoRecordsFound' | translate}}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row" *ngIf="criteriaDto.Name" [@expandCollapse]>
+    <div class="col-12">
+        <button class="btn btn-outline-primary btn-sm btn-naked pull-right" type="button" (click)="showAddNew()">
+            <fa [name]="'plus'"></fa>{{'xCouldntFindAddNew' | translate}}
+        </button>
+    </div>
+</div>
+<div class="row">
+    <div class="col-12">
+        <ngx-loading [show]="busy && ieListDto.length == 0"></ngx-loading>
+    </div>
+</div>
+<form class="needs-validation" #newIeForm="ngForm" (submit)="saveNewIe()" novalidate>
+    <div class="modal fade" *ngIf="saveDto" bsModal #modal="bs-modal" tabindex="-1" role="dialog"
+        aria-labelledby="dialog-events-name">
+        <ngx-loading [show]="busyNewIe"></ngx-loading>
+
+        <div class="modal-dialog modal-md modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 id="dialog-events-name" class="modal-title pull-left">{{'xNew' | translate}}</h5>
+                    <button type="button" class="close pull-right" aria-label="Close" (click)="modal.hide()">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-12">
+                            <input class="form-control" #ieName="ngModel" style="height: 25px" name="newIeName" required
+                                [(ngModel)]="saveDto.IncludeExcludeName" type="text"
+                                [class.is-invalid]="ieName.invalid && (ieName.touched || newIeForm.submitted)"
+                                placeholder="{{'xNameCantBeEmpty' | translate}}" autocomplete="off">
+                            <div class="invalid-tooltip">{{'xNameCantBeEmpty' | translate}}</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer p-2">
+                    <button type="submit" class="btn btn-success btn-sm float-right">
+                        {{'xSave' | translate}}
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

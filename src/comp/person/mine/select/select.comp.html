@@ -1,0 +1,35 @@
+<ngx-loading [show]="busy"></ngx-loading>
+<div class="modal fade" bsModal #modal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="dialog-events-name">
+    <div class="modal-dialog modal-md modal-dialog-centered">
+        <div class="modal-content">
+            <!--
+                <div class="modal-header p-2">
+                <h5 id="dialog-events-name" class="modal-title pull-left">{{'xSwicthProfile' | translate}}</h5>
+                <button type="button" class="close pull-right" aria-label="Close" (click)="modal.hide()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            -->
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-12">
+                        <select required [(ngModel)]="selectedProfileId" name="MyPerson" #shop="ngModel"
+                            class="form-control border border-primary" (change)="myPersonChanged()">
+                            <option [ngValue]="null">{{'xSwicthProfile' | translate}}
+                            </option>
+                            <option *ngFor="let myPerson of myPersonList" [ngValue]="myPerson.RelatedPersonId">
+                                {{myPerson.RelatedPersonFullName}}
+                                - {{myPerson.RelationTypesStr}}</option>
+                        </select>
+                        <div class="invalid-tooltip">{{'xSelect' | translate}}</div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer pl-2 pb-2 pt-2">
+                <button class="btn btn-danger btn-sm pull-right" type="button" (click)="modal.hide()">
+                    <fa [name]="'ban'"></fa>{{'xCancel' | translate}}
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

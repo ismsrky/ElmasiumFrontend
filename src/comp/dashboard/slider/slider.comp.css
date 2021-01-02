@@ -1,0 +1,7 @@
+.selected-slide{
+    border: 3px solid white;
+}
+
+.unselected-slide{
+    border: 3px solid transparent;
+}

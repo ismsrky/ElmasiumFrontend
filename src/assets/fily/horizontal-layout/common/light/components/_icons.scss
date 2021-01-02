@@ -1,0 +1,127 @@
+/* Icons */
+
+.icons-list {
+  border-left: 1px solid $border-color;
+  border-top: 1px solid $border-color;
+  >div {
+    background: $white;
+    border-bottom: 1px solid $border-color;
+    border-right: 1px solid $border-color;
+    @include display-flex;
+    @include align-items(center);
+    padding:15px 15px;
+    font-weight: 400;
+    font-size: $default-font-size;
+
+    i {
+      display: inline-block;
+      font-size: 20px;
+      width: 40px;
+      text-align: left;
+      color: theme-color(primary);
+    }
+  }
+}
+
+.icon-in-bg {
+  width: 55px;
+  height: 55px;
+  text-align: center;
+  @include display-flex();
+  @include align-items(center);
+  @include justify-content(center);
+}
+
+.icon-lg {
+  font-size: 2.5rem;
+}
+
+.icon-md {
+  font-size: 1.875rem;
+}
+
+.icon-sm {
+  font-size: 1rem;
+}
+
+@each $color, $value in $theme-colors {
+  .icon-rounded-#{$color} {
+    background: $value;
+    width: 1.875rem;
+    height: 1.875rem;
+    border-radius: 50%;
+    text-align: center;
+    i, p, h1, h2, h3, h4, h5, h6 {
+      color: $white;
+      line-height: 1.875rem;
+    }
+    &.icon-rounded-sm {
+      width: 1.5rem;
+      height: 1.5rem;
+      i, p, h1, h2, h3, h4, h5, h6 {
+        line-height: 1.5rem;
+      }
+    }
+    &.icon-rounded-md {
+      width: 2.625rem;
+      height: 2.625rem;
+      i, p, h1, h2, h3, h4, h5, h6 {
+        line-height: 2.625rem;
+      }
+    }
+    &.icon-rounded-lg {
+      width: 3.75rem;
+      height: 3.75rem;
+      i, p, h1, h2, h3, h4, h5, h6 {
+        line-height: 3.75rem;
+      }
+      i {
+        font-size: 1.25rem;
+      }
+    }
+  }
+  .icon-rounded-inverse-#{$color} {
+    background: white;
+    width: 1.875rem;
+    height: 1.875rem;
+    border-radius: 50%;
+    text-align: center;
+    i, p, h1, h2, h3, h4, h5, h6 {
+      color: $value;
+      line-height: 1.875rem;
+    }
+    &.icon-rounded-sm {
+      width: 1.5rem;
+      height: 1.5rem;
+      i, p, h1, h2, h3, h4, h5, h6 {
+        line-height: 1.5rem;
+      }
+    }
+    &.icon-rounded-md {
+      width: 2.625rem;
+      height: 2.625rem;
+      i, p, h1, h2, h3, h4, h5, h6 {
+        line-height: 2.875rem;
+      }
+    }
+    &.icon-rounded-lg {
+      width: 3.75rem;
+      height: 3.75rem;
+      i, p, h1, h2, h3, h4, h5, h6 {
+        line-height: 3.75rem;
+      }
+      i {
+        font-size: 1.625rem;
+      }
+    }
+  }
+}
+
+
+.btn {
+	.fa {
+		font-size: 14px;
+		margin-right: 5px;
+		vertical-align: middle;
+	}
+}
