@@ -1,6 +1,13 @@
-# MhApp
+# The frontend of 'Elmasium'.
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.7.3.
+This is the frontend of 'Elmasium' that contains components, enums, business classess and some helpers.
+Bootstrap 4, Fily Admin Template, some ngx-bootstrap components were used.
+
+Visit Fily Admin Template:
+https://themeforest.net/item/fily-responsive-bootstrap-admin-template/23067271
+
+Visit ngx-bootstrap:
+https://valor-software.com/ngx-bootstrap
 
 ## Development server
 
