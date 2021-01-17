@@ -1,4 +1,4 @@
-# The frontend of 'Elmasium'.
+# The frontend of 'Elmasium'
 
 This is the frontend of 'Elmasium' that contains components, enums, business classess and some helpers.
 Bootstrap 4, Fily Admin Template, some ngx-bootstrap components were used.
